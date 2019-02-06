@@ -65,9 +65,12 @@ char* id;
 
 %%
 
-Statement: Expression DONE {std::cout << $1 << std::endl;};
-ProcedureDecl: PROCEDURE 
-
+Program: ConstantDecl? TypeDecl? VarDecl? (ProcedureDecl | FunctionDecl|)* Block {};
+ConstantDecl: CONST (ID EQ Expression SEMCOL)+ {};
+ProcedureDecl: PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL FORWARD SEMCOL {}|
+	    PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL body SEMCOL{}; 
+FunctionDecl: FUNCTION ID POPEN FormalParameters PCLOSE COL Type SEMCOL {};
+FormalParameters: {}| (VAR|REF)? IdentList COL Type (SEMCOL (VAR|REF)? IdentList COL Type)*;
 
 %%
 void yyerror(const char* message){
