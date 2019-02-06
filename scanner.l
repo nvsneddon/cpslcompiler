@@ -69,3 +69,4 @@ id  [a-zA-Z_][a-zA-Z0-9_]*
 '[a-zA-Z]' {yylval.val = strdup(yytext); return CHAR;}
 \"[a-zA-Z]*\" {yylval.val = strdup(yytext); return STR;}
 [ \t] {}
+$(.*)\n {}
