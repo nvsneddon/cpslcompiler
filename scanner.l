@@ -3,6 +3,8 @@
 
 //#include "parser.hpp"
 %}
+
+%option noyywrap
 DIGIT 	[0-9]
 id  [a-zA-Z][a-zA-Z0-9]*
 

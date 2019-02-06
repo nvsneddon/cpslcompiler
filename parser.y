@@ -1,3 +1,11 @@
+%{
+	#include <iostream>
+	
+	extern int yylex();
+	void yyerror(const char*);
+%}
+
+
 %union
 {
 float val;
@@ -65,12 +73,17 @@ char* id;
 
 %%
 
-Program: ConstantDecl? TypeDecl? VarDecl? (ProcedureDecl | FunctionDecl|)* Block {};
-ConstantDecl: CONST (ID EQ Expression SEMCOL)+ {};
-ProcedureDecl: PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL FORWARD SEMCOL {}|
+/*Program: ConstantDecl? TypeDecl? VarDecl? (ProcedureDecl | FunctionDecl|)* Block {};*/
+
+ConstantDecl: CONST POPEN ConstantSubDecl PCLOSE {};
+
+ConstantSubDecl: ID EQ Expression SEMCOL {} | ConstantSubDecl ID EQ Expression SEMCOL {};
+Expression: %empty {};
+
+/*ProcedureDecl: PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL FORWARD SEMCOL {}|
 	    PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL body SEMCOL{}; 
 FunctionDecl: FUNCTION ID POPEN FormalParameters PCLOSE COL Type SEMCOL {};
-FormalParameters: {}| (VAR|REF)? IdentList COL Type (SEMCOL (VAR|REF)? IdentList COL Type)*;
+FormalParameters: {}| (VAR|REF)? IdentList COL Type (SEMCOL (VAR|REF)? IdentList COL Type)*;*/
 
 %%
 void yyerror(const char* message){
