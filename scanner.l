@@ -66,4 +66,6 @@ id  [a-zA-Z_][a-zA-Z0-9_]*
 {id} {yylval.id = strdup(yytext); return ID;}
 {DIGIT}+ {yylval.val = atoi(yytext); return NUMBER;}
 0x({DIGIT}+) {yylval.val = atoi(yytext); return NUMBER;}
-[ \t]
+'[a-zA-Z]' {yylval.val = strdup(yytext); return CHAR;}
+\"[a-zA-Z]*\" {yylval.val = strdup(yytext); return STR;}
+[ \t] {}

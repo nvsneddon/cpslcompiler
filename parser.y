@@ -59,6 +59,8 @@ char* id;
 
 %token<id> ID
 %token<val> NUMBER
+%token<val> CHAR
+%token<val> STR
 
 
 %%
