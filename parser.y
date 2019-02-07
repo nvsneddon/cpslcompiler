@@ -57,6 +57,7 @@ char* id;
 %token RECORD
 %token REF
 %token REPEAT
+%token RETURN
 %token STOP
 %token SUCC
 %token THEN
@@ -76,11 +77,10 @@ char* id;
 /*Program: ConstantDecl? TypeDecl? VarDecl? (ProcedureDecl | FunctionDecl|)* Block {};*/
 
 ConstantDecl: CONST POPEN ConstantSubDecl PCLOSE {};
-
 ConstantSubDecl: ID EQ Expression SEMCOL {} | ConstantSubDecl ID EQ Expression SEMCOL {};
-Expression: %empty {};
-
-/*ProcedureDecl: PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL FORWARD SEMCOL {}|
+Expression: {}
+/*
+ProcedureDecl: PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL FORWARD SEMCOL {}|
 	    PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL body SEMCOL{}; 
 FunctionDecl: FUNCTION ID POPEN FormalParameters PCLOSE COL Type SEMCOL {};
 FormalParameters: {}| (VAR|REF)? IdentList COL Type (SEMCOL (VAR|REF)? IdentList COL Type)*;*/
