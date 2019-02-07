@@ -102,7 +102,7 @@ body: ConstSubDecl TypeDecl VarDecl Block {};
 Block: BEGIN StatementSequence END {};
 
 FormalParameters: {} | VarRef IDList COL Type {}; 
-VarRef: Var {} | REF {} | {};
+VarRef: VAR {} | REF {} | {};
 
 
 StatementSequence: StatementSequence SEMCOL Statement {} |
@@ -125,7 +125,7 @@ ElseIfStatement: ElseIfStatement ELSEIF Expression THEN StatementSequence | {};
 ElseStatement: ELSE Expression THEN StatementSequence | {};
 WhileStatement: WHILE Expression DO StatementSequence END {};
 RepeatStatement: REPEAT StatementSequence UNTIL Expression {};
-ForStatement: FOR ID ASSIGN Expression todownto Expression do StatementSequence END {};
+ForStatement: FOR ID ASSIGN Expression todownto Expression DO StatementSequence END {};
 todownto: TO {}| DOWNTO {};
 StopStatement: STOP {};
 ReturnStatement: RETURN Expression {}; | RETURN {};
@@ -134,6 +134,12 @@ ReadValues: ReadValues COMMA LValue {} | LValue {};
 WriteStatement: WRITE POPEN ExpressionList PCLOSE;
 ExpressionList: ExpressionList COMMA Expression {} | Expression {};
 ProcedureCall: ID POPEN ExpressionList PCLOSE {}| ID POPEN PCLOSE {};
+
+
+Assignment: {};
+Expression: {};
+LValue: {};
+Type: {};
 
 %%
 void yyerror(const char* message){
