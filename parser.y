@@ -118,8 +118,22 @@ Statement: Assignment {} |
 	ReadStatement {} |
 	WriteStatement {} |
 	ProcedureCall {} |
-	{}
+	{};
 
+IfStatement: IF Expression THEN StatementSequence ElseIfStatement ElseStatement {};
+ElseIfStatement: ElseIfStatement ELSEIF Expression THEN StatementSequence | {};
+ElseStatement: ELSE Expression THEN StatementSequence | {};
+WhileStatement: WHILE Expression DO StatementSequence END {};
+RepeatStatement: REPEAT StatementSequence UNTIL Expression {};
+ForStatement: FOR ID ASSIGN Expression todownto Expression do StatementSequence END {};
+todownto: TO {}| DOWNTO {};
+StopStatement: STOP {};
+ReturnStatement: RETURN Expression {}; | RETURN {};
+ReadStatement: READ POPEN ReadValues PCLOSE {};
+ReadValues: ReadValues COMMA LValue {} | LValue {};
+WriteStatement: WRITE POPEN ExpressionList PCLOSE;
+ExpressionList: ExpressionList COMMA Expression {} | Expression {};
+ProcedureCall: ID POPEN ExpressionList PCLOSE {}| ID POPEN PCLOSE {};
 
 %%
 void yyerror(const char* message){
