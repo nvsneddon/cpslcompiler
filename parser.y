@@ -37,7 +37,7 @@ char* id;
 %token PERC 
 
 %token ARRAY
-%token START 
+%token BEGIN 
 %token CHR
 %token CONST
 %token DO
@@ -83,25 +83,43 @@ Profunct: Profunct ProcedureDecl {} | Profunct FunctionDecl {} | {};
 ConstantDecl: CONST ConstSubDecl {} | {};
 ConstSubDecl: ConstSubDecl POPEN Expression SEMCOL PCLOSE {} | POPEN Expression SEMCOL PCLOSE {}; 
 TypeDecl: TYPE SubTypeDecl {} | {};   
-SubTypeDecl: SubTypeDecl POPEN ID EQ typestatement PCLOSE SEMCOL {} | POPEN ID EQ typestatement PCLOSE SEMCOL {}; 
-VarDecl: VAR SubVarDecl POPEN IDList COL typestatement SEMCOL PCLOSE {} | {}; 
-SubVarDecl: POPEN IDList COL typestatement SEMCOL PCLOSE {} | {}; 
+SubTypeDecl: SubTypeDecl POPEN ID EQ Typestatement PCLOSE SEMCOL {} | POPEN ID EQ Typestatement PCLOSE SEMCOL {}; 
+VarDecl: VAR SubVarDecl POPEN IDList COL Typestatement SEMCOL PCLOSE {} | {}; 
+SubVarDecl: SubVarDecl POPEN IDList COL Typestatement SEMCOL PCLOSE {} | {}; 
 
-typestatement: simpletype {} | recordtype {} | arraytype {};
-simpletype: ID {};
-recordtype: RECORD recordsubtype END
-recordsubtype: recordsubtype IDList COL typestatement SEMCOL {}| {};
-arraytype: ARRAY BOPEN Expression COL Expression BCLOSE OF typeexpression {}; 
+Typestatement: ID {} | recordtype {} | arraytype {};
+recordtype: RECORD recordsubtype END{};
+recordsubtype: recordsubtype IDList COL Typestatement SEMCOL {}| {};
+arraytype: ARRAY BOPEN Expression COL Expression BCLOSE OF Typestatement {}; 
 
-IDList: IDList COMMA ID | ID
+IDList: IDList COMMA ID {} | ID {};
 
-Expression: {};
+ProcedureDecl: PROCEDURE ID POPEN FormalParameters PCLOSE COL TypeDecl SEMCOL ForBody SEMCOL {};
+FunctionDecl: FUNCTION ID POPEN FormalParameters PCLOSE SEMCOL ForBody SEMCOL{}; 
 
-/*
-ProcedureDecl: PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL FORWARD SEMCOL {}|
-	    PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL body SEMCOL{}; 
-FunctionDecl: FUNCTION ID POPEN FormalParameters PCLOSE COL Type SEMCOL {};
-FormalParameters: {}| (VAR|REF)? IdentList COL Type (SEMCOL (VAR|REF)? IdentList COL Type)*;*/
+ForBody: FORWARD {} | body{};
+body: ConstSubDecl TypeDecl VarDecl Block {};
+Block: BEGIN StatementSequence END {};
+
+FormalParameters: {} | VarRef IDList COL Type {}; 
+VarRef: Var {} | REF {} | {};
+
+
+StatementSequence: StatementSequence SEMCOL Statement {} |
+	Statement {};
+
+Statement: Assignment {} |
+	IfStatement {} |
+	WhileStatement {} |
+	RepeatStatement {} |
+	ForStatement {} |
+	StopStatement {} |
+	ReturnStatement {} |
+	ReadStatement {} |
+	WriteStatement {} |
+	ProcedureCall {} |
+	{}
+
 
 %%
 void yyerror(const char* message){
