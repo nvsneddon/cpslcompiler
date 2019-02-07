@@ -24,7 +24,7 @@ id  [a-zA-Z][a-zA-Z0-9]*
 ">=" {return GTE;}
 "<=" {return LTE;}
 "." {return DEC;}
-"," {return DONE;}
+"," {return COMMA;}
 ":" {return COL;}
 ";" {return SEMCOL;}
 "(" {return POPEN;}
@@ -59,6 +59,8 @@ id  [a-zA-Z][a-zA-Z0-9]*
 "stop"|"STOP" {return STOP;}
 "succ"|"SUCC" {return SUCC;}
 "then"|"THEN" {return THEN;}
+"to"|"TO" {return TO;}
+"type"|"TYPE" {return TYPE;}
 "until"|"UNTIL" {return UNTIL;}
 "var"|"VAR" {return VAR;} 
 "while"|"WHILE" {return WHILE;}

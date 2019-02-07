@@ -27,7 +27,7 @@ char* id;
 %token GTE
 %token LTE
 %token DEC
-%token DONE 
+%token COMMA 
 %token COL
 %token SEMCOL
 %token POPEN
@@ -61,6 +61,8 @@ char* id;
 %token STOP
 %token SUCC
 %token THEN
+%token TO
+%token TYPE
 %token UNTIL
 %token VAR
 %token WHILE
@@ -74,11 +76,27 @@ char* id;
 
 %%
 
-/*Program: ConstantDecl? TypeDecl? VarDecl? (ProcedureDecl | FunctionDecl|)* Block {};*/
+Program: ConstantDecl TypeDecl VarDecl Profunct Block DEC {};
 
-ConstantDecl: CONST POPEN ConstantSubDecl PCLOSE {};
-ConstantSubDecl: ID EQ Expression SEMCOL {} | ConstantSubDecl ID EQ Expression SEMCOL {};
-Expression: {}
+Profunct: Profunct ProcedureDecl {} | Profunct FunctionDecl {} | {};
+
+ConstantDecl: CONST ConstSubDecl {} | {};
+ConstSubDecl: ConstSubDecl POPEN Expression SEMCOL PCLOSE {} | POPEN Expression SEMCOL PCLOSE {}; 
+TypeDecl: TYPE SubTypeDecl {} | {};   
+SubTypeDecl: SubTypeDecl POPEN ID EQ typestatement PCLOSE SEMCOL {} | POPEN ID EQ typestatement PCLOSE SEMCOL {}; 
+VarDecl: VAR SubVarDecl POPEN IDList COL typestatement SEMCOL PCLOSE {} | {}; 
+SubVarDecl: POPEN IDList COL typestatement SEMCOL PCLOSE {} | {}; 
+
+typestatement: simpletype {} | recordtype {} | arraytype {};
+simpletype: ID {};
+recordtype: RECORD recordsubtype END
+recordsubtype: recordsubtype IDList COL typestatement SEMCOL {}| {};
+arraytype: ARRAY BOPEN Expression COL Expression BCLOSE OF typeexpression {}; 
+
+IDList: IDList COMMA ID | ID
+
+Expression: {};
+
 /*
 ProcedureDecl: PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL FORWARD SEMCOL {}|
 	    PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL body SEMCOL{}; 
