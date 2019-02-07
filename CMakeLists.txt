@@ -14,8 +14,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_COMPILE_FLAGS}")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
 
 set(cpsl_srcs
-  ${BISON_Parser_OUTPUTS}
-  ${FLEX_Scanner_OUTPUTS}
+	main.cpp
+	${BISON_Parser_OUTPUTS}
+	${FLEX_Scanner_OUTPUTS}
 )
 source_group("Calc" FILES ${cpsl_srcs})
 
