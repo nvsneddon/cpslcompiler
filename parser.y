@@ -78,7 +78,7 @@ char* id;
 
 %%
 
-Program: ConstantDecl TypeDecl VarDecl Profunct Block DEC {};
+Program: ConstantDecl TypeDecl VarDecl Profunct Block DEC {} ;
 
 Profunct: Profunct ProcedureDecl {} | Profunct FunctionDecl {} | {};
 
