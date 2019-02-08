@@ -3,3 +3,5 @@ cd build
 cmake ..
 make
 mv cpsl ..
+cd ..
+./cpsl
