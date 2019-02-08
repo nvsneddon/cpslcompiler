@@ -166,8 +166,7 @@ Expression: Expression OR Expression {}
 	| ORD POPEN Expression PCLOSE {}
 	| PRED POPEN Expression PCLOSE {}
 	| SUCC POPEN Expression PCLOSE {}
-	| LValue;
-
+	| LValue {};
 %%
 void yyerror(const char* message){
 	std::cerr << message << std::endl;
