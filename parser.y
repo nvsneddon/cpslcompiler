@@ -26,6 +26,8 @@ char* id;
 %token GT
 %token GTE
 %token LTE
+%token LE
+%token GE
 %token DEC
 %token COMMA 
 %token COL
@@ -87,7 +89,8 @@ SubTypeDecl: SubTypeDecl POPEN ID EQ Typestatement PCLOSE SEMCOL {} | POPEN ID E
 VarDecl: VAR SubVarDecl POPEN IDList COL Typestatement SEMCOL PCLOSE {} | {}; 
 SubVarDecl: SubVarDecl POPEN IDList COL Typestatement SEMCOL PCLOSE {} | {}; 
 
-Typestatement: ID {} | recordtype {} | arraytype {};
+Typestatement: simpletype {} | recordtype {} | arraytype {};
+simpletype: ID {};
 recordtype: RECORD recordsubtype END{};
 recordsubtype: recordsubtype IDList COL Typestatement SEMCOL {}| {};
 arraytype: ARRAY BOPEN Expression COL Expression BCLOSE OF Typestatement {}; 
@@ -101,7 +104,7 @@ ForBody: FORWARD {} | body{};
 body: ConstSubDecl TypeDecl VarDecl Block {};
 Block: BEGIN StatementSequence END {};
 
-FormalParameters: {} | VarRef IDList COL Type {}; 
+FormalParameters: {} | VarRef IDList COL Typestatement {}; 
 VarRef: VAR {} | REF {} | {};
 
 
@@ -136,10 +139,34 @@ ExpressionList: ExpressionList COMMA Expression {} | Expression {};
 ProcedureCall: ID POPEN ExpressionList PCLOSE {}| ID POPEN PCLOSE {};
 
 
-Assignment: {};
-Expression: {};
-LValue: {};
-Type: {};
+
+
+Assignment: LValue ASSIGN Expression{};
+LValue: ID SubLValue {};
+SubLValue: POPEN DEC ID PCLOSE {} | BOPEN Expression BCLOSE {} | {};
+
+Expression: Expression OR Expression {}
+	| Expression AND Expression {}
+	| Expression EQ Expression {}
+	| Expression ARROWS Expression {}
+	| Expression GTE Expression {}
+	| Expression GE Expression {}
+	| Expression LTE Expression {}
+	| Expression LE Expression {}
+	| Expression ADD Expression {}
+	| Expression SUB Expression {}
+	| Expression MULT Expression {}
+	| Expression DIV Expression {}
+	| Expression PERC Expression {}
+	| TILDA Expression {}
+	| SUB Expression {}
+	| POPEN Expression PCLOSE {}
+	| ID POPEN ExpressionList PCLOSE {}
+	| CHR POPEN Expression PCLOSE {}
+	| ORD POPEN Expression PCLOSE {}
+	| PRED POPEN Expression PCLOSE {}
+	| SUCC POPEN Expression PCLOSE {}
+	| LValue;
 
 %%
 void yyerror(const char* message){
