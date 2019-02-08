@@ -39,7 +39,7 @@ char* id;
 %token PERC 
 
 %token ARRAY
-%token BEGIN 
+%token START 
 %token CHR
 %token CONST
 %token DO
@@ -102,7 +102,7 @@ FunctionDecl: FUNCTION ID POPEN FormalParameters PCLOSE SEMCOL ForBody SEMCOL{};
 
 ForBody: FORWARD {} | body{};
 body: ConstSubDecl TypeDecl VarDecl Block {};
-Block: BEGIN StatementSequence END {};
+Block: START StatementSequence END {};
 
 FormalParameters: {} | VarRef IDList COL Typestatement {}; 
 VarRef: VAR {} | REF {} | {};

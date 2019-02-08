@@ -35,7 +35,7 @@ id  [a-zA-Z][a-zA-Z0-9]*
 
 
 "array"|"ARRAY" {return ARRAY;}
-"begin"|"BEGIN" {return BEGIN;}
+"begin"|"BEGIN" {return START;}
 "chr"|"CHR" {return CHR;}
 "const"|"CONST" {return CONST;}
 "do"|"DO" {return DO;}
