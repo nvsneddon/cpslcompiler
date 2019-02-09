@@ -1,5 +1,7 @@
 %{
 	#include <iostream>
+
+	extern "C" int yylineno;
 	
 	extern int yylex();
 	void yyerror(const char*);
@@ -39,7 +41,7 @@ char* id;
 %token PERC 
 
 %token ARRAY
-%token START 
+%token START
 %token CHR
 %token CONST
 %token DO
@@ -75,24 +77,63 @@ char* id;
 %token<id> CHAR
 %token<id> STR
 
+%left OR
+%left AND
+%left ADD SUB
+%left MULT DIV PERC
+%nonassoc EQ ARROWS GT GTE LT LTE
+%right TILDA
+%right NEG
 
+%define parse.error verbose
+%locations
 %%
 
-Program: ConstantDecl TypeDecl VarDecl Profunct Block DEC {} ;
+Program: ConstantDecl TypeDecl VarDecl Profunct Block DEC {} 
+	;
 
-Profunct: Profunct ProcedureDecl {} | Profunct FunctionDecl {} | {};
+Profunct: Profunct ProcedureDecl {} 
+	| Profunct FunctionDecl {} 
+	| {}
+	;
 
-ConstantDecl: CONST ConstSubDecl {} | {};
-ConstSubDecl: ConstSubDecl POPEN Expression SEMCOL PCLOSE {} | POPEN Expression SEMCOL PCLOSE {}; 
-TypeDecl: TYPE SubTypeDecl {} | {};   
-SubTypeDecl: SubTypeDecl POPEN ID EQ Typestatement PCLOSE SEMCOL {} | POPEN ID EQ Typestatement PCLOSE SEMCOL {}; 
-VarDecl: VAR SubVarDecl POPEN IDList COL Typestatement SEMCOL PCLOSE {} | {}; 
-SubVarDecl: SubVarDecl POPEN IDList COL Typestatement SEMCOL PCLOSE {} | {}; 
+ConstantDecl: CONST ConstSubDecl {} 
+	| {}
+	;
 
-Typestatement: simpletype {} | recordtype {} | arraytype {};
-simpletype: ID {};
-recordtype: RECORD recordsubtype END{};
-recordsubtype: recordsubtype IDList COL Typestatement SEMCOL {}| {};
+ConstSubDecl: ConstSubDecl POPEN Expression SEMCOL PCLOSE {} 
+	| POPEN Expression SEMCOL PCLOSE {}
+	; 
+
+TypeDecl: TYPE SubTypeDecl {} 
+	| {}
+	;
+
+SubTypeDecl: SubTypeDecl POPEN ID EQ Typestatement PCLOSE SEMCOL {} 
+	| POPEN ID EQ Typestatement PCLOSE SEMCOL {}
+	;
+
+VarDecl: VAR SubVarDecl POPEN IDList COL Typestatement SEMCOL PCLOSE {} 
+	| {}
+	; 
+SubVarDecl: SubVarDecl POPEN IDList COL Typestatement SEMCOL PCLOSE {} 
+	| {}
+	; 
+
+Typestatement: simpletype {} 
+	| recordtype {} 
+	| arraytype {}
+	;
+
+
+simpletype: ID {}
+	;
+recordtype: RECORD recordsubtype END
+	{}
+	;
+recordsubtype: recordsubtype IDList COL Typestatement SEMCOL {}
+	| {}
+	;
 arraytype: ARRAY BOPEN Expression COL Expression BCLOSE OF Typestatement {}; 
 
 IDList: IDList COMMA ID {} | ID {};
@@ -136,14 +177,21 @@ ReadStatement: READ POPEN ReadValues PCLOSE {};
 ReadValues: ReadValues COMMA LValue {} | LValue {};
 WriteStatement: WRITE POPEN ExpressionList PCLOSE;
 ExpressionList: ExpressionList COMMA Expression {} | Expression {};
-ProcedureCall: ID POPEN ExpressionList PCLOSE {}| ID POPEN PCLOSE {};
+ProcedureCall: ID POPEN ExpressionList PCLOSE {}
+	| ID POPEN PCLOSE {}
+	;
 
 
 
 
-Assignment: LValue ASSIGN Expression{};
-LValue: ID SubLValue {};
-SubLValue: POPEN DEC ID PCLOSE {} | BOPEN Expression BCLOSE {} | {};
+Assignment: LValue ASSIGN Expression {}
+	;
+LValue: ID SubLValue {}
+	;
+SubLValue: POPEN DEC ID PCLOSE {} 
+	| BOPEN Expression BCLOSE {} 
+	| {}
+	;
 
 Expression: Expression OR Expression {}
 	| Expression AND Expression {}
@@ -153,21 +201,27 @@ Expression: Expression OR Expression {}
 	| Expression GE Expression {}
 	| Expression LTE Expression {}
 	| Expression LE Expression {}
+	| Expression LT Expression {}
+	| Expression GT Expression {}
 	| Expression ADD Expression {}
 	| Expression SUB Expression {}
 	| Expression MULT Expression {}
 	| Expression DIV Expression {}
 	| Expression PERC Expression {}
 	| TILDA Expression {}
-	| SUB Expression {}
+	| SUB Expression %prec NEG {}
 	| POPEN Expression PCLOSE {}
 	| ID POPEN ExpressionList PCLOSE {}
 	| CHR POPEN Expression PCLOSE {}
 	| ORD POPEN Expression PCLOSE {}
 	| PRED POPEN Expression PCLOSE {}
 	| SUCC POPEN Expression PCLOSE {}
-	| LValue {};
+	| LValue {}
+	| STR {}
+	| CHAR {}
+	| NUMBER {}
+	;
 %%
 void yyerror(const char* message){
-	std::cerr << message << std::endl;
+	std::cerr << message  << "\tOn line" << yylineno << std::endl;
 }
