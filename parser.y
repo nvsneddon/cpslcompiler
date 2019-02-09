@@ -91,6 +91,11 @@ char* id;
 
 Program: ConstantDecl TypeDecl VarDecl Profunct DEC {}
 	| TypeDecl VarDecl Profunct DEC {}
+	| ConstantDecl VarDecl Profunct DEC {}
+	| ConstantDecl TypeDecl Profunct DEC {}
+	| ConstantDecl Profunct DEC {}
+	| TypeDecl Profunct DEC {}
+	| VarDecl Profunct DEC {}
 	;
 
 Profunct: Profunct ProcedureDecl Block {} 
@@ -136,13 +141,13 @@ arraytype: ARRAY BOPEN Expression COL Expression BCLOSE OF Typestatement {}
 	;
 
 IDList: IDList COMMA ID {}  
-	|ID {}
+	| ID {}
 	;
 
 ProcedureDecl: PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL FORWARD SEMCOL {}
 	| PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL body SEMCOL {}
 	;
-FunctionDecl: FUNCTION ID POPEN FormalParameters PCLOSE COL Typestatment SEMCOL FORWARD SEMCOL{}
+FunctionDecl: FUNCTION ID POPEN FormalParameters PCLOSE COL Typestatement SEMCOL FORWARD SEMCOL{}
 	| FUNCTION ID POPEN FormalParameters PCLOSE COL Typestatement SEMCOL body SEMCOL{}
 	; 
 
@@ -157,54 +162,78 @@ body: ConstSubDecl TypeDecl VarDecl Block {}
 
 Block: START StatementSequence END {};
 
-FormalParameters: VarRef IDList COL Typestatement {} 
+FormalParameters: FormalParameters SEMCOL VarRef IDList COL Typestatement {} 
+	| FormalParameters SEMCOL IDList COL Typestatement {} 
+	| VarRef IDList COL Typestatement {} 
+	| IDList COL Typestatement {} 
+	;
+	
+VarRef: VAR {} 
+	| REF {} 
+	;
+
+StatementSequence: StatementSequence SEMCOL Statement {} 
+	| Statement {}
+	;
+
+Statement: Assignment {} 
+	| IfStatement {} 
+	| WhileStatement {} 
+	| RepeatStatement {} 
+	| ForStatement {} 
+	| StopStatement {} 
+	| ReturnStatement {} 
+	| ReadStatement {} 
+	| WriteStatement {} 
+	| ProcedureCall {} 
 	| {}
 	;
-VarRef: VAR {} | REF {} | {};
 
-
-StatementSequence: StatementSequence SEMCOL Statement {} |
-	Statement {};
-
-Statement: Assignment {} |
-	IfStatement {} |
-	WhileStatement {} |
-	RepeatStatement {} |
-	ForStatement {} |
-	StopStatement {} |
-	ReturnStatement {} |
-	ReadStatement {} |
-	WriteStatement {} |
-	ProcedureCall {} |
-	{};
-
-IfStatement: IF Expression THEN StatementSequence ElseIfStatement ElseStatement {};
-ElseIfStatement: ElseIfStatement ELSEIF Expression THEN StatementSequence | {};
-ElseStatement: ELSE Expression THEN StatementSequence | {};
-WhileStatement: WHILE Expression DO StatementSequence END {};
-RepeatStatement: REPEAT StatementSequence UNTIL Expression {};
-ForStatement: FOR ID ASSIGN Expression todownto Expression DO StatementSequence END {};
-todownto: TO {}| DOWNTO {};
-StopStatement: STOP {};
-ReturnStatement: RETURN Expression {}; | RETURN {};
-ReadStatement: READ POPEN ReadValues PCLOSE {};
-ReadValues: ReadValues COMMA LValue {} | LValue {};
-WriteStatement: WRITE POPEN ExpressionList PCLOSE;
-ExpressionList: ExpressionList COMMA Expression {} | Expression {};
+IfStatement: IF Expression THEN StatementSequence ElseIfStatement ElseStatement END {}
+	| IF Expression THEN StatementSequence ElseStatement END {}
+	| IF Expression THEN StatementSequence ElseIfStatement END {}
+	| IF Expression THEN StatementSequence END {}
+	;
+ElseIfStatement: ElseIfStatement ELSEIF Expression THEN StatementSequence {}
+	| ELSEIF Expression THEN StatementSequence 
+	;
+ElseStatement: ELSE Expression THEN StatementSequence {}
+	;
+WhileStatement: WHILE Expression DO StatementSequence END {}
+	;
+RepeatStatement: REPEAT StatementSequence UNTIL Expression {}
+	;
+ForStatement: FOR ID ASSIGN Expression todownto Expression DO StatementSequence END {}
+	;
+todownto: TO {}
+	| DOWNTO {}
+	;
+StopStatement: STOP {}
+	;
+ReturnStatement: RETURN Expression {}; 
+	| RETURN {}
+	;
+ReadStatement: READ POPEN ReadValues PCLOSE {}
+	;
+ReadValues: ReadValues COMMA LValue {} 
+	| LValue {}
+	;
+WriteStatement: WRITE POPEN ExpressionList PCLOSE
+	;
 ProcedureCall: ID POPEN ExpressionList PCLOSE {}
 	| ID POPEN PCLOSE {}
 	;
-
-
-
+ExpressionList: ExpressionList COMMA Expression {} 
+	| Expression {}	
+	;
 
 Assignment: LValue ASSIGN Expression {}
 	;
 LValue: ID SubLValue {}
+	| ID {}
 	;
-SubLValue: POPEN DEC ID PCLOSE {} 
-	| BOPEN Expression BCLOSE {} 
-	| {}
+SubLValue: DEC ID {} 
+	| Expression {} 
 	;
 
 Expression: Expression OR Expression {}
