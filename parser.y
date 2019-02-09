@@ -89,35 +89,33 @@ char* id;
 %locations
 %%
 
-Program: ConstantDecl TypeDecl VarDecl Profunct Block DEC {} 
+Program: ConstantDecl TypeDecl VarDecl Profunct DEC {}
+	| TypeDecl VarDecl Profunct DEC {}
 	;
 
-Profunct: Profunct ProcedureDecl {} 
-	| Profunct FunctionDecl {} 
-	| {}
+Profunct: Profunct ProcedureDecl Block {} 
+	| Profunct FunctionDecl Block {} 
+	| Block {}
 	;
 
 ConstantDecl: CONST ConstSubDecl {} 
-	| {}
 	;
 
-ConstSubDecl: ConstSubDecl POPEN Expression SEMCOL PCLOSE {} 
+ConstSubDecl: ConstantDecl POPEN Expression SEMCOL PCLOSE {} 
 	| POPEN Expression SEMCOL PCLOSE {}
 	; 
 
 TypeDecl: TYPE SubTypeDecl {} 
-	| {}
 	;
 
-SubTypeDecl: SubTypeDecl POPEN ID EQ Typestatement PCLOSE SEMCOL {} 
-	| POPEN ID EQ Typestatement PCLOSE SEMCOL {}
+SubTypeDecl: SubTypeDecl ID EQ Typestatement SEMCOL {} 
+	| ID EQ Typestatement SEMCOL {}
 	;
 
-VarDecl: VAR SubVarDecl POPEN IDList COL Typestatement SEMCOL PCLOSE {} 
-	| {}
+VarDecl: VAR SubVarDecl {} 
 	; 
-SubVarDecl: SubVarDecl POPEN IDList COL Typestatement SEMCOL PCLOSE {} 
-	| {}
+SubVarDecl: SubVarDecl IDList COL Typestatement SEMCOL {} 
+	| IDList COL Typestatement SEMCOL {}
 	; 
 
 Typestatement: simpletype {} 
@@ -128,24 +126,40 @@ Typestatement: simpletype {}
 
 simpletype: ID {}
 	;
-recordtype: RECORD recordsubtype END
-	{}
+recordtype: RECORD recordsubtype END {} 
+	| RECORD END {}
 	;
 recordsubtype: recordsubtype IDList COL Typestatement SEMCOL {}
-	| {}
+	| IDList COL Typestatement SEMCOL {}
 	;
-arraytype: ARRAY BOPEN Expression COL Expression BCLOSE OF Typestatement {}; 
+arraytype: ARRAY BOPEN Expression COL Expression BCLOSE OF Typestatement {}
+	;
 
-IDList: IDList COMMA ID {} | ID {};
+IDList: IDList COMMA ID {}  
+	|ID {}
+	;
 
-ProcedureDecl: PROCEDURE ID POPEN FormalParameters PCLOSE COL TypeDecl SEMCOL ForBody SEMCOL {};
-FunctionDecl: FUNCTION ID POPEN FormalParameters PCLOSE SEMCOL ForBody SEMCOL{}; 
+ProcedureDecl: PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL FORWARD SEMCOL {}
+	| PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL body SEMCOL {}
+	;
+FunctionDecl: FUNCTION ID POPEN FormalParameters PCLOSE COL Typestatment SEMCOL FORWARD SEMCOL{}
+	| FUNCTION ID POPEN FormalParameters PCLOSE COL Typestatement SEMCOL body SEMCOL{}
+	; 
 
-ForBody: FORWARD {} | body{};
-body: ConstSubDecl TypeDecl VarDecl Block {};
+body: ConstSubDecl TypeDecl VarDecl Block {}
+	| TypeDecl VarDecl Block {}
+	| ConstSubDecl VarDecl Block {}
+	| ConstSubDecl TypeDecl Block {}
+	| TypeDecl Block {}
+	| ConstSubDecl Block {}
+	| VarDecl Block {}
+	;
+
 Block: START StatementSequence END {};
 
-FormalParameters: {} | VarRef IDList COL Typestatement {}; 
+FormalParameters: VarRef IDList COL Typestatement {} 
+	| {}
+	;
 VarRef: VAR {} | REF {} | {};
 
 
