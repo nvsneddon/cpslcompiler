@@ -89,18 +89,27 @@ char* id;
 %locations
 %%
 
-Program: ConstantDecl TypeDecl VarDecl Profunct DEC {}
-	| TypeDecl VarDecl Profunct DEC {}
-	| ConstantDecl VarDecl Profunct DEC {}
-	| ConstantDecl TypeDecl Profunct DEC {}
-	| ConstantDecl Profunct DEC {}
-	| TypeDecl Profunct DEC {}
-	| VarDecl Profunct DEC {}
+Program: ConstantDecl TypeDecl VarDecl Profunct Block DEC {}
+	| TypeDecl VarDecl Profunct Block DEC {}
+	| ConstantDecl VarDecl Profunct Block DEC {}
+	| ConstantDecl TypeDecl Profunct Block DEC {}
+	| ConstantDecl Profunct Block DEC {}
+	| TypeDecl Profunct Block DEC {}
+	| VarDecl Profunct Block DEC {}
+	| TypeDecl VarDecl Block DEC {}
+	| ConstantDecl VarDecl Block DEC {}
+	| ConstantDecl TypeDecl Block DEC {}
+	| ConstantDecl Block DEC {}
+	| TypeDecl Block DEC {}
+	| VarDecl Block DEC {}
+	| Profunct Block DEC {}
+	| Block DEC {}
 	;
 
-Profunct: Profunct ProcedureDecl Block {} 
-	| Profunct FunctionDecl Block {} 
-	| Block {}
+Profunct: Profunct ProcedureDecl {} 
+	| Profunct FunctionDecl {} 
+	| ProcedureDecl {}
+	| FunctionDecl {}
 	;
 
 ConstantDecl: CONST ConstSubDecl {} 
@@ -144,11 +153,11 @@ IDList: IDList COMMA ID {}
 	| ID {}
 	;
 
-ProcedureDecl: PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL FORWARD SEMCOL {}
-	| PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL body SEMCOL {}
+ProcedureDecl: PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL body SEMCOL {}
+	| PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL FORWARD SEMCOL {}
 	;
-FunctionDecl: FUNCTION ID POPEN FormalParameters PCLOSE COL Typestatement SEMCOL FORWARD SEMCOL{}
-	| FUNCTION ID POPEN FormalParameters PCLOSE COL Typestatement SEMCOL body SEMCOL{}
+FunctionDecl: FUNCTION ID POPEN FormalParameters PCLOSE COL Typestatement SEMCOL body SEMCOL{}
+	| FUNCTION ID POPEN FormalParameters PCLOSE COL Typestatement SEMCOL FORWARD SEMCOL{}
 	; 
 
 body: ConstSubDecl TypeDecl VarDecl Block {}
@@ -158,6 +167,7 @@ body: ConstSubDecl TypeDecl VarDecl Block {}
 	| TypeDecl Block {}
 	| ConstSubDecl Block {}
 	| VarDecl Block {}
+	| Block {}
 	;
 
 Block: START StatementSequence END {};
@@ -166,6 +176,7 @@ FormalParameters: FormalParameters SEMCOL VarRef IDList COL Typestatement {}
 	| FormalParameters SEMCOL IDList COL Typestatement {} 
 	| VarRef IDList COL Typestatement {} 
 	| IDList COL Typestatement {} 
+	| {}
 	;
 	
 VarRef: VAR {} 
@@ -197,7 +208,7 @@ IfStatement: IF Expression THEN StatementSequence ElseIfStatement ElseStatement 
 ElseIfStatement: ElseIfStatement ELSEIF Expression THEN StatementSequence {}
 	| ELSEIF Expression THEN StatementSequence 
 	;
-ElseStatement: ELSE Expression THEN StatementSequence {}
+ElseStatement: ELSE StatementSequence {}
 	;
 WhileStatement: WHILE Expression DO StatementSequence END {}
 	;
@@ -210,7 +221,7 @@ todownto: TO {}
 	;
 StopStatement: STOP {}
 	;
-ReturnStatement: RETURN Expression {}; 
+ReturnStatement: RETURN Expression {} 
 	| RETURN {}
 	;
 ReadStatement: READ POPEN ReadValues PCLOSE {}
@@ -255,6 +266,7 @@ Expression: Expression OR Expression {}
 	| SUB Expression %prec NEG {}
 	| POPEN Expression PCLOSE {}
 	| ID POPEN ExpressionList PCLOSE {}
+	| ID POPEN PCLOSE {}
 	| CHR POPEN Expression PCLOSE {}
 	| ORD POPEN Expression PCLOSE {}
 	| PRED POPEN Expression PCLOSE {}
@@ -266,5 +278,5 @@ Expression: Expression OR Expression {}
 	;
 %%
 void yyerror(const char* message){
-	std::cerr << message  << "\tOn line" << yylineno << std::endl;
+	std::cerr << message  << " on line " << yylineno << std::endl;
 }
