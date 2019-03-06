@@ -7,11 +7,17 @@
 	void yyerror(const char*);
 %}
 
+%code requires{
+	#ifndef __TYPES_HPP_INCLUDES
+	#define __TYPES_HPP_INCLUDES
+
+	#endif
+}
 
 %union
 {
-float val;
-char* id;
+	float val;
+	char* id;
 }
 
 %token ADD
@@ -71,11 +77,16 @@ char* id;
 %token VAR
 %token WHILE
 %token WRITE
+%token ID
+%token NUMBER
+%token CHAR
+%token STR
 
-%token<id> ID
-%token<val> NUMBER
-%token<id> CHAR
-%token<id> STR
+%type<id> ID
+%type<val> NUMBER
+%type<id> CHAR
+%type<id> STR
+
 
 %left OR
 %left AND
