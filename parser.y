@@ -2,7 +2,6 @@
 	#include <iostream>
 
 	extern "C" int yylineno;
-	
 	extern int yylex();
 	void yyerror(const char*);
 %}
@@ -10,7 +9,7 @@
 %code requires{
 	#ifndef __TYPES_HPP_INCLUDES
 	#define __TYPES_HPP_INCLUDES
-
+	#include "symbol_table.hpp"
 	#endif
 }
 
