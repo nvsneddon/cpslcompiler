@@ -182,11 +182,11 @@ body: ConstSubDecl TypeDecl VarDecl Block {}
 
 Block: START StatementSequence END {};
 
-FormalParameters: FormalParameters SEMCOL VarRef IDList COL Typestatement {} 
+FormalParameters: {}
+	| FormalParameters SEMCOL VarRef IDList COL Typestatement {} 
 	| FormalParameters SEMCOL IDList COL Typestatement {} 
 	| VarRef IDList COL Typestatement {} 
 	| IDList COL Typestatement {} 
-	| {}
 	;
 	
 VarRef: VAR {} 
@@ -239,7 +239,7 @@ ReadStatement: READ POPEN ReadValues PCLOSE {}
 ReadValues: ReadValues COMMA LValue {} 
 	| LValue {}
 	;
-WriteStatement: WRITE POPEN ExpressionList PCLOSE
+WriteStatement: WRITE POPEN ExpressionList PCLOSE {}
 	;
 ProcedureCall: ID POPEN ExpressionList PCLOSE {}
 	| ID POPEN PCLOSE {}
