@@ -15,3 +15,7 @@ int Character::size(){
 int CharacterString::size(){
     return 0;
 }
+
+int Bool::size(){
+    return 1;
+}

@@ -10,7 +10,6 @@ void Write::write(std::string msg){
         if (msg[i] == '\n'){
             msg.erase(i, 1);
             msg.insert(i, "\\n");
-            i++;
         }
     }
     string label = "msg" + to_string(counter++);

@@ -5,17 +5,22 @@ private:
 protected:
 };
 
-class Integer{
+class Integer : public Type{
 public:
     int size();
 };
 
-class Character{
+class Character : public Type{
 public:
     int size();
 };
 
-class CharacterString{
+class CharacterString : public Type{
+public:
+    int size();
+};
+
+class Bool : public Type{
 public:
     int size();
 };
