@@ -1,4 +1,4 @@
-/builddir
+/makefiles
 /TestFiles
 parser.output
 parser.tab.c
