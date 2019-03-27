@@ -19,6 +19,7 @@ set(cpsl_srcs
 	write.cpp
 	symbol_table.hpp
 	symbol_table.cpp
+	includes.hpp
 	${BISON_Parser_OUTPUTS}
 	${FLEX_Scanner_OUTPUTS}
 )
