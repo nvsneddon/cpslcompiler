@@ -4,10 +4,10 @@
 #include <iostream>
 #include <vector>
 #include <map>
-#include "expression.hpp"
 
-class symbolTable{
+class SymbolTable{
     public:
+        void add();
     private:
         std::vector<std::map<std::string, int>> variables;    
 };
