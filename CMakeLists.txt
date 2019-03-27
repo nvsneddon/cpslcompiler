@@ -20,6 +20,8 @@ set(cpsl_srcs
 	symbol_table.hpp
 	symbol_table.cpp
 	includes.hpp
+	type.cpp
+	type.hpp
 	${BISON_Parser_OUTPUTS}
 	${FLEX_Scanner_OUTPUTS}
 )
