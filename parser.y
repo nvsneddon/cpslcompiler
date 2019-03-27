@@ -7,10 +7,7 @@
 %}
 
 %code requires{
-	#ifndef __TYPES_HPP_INCLUDES
-	#define __TYPES_HPP_INCLUDES
-	#include "symbol_table.hpp"
-	#endif
+	#include "includes.hpp"
 }
 
 %union
@@ -85,6 +82,7 @@
 %type<val> NUMBER
 %type<id> CHAR
 %type<id> STR
+%type<id> Expression
 
 
 %left OR
@@ -239,7 +237,9 @@ ReadStatement: READ POPEN ReadValues PCLOSE {}
 ReadValues: ReadValues COMMA LValue {} 
 	| LValue {}
 	;
-WriteStatement: WRITE POPEN ExpressionList PCLOSE {}
+WriteStatement: WRITE POPEN ExpressionList PCLOSE {
+	Write::write("This is a test\n");
+}
 	;
 ProcedureCall: ID POPEN ExpressionList PCLOSE {}
 	| ID POPEN PCLOSE {}
@@ -282,7 +282,7 @@ Expression: Expression OR Expression {}
 	| PRED POPEN Expression PCLOSE {}
 	| SUCC POPEN Expression PCLOSE {}
 	| LValue {}
-	| STR {}
+	| STR {$$ = $1;}
 	| CHAR {}
 	| NUMBER {}
 	;
