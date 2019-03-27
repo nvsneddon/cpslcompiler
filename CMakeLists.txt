@@ -17,6 +17,8 @@ set(cpsl_srcs
 	main.cpp
 	Statements/write.hpp
 	Statements/write.cpp
+	Statements/statement.hpp
+	Statements/statement.cpp
 	Tables/symbol_table.hpp
 	Tables/symbol_table.cpp
 	includes.hpp

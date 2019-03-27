@@ -1,6 +1,6 @@
 #include <string>
 
-class Write {
+class Write{
     public:
         static void write(std::string msg);
     private:
