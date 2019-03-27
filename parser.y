@@ -7,7 +7,10 @@
 %}
 
 %code requires{
+	#ifndef INCLUDES_HPP
+	#define INCLUDES_HPP
 	#include "includes.hpp"
+	#endif
 }
 
 %union

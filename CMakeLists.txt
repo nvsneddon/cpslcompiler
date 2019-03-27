@@ -15,13 +15,13 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
 
 set(cpsl_srcs
 	main.cpp
-	write.hpp
-	write.cpp
-	symbol_table.hpp
-	symbol_table.cpp
+	Statements/write.hpp
+	Statements/write.cpp
+	Tables/symbol_table.hpp
+	Tables/symbol_table.cpp
 	includes.hpp
-	type.cpp
-	type.hpp
+	Types/type.cpp
+	Types/type.hpp
 	${BISON_Parser_OUTPUTS}
 	${FLEX_Scanner_OUTPUTS}
 )
