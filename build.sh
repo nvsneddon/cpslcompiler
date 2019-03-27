@@ -1,5 +1,5 @@
-mkdir build;
-cd build
+mkdir builddir;
+cd builddir
 cmake ..
 make
 mv cpsl ..
