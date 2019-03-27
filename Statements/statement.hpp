@@ -2,7 +2,8 @@
 #define STATEMENT_HPP
 
 class Statement{
-    virtual void write();
+public:
+    virtual void write() = 0;
 };
 
 #endif
