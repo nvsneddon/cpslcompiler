@@ -273,7 +273,7 @@ Expression: Expression OR Expression {}
 	| Expression DIV Expression {}
 	| Expression PERC Expression {}
 	| TILDA Expression {}
-	| SUB Expression %prec NEG {}
+	| SUB Expression {}
 	| POPEN Expression PCLOSE {}
 	| ID POPEN ExpressionList PCLOSE {}
 	| ID POPEN PCLOSE {}

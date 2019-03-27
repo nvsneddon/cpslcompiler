@@ -5,3 +5,5 @@ parser.tab.c
 parser.tab.h
 y.tab.c
 cpsl
+.vscode
+/testdirectory
