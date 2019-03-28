@@ -14,7 +14,7 @@ void Write::write(std::string msg){
     }
     string label = "msg" + to_string(counter++);
     cout << ".data" << endl;
-    cout << label << ": .ascii \"" << msg << "\\0\"" << endl;
+    cout << label << ": .asciiz \"" << msg << "\"" << endl;
     cout << ".text" << endl;
     cout << "li $v0, 4" << endl;
     cout << "la $a0, " << label << endl;

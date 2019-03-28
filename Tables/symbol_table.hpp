@@ -10,6 +10,7 @@ class SymbolTable{
         void add();
     private:
         std::vector<std::map<std::string, int>> variables;    
+        std::vector<std::map<std::string, std::string>> toPrint;
 };
 
 

@@ -6,9 +6,9 @@
 
 class StatementList{ 
 public:
-    void emit(){
-        for(auto i:sList) i->write();
-    }
+    void emit(){ for(auto i : sList) i->write(); }
+    void add(Statement* stmt){ sList.push_back(stmt); };
+    ~StatementList(){ for(auto i : sList) delete i;};
 private: 
     std::vector<Statement*> sList;
 };
