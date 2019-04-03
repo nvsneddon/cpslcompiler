@@ -111,10 +111,10 @@ Program: ConstantDecl TypeDecl VarDecl Profunct Block DEC {}
 	| ConstantDecl VarDecl Block DEC {}
 	| ConstantDecl TypeDecl Block DEC {}
 	| ConstantDecl Block DEC {}
-	| TypeDecl Block DEC {}
-	| VarDecl Block DEC {}
-	| Profunct Block DEC {}
-	| Block DEC {}
+	| TypeDecl Block DEC {} 
+	| VarDecl Block DEC {} 
+	| Profunct Block DEC {} 
+	| Block DEC {} 
 	;
 
 Profunct: Profunct ProcedureDecl {} 
@@ -126,8 +126,8 @@ Profunct: Profunct ProcedureDecl {}
 ConstantDecl: CONST ConstSubDecl {} 
 	;
 
-ConstSubDecl: ConstantDecl POPEN Expression SEMCOL PCLOSE {} 
-	| POPEN Expression SEMCOL PCLOSE {}
+ConstSubDecl: ConstantDecl Expression SEMCOL {} 
+	| Expression SEMCOL {}
 	; 
 
 TypeDecl: TYPE SubTypeDecl {} 
@@ -181,7 +181,8 @@ body: ConstSubDecl TypeDecl VarDecl Block {}
 	| Block {}
 	;
 
-Block: START StatementSequence END {};
+Block: START StatementSequence END {}
+	;
 
 FormalParameters: {}
 	| FormalParameters SEMCOL VarRef IDList COL Typestatement {} 
@@ -241,8 +242,8 @@ ReadValues: ReadValues COMMA LValue {}
 	| LValue {}
 	;
 WriteStatement: WRITE POPEN ExpressionList PCLOSE {
-	Write::write("This is a test\n");
-}
+		Write::write("This is a test\n");
+	}
 	;
 ProcedureCall: ID POPEN ExpressionList PCLOSE {}
 	| ID POPEN PCLOSE {}
@@ -253,12 +254,9 @@ ExpressionList: ExpressionList COMMA Expression {}
 
 Assignment: LValue ASSIGN Expression {}
 	;
-LValue: ID SubLValue {}
-	| ID {}
-	;
-SubLValue: DEC ID {} 
-	| Expression {} 
-	;
+LValue: ID {}
+	| LValue DEC ID {}
+	| LValue BOPEN Expression BCLOSE {}
 
 Expression: Expression OR Expression {}
 	| Expression AND Expression {}
@@ -286,7 +284,7 @@ Expression: Expression OR Expression {}
 	| SUCC POPEN Expression PCLOSE {}
 	| LValue {}
 	| STR {$$ = $1;}
-	| CHAR {}
+	| CHAR {$$ = $1;}
 	| NUMBER {}
 	;
 %%
