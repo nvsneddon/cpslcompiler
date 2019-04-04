@@ -23,8 +23,8 @@
 {
 	float val;
 	char* id;
-	Expression* expr;
 	Type* tpe;
+	ExpressionsList* elist;
 }
 
 %token ADD
@@ -92,6 +92,7 @@
 %type<id> CHAR
 %type<id> STR
 %type<tpe> Expression
+%type<elist> ExpressionList
 
 
 %left OR
@@ -247,16 +248,17 @@ ReadValues: ReadValues COMMA LValue {}
 	| LValue {}
 	;
 WriteStatement: WRITE POPEN ExpressionList PCLOSE {
-		std::cout << "\n\n";
-		Write::write("This is a test\n");
-		std::cout << "\n\n";
+
 	}
 	;
 ProcedureCall: ID POPEN ExpressionList PCLOSE {}
 	| ID POPEN PCLOSE {}
 	;
-ExpressionList: ExpressionList COMMA Expression {} 
-	| Expression {}	
+ExpressionList: ExpressionList COMMA Expression { $1->add($3); } 
+	| Expression {
+		$$ = new ExpressionsList();
+		$$->add($1);
+	}	
 	;
 
 Assignment: LValue ASSIGN Expression {}

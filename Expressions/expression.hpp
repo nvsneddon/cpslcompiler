@@ -6,9 +6,9 @@
 
 class Expression{
     public:
-        Expression(int expr, std::string theType);
+        Expression(Type* tpe) { expr = tpe; }
     private:
-        Type* type;
+        Type* expr;
 };
 
 #endif

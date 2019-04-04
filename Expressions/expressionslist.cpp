@@ -5,5 +5,9 @@ ExpressionsList::ExpressionsList(){
 }
 
 ExpressionsList::~ExpressionsList(){
+
+}
+
+void ExpressionsList::add(Type* t){
     
 }
