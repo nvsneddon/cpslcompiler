@@ -266,28 +266,48 @@ LValue: ID {} //Thiis one is for normal variables
 Expression: Expression OR Expression {}
 	| Expression AND Expression {}
 	| Expression EQ Expression {
-		int result = ($1->getExpression() == $3->getExpression()) ? 1 : 0;
+		int result = ($1->getExpression() == $3->getExpression() ? 1 : 0);
+		if(result == 1){
+			std::cout << "The left is equal to the right" << std::endl;
+		} else {
+			std::cout << "Those numbers are not equal" << std::endl;
+		}
 		$$ = new Expression(result, "boolean");
 	}
 	| Expression ARROWS Expression {
 		Expression* newexpression;
 		int result = ($1->getExpression() != $3->getExpression()) ? 1 : 0;
+		if(result == 1){
+			std::cout << " They are not equal." << std::endl;
+		}
 		$$ = new Expression(result, "boolean");
 	}
 	| Expression GTE Expression {
 		int result = ($1->getExpression() >= $3->getExpression()) ? 1 : 0;
+		if(result == 1){
+			std::cout << "Left is greater than or equal to the right" << std::endl;
+		}
 		$$ = new Expression(result, "boolean");
 	}
 	| Expression GT Expression {
 		int result = ($1->getExpression() > $3->getExpression()) ? 1 : 0;
+		if(result == 1){
+			std::cout << "It is greater than that." << std::endl;
+		}
 		$$ = new Expression(result, "boolean");
 	}
 	| Expression LTE Expression {
 		int result = ($1->getExpression() <= $3->getExpression()) ? 1 : 0;
+		if(result == 1){
+			std::cout << "It is less than ore equal to that." << std::endl;
+		}
 		$$ = new Expression(result, "boolean");
 	}
 	| Expression LT Expression {
 		int result = ($1->getExpression() < $3->getExpression()) ? 1 : 0;
+		if(result == 1){
+			std::cout << "It is less than that." << std::endl;
+		}
 		$$ = new Expression(result, "boolean");
 	}
 	| Expression ADD Expression {}
