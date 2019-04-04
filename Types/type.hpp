@@ -3,19 +3,23 @@
 
 class Type{
 public:
-    Type() {};
+    Type(int e) { element = e; };
     virtual int size();
+    int getExpression() { return element; }
 private:
 protected:
+    int element;
 };
 
 class Integer : public Type{
 public:
+    Integer(int e) : Type(e) {};
 private:
 };
 
 class Character : public Type{
 public:
+    Character(int e) : Type(e) {};
 private:
 };
 
@@ -24,8 +28,9 @@ public:
 private:
 };
 
-class Boolean : public Type{
+class Bool : public Type{
 public:
+    Bool(int e) : Type(e) {};
 private:
 };
 

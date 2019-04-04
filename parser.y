@@ -91,7 +91,7 @@
 %type<val> NUMBER
 %type<id> CHAR
 %type<id> STR
-%type<expr> Expression
+%type<tpe> Expression
 
 
 %left OR
@@ -247,7 +247,9 @@ ReadValues: ReadValues COMMA LValue {}
 	| LValue {}
 	;
 WriteStatement: WRITE POPEN ExpressionList PCLOSE {
-		//Write::write("This is a test\n");
+		std::cout << "\n\n";
+		Write::write("This is a test\n");
+		std::cout << "\n\n";
 	}
 	;
 ProcedureCall: ID POPEN ExpressionList PCLOSE {}
@@ -268,47 +270,75 @@ Expression: Expression OR Expression {}
 	| Expression EQ Expression {
 		int result = ($1->getExpression() == $3->getExpression() ? 1 : 0);
 		if(result == 1){
-			std::cout << "The left is equal to the right" << std::endl;
-		} else {
-			std::cout << "Those numbers are not equal" << std::endl;
+			std::cout << "Correct!" << std::endl;
+		} 
+		else {
+			std::cout << "Wrong!!" << std::endl;
 		}
-		$$ = new Expression(result, "boolean");
+		$$ = new Bool(result);
+		delete $1;
+		delete $3;
 	}
 	| Expression ARROWS Expression {
 		Expression* newexpression;
 		int result = ($1->getExpression() != $3->getExpression()) ? 1 : 0;
 		if(result == 1){
-			std::cout << " They are not equal." << std::endl;
+			std::cout << "They are not equal." << std::endl;
+		} 
+		else {
+			std::cout << "Wrong!!" << std::endl;
 		}
-		$$ = new Expression(result, "boolean");
+		$$ = new Bool(result);
+		delete $1;
+		delete $3;
 	}
 	| Expression GTE Expression {
 		int result = ($1->getExpression() >= $3->getExpression()) ? 1 : 0;
 		if(result == 1){
 			std::cout << "Left is greater than or equal to the right" << std::endl;
 		}
-		$$ = new Expression(result, "boolean");
+		else {
+			std::cout << "Wrong!!" << std::endl;
+		}
+		$$ = new Bool(result);
+		delete $1;
+		delete $3;
 	}
 	| Expression GT Expression {
 		int result = ($1->getExpression() > $3->getExpression()) ? 1 : 0;
 		if(result == 1){
 			std::cout << "It is greater than that." << std::endl;
 		}
-		$$ = new Expression(result, "boolean");
+		else {
+			std::cout << "Wrong!!" << std::endl;
+		}
+		$$ = new Bool(result);
+		delete $1;
+		delete $3;
 	}
 	| Expression LTE Expression {
 		int result = ($1->getExpression() <= $3->getExpression()) ? 1 : 0;
 		if(result == 1){
 			std::cout << "It is less than ore equal to that." << std::endl;
 		}
-		$$ = new Expression(result, "boolean");
+		else {
+			std::cout << "Wrong!!" << std::endl;
+		}
+		$$ = new Bool(result);
+		delete $1;
+		delete $3;
 	}
 	| Expression LT Expression {
 		int result = ($1->getExpression() < $3->getExpression()) ? 1 : 0;
 		if(result == 1){
 			std::cout << "It is less than that." << std::endl;
 		}
-		$$ = new Expression(result, "boolean");
+		else {
+			std::cout << "Wrong!!" << std::endl;
+		}
+		$$ = new Bool(result);
+		delete $1;
+		delete $3;
 	}
 	| Expression ADD Expression {}
 	| Expression SUB Expression {}
@@ -327,10 +357,10 @@ Expression: Expression OR Expression {}
 	| LValue {}
 	| STR {}
 	| CHAR {
-		$$ = new Expression(int($1[1]), "character"); //TODO Make sure that this isn't spaghetti code. I think the index is 1 because the str looks like 'x'
+		$$ = new Character(int($1[1])); //TODO Make sure that this isn't spaghetti code. I think the index is 1 because the str looks like 'x'
 	}
 	| NUMBER {
-		$$ = new Expression($1, "integer"); 
+		$$ = new Integer($1); 
 	}
 	;
 %%
