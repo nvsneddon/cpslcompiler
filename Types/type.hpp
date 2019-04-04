@@ -24,7 +24,7 @@ public:
 private:
 };
 
-class Bool : public Type{
+class Boolean : public Type{
 public:
 private:
 };

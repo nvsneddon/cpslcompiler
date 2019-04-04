@@ -41,8 +41,6 @@
 %token GT
 %token GTE
 %token LTE
-%token LE
-%token GE
 %token DEC
 %token COMMA 
 %token COL
@@ -267,14 +265,31 @@ LValue: ID {} //Thiis one is for normal variables
 
 Expression: Expression OR Expression {}
 	| Expression AND Expression {}
-	| Expression EQ Expression {}
-	| Expression ARROWS Expression {}
-	| Expression GTE Expression {}
-	| Expression GE Expression {}
-	| Expression LTE Expression {}
-	| Expression LE Expression {}
-	| Expression LT Expression {}
-	| Expression GT Expression {}
+	| Expression EQ Expression {
+		int result = ($1->getExpression() == $3->getExpression()) ? 1 : 0;
+		$$ = new Expression(result, "boolean");
+	}
+	| Expression ARROWS Expression {
+		Expression* newexpression;
+		int result = ($1->getExpression() != $3->getExpression()) ? 1 : 0;
+		$$ = new Expression(result, "boolean");
+	}
+	| Expression GTE Expression {
+		int result = ($1->getExpression() >= $3->getExpression()) ? 1 : 0;
+		$$ = new Expression(result, "boolean");
+	}
+	| Expression GT Expression {
+		int result = ($1->getExpression() > $3->getExpression()) ? 1 : 0;
+		$$ = new Expression(result, "boolean");
+	}
+	| Expression LTE Expression {
+		int result = ($1->getExpression() <= $3->getExpression()) ? 1 : 0;
+		$$ = new Expression(result, "boolean");
+	}
+	| Expression LT Expression {
+		int result = ($1->getExpression() < $3->getExpression()) ? 1 : 0;
+		$$ = new Expression(result, "boolean");
+	}
 	| Expression ADD Expression {}
 	| Expression SUB Expression {}
 	| Expression MULT Expression {}
@@ -292,7 +307,7 @@ Expression: Expression OR Expression {}
 	| LValue {}
 	| STR {}
 	| CHAR {
-		$$ = new Expression(int($1[0]), "character"); //TODO Make sure that this isn't spaghetti code.
+		$$ = new Expression(int($1[1]), "character"); //TODO Make sure that this isn't spaghetti code. I think the index is 1 because the str looks like 'x'
 	}
 	| NUMBER {
 		$$ = new Expression($1, "integer"); 

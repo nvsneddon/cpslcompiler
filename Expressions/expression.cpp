@@ -14,7 +14,8 @@ Expression::Expression(int expr, std::string theType){
         e = expr;
     }
     else if (theType.compare("boolean")){
-
+        type = new Boolean();
+        e = expr;
     }
     else{
         std::cerr << "Malaligned Type" << std::endl;
