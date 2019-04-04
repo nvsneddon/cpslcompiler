@@ -21,11 +21,12 @@ set(cpsl_srcs
 	Statements/write.cpp
 	Statements/statement.hpp
 	Statements/statementlist.hpp
-	Tables/tables.hpp
 	Expressions/expression.hpp
-	includes.hpp
+	Expressions/expression.cpp
+	Expressions/expressionlist.hpp
 	Types/type.cpp
 	Types/type.hpp
+	includes.hpp
 	${BISON_Parser_OUTPUTS}
 	${FLEX_Scanner_OUTPUTS}
 )

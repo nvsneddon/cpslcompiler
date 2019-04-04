@@ -2,6 +2,7 @@
 	#include <iostream>
 
 	extern "C" int yylineno;
+
 	extern int yylex();
 	void yyerror(const char*);
 %}
@@ -10,6 +11,8 @@
 	#ifndef INCLUDES_HPP
 	#define INCLUDES_HPP
 	#include "includes.hpp"
+	extern SymbolTable* symbols;
+	extern ExpressionsList* elist;
 	#endif
 }
 
@@ -17,6 +20,8 @@
 {
 	float val;
 	char* id;
+	Expression* expr;
+	Type* tpe;
 }
 
 %token ADD
@@ -85,7 +90,7 @@
 %type<val> NUMBER
 %type<id> CHAR
 %type<id> STR
-%type<id> Expression
+%type<expr> Expression
 
 
 %left OR
@@ -241,7 +246,7 @@ ReadValues: ReadValues COMMA LValue {}
 	| LValue {}
 	;
 WriteStatement: WRITE POPEN ExpressionList PCLOSE {
-		Write::write("This is a test\n");
+		//Write::write("This is a test\n");
 	}
 	;
 ProcedureCall: ID POPEN ExpressionList PCLOSE {}
@@ -282,8 +287,8 @@ Expression: Expression OR Expression {}
 	| PRED POPEN Expression PCLOSE {}
 	| SUCC POPEN Expression PCLOSE {}
 	| LValue {}
-	| STR {$$ = $1;}
-	| CHAR {$$ = $1;}
+	| STR {}
+	| CHAR {}
 	| NUMBER {}
 	;
 %%

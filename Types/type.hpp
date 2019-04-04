@@ -1,8 +1,6 @@
 #ifndef TYPE_HPP
 #define TYPE_HPP
 
-#include <string>
-
 class Type{
 public:
     Type() {};
@@ -31,5 +29,13 @@ class Bool : public Type{
 public:
 private:
 };
+
+class Array : public Type{
+public:
+    int size();
+private:
+    int lb;
+    int ub;
+};  
 
 #endif

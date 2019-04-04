@@ -1,11 +1,15 @@
 #ifndef EXPRESSION_HPP 
 #define EXPRESSION_HPP
-#include "../includes.hpp"
-#include "../Tables/symbol_table.hpp"
 
+#include <string>
+#include "../Types/type.hpp"
 
 class Expression{
     public:
+        Expression(int expr, std::string theType);
+        void test() {}
+    private:
+        Type* type;
 };
 
 #endif

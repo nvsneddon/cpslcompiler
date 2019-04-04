@@ -1,11 +1,14 @@
-#ifndef MAIN
-#define MAIN
 #include "includes.hpp"
-
 extern int yyparse();
 
-int main(){
-	yyparse();
-}
+SymbolTable* symbols;
+ExpressionsList* elist;
 
-#endif
+
+int main(){
+	symbols = new SymbolTable();
+	elist = new ExpressionsList();
+	yyparse();
+	delete symbols;
+	delete elist;
+}

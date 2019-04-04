@@ -4,7 +4,6 @@
 #include <iostream>
 #include <vector>
 #include <map>
-#include "../includes.hpp"
 
 
 class SymbolTable{
