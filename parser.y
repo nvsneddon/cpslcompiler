@@ -261,9 +261,9 @@ ExpressionList: ExpressionList COMMA Expression {}
 
 Assignment: LValue ASSIGN Expression {}
 	;
-LValue: ID {}
-	| LValue DEC ID {}
-	| LValue BOPEN Expression BCLOSE {}
+LValue: ID {} //Thiis one is for normal variables
+	| LValue DEC ID {} //This one is for records
+	| LValue BOPEN Expression BCLOSE {} // And this one is for arrays
 
 Expression: Expression OR Expression {}
 	| Expression AND Expression {}
@@ -291,8 +291,12 @@ Expression: Expression OR Expression {}
 	| SUCC POPEN Expression PCLOSE {}
 	| LValue {}
 	| STR {}
-	| CHAR {}
-	| NUMBER {}
+	| CHAR {
+		$$ = new Expression(int($1[0]), "character"); //TODO Make sure that this isn't spaghetti code.
+	}
+	| NUMBER {
+		$$ = new Expression($1, "integer"); 
+	}
 	;
 %%
 void yyerror(const char* message){

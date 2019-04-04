@@ -7,9 +7,10 @@
 class Expression{
     public:
         Expression(int expr, std::string theType);
-        void test() {}
+        int getExpression() { return e; }
     private:
         Type* type;
+        int e;
 };
 
 #endif

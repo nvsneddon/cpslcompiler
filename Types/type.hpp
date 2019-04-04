@@ -7,7 +7,6 @@ public:
     virtual int size();
 private:
 protected:
-    int element;
 };
 
 class Integer : public Type{
