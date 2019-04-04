@@ -5,7 +5,7 @@ class Type{
 public:
     Type(int e) { element = e; };
     virtual int size();
-    int getExpression() { return element; }
+    virtual int getExpression() { return element; }
 private:
 protected:
     int element;

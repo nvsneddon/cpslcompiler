@@ -7,6 +7,7 @@
 class Expression{
     public:
         Expression(Type* tpe) { expr = tpe; }
+        Type* getExpression() { return expr; }
     private:
         Type* expr;
 };

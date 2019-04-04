@@ -89,6 +89,7 @@
 
 %type<id> ID
 %type<val> NUMBER
+%type<id> LValue
 %type<id> CHAR
 %type<id> STR
 %type<tpe> Expression
@@ -251,7 +252,11 @@ WriteStatement: WRITE POPEN ExpressionsList PCLOSE {
 
 	}
 	;
-ProcedureCall: ID POPEN ExpressionsList PCLOSE {}
+ProcedureCall: ID POPEN ExpressionsList PCLOSE {
+		$3->write();
+		std::cout << $1 << std::endl;
+		delete $3;
+	}
 	| ID POPEN PCLOSE {}
 	;
 ExpressionsList: ExpressionsList COMMA Expression { $1->add($3); } 
@@ -263,7 +268,7 @@ ExpressionsList: ExpressionsList COMMA Expression { $1->add($3); }
 
 Assignment: LValue ASSIGN Expression {}
 	;
-LValue: ID {} //Thiis one is for normal variables
+LValue: ID {$$ = $1;} //Thiis one is for normal variables
 	| LValue DEC ID {} //This one is for records
 	| LValue BOPEN Expression BCLOSE {} // And this one is for arrays
 
@@ -350,14 +355,22 @@ Expression: Expression OR Expression {}
 	| TILDA Expression {}
 	| SUB Expression {}
 	| POPEN Expression PCLOSE {}
-	| ID POPEN ExpressionsList PCLOSE {}
-	| ID POPEN PCLOSE {}
+	| ID POPEN ExpressionsList PCLOSE {
+		std::cout << $1 << std::endl;
+	}
+	| ID POPEN PCLOSE {
+		std::cout << $1 << std::endl;
+	}
 	| CHR POPEN Expression PCLOSE {}
 	| ORD POPEN Expression PCLOSE {}
 	| PRED POPEN Expression PCLOSE {}
 	| SUCC POPEN Expression PCLOSE {}
-	| LValue {}
-	| STR {}
+	| LValue {
+		std::cout << $1 << std::endl;
+	}
+	| STR {
+		std::cout << $1 << std::endl;
+	}
 	| CHAR {
 		$$ = new Character(int($1[1])); //TODO Make sure that this isn't spaghetti code. I think the index is 1 because the str looks like 'x'
 	}
