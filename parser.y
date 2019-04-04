@@ -92,7 +92,7 @@
 %type<id> CHAR
 %type<id> STR
 %type<tpe> Expression
-%type<elist> ExpressionList
+%type<elist> ExpressionsList
 
 
 %left OR
@@ -247,14 +247,14 @@ ReadStatement: READ POPEN ReadValues PCLOSE {}
 ReadValues: ReadValues COMMA LValue {} 
 	| LValue {}
 	;
-WriteStatement: WRITE POPEN ExpressionList PCLOSE {
+WriteStatement: WRITE POPEN ExpressionsList PCLOSE {
 
 	}
 	;
-ProcedureCall: ID POPEN ExpressionList PCLOSE {}
+ProcedureCall: ID POPEN ExpressionsList PCLOSE {}
 	| ID POPEN PCLOSE {}
 	;
-ExpressionList: ExpressionList COMMA Expression { $1->add($3); } 
+ExpressionsList: ExpressionsList COMMA Expression { $1->add($3); } 
 	| Expression {
 		$$ = new ExpressionsList();
 		$$->add($1);
@@ -350,7 +350,7 @@ Expression: Expression OR Expression {}
 	| TILDA Expression {}
 	| SUB Expression {}
 	| POPEN Expression PCLOSE {}
-	| ID POPEN ExpressionList PCLOSE {}
+	| ID POPEN ExpressionsList PCLOSE {}
 	| ID POPEN PCLOSE {}
 	| CHR POPEN Expression PCLOSE {}
 	| ORD POPEN Expression PCLOSE {}
