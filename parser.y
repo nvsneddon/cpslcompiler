@@ -100,27 +100,26 @@
 %locations
 %%
 
-Program: ConstantDecl TypeDecl VarDecl Profunct Block DEC {}
-	| TypeDecl VarDecl Profunct Block DEC {}
-	| ConstantDecl VarDecl Profunct Block DEC {}
-	| ConstantDecl TypeDecl Profunct Block DEC {}
-	| ConstantDecl Profunct Block DEC {}
-	| TypeDecl Profunct Block DEC {}
-	| VarDecl Profunct Block DEC {}
-	| TypeDecl VarDecl Block DEC {}
-	| ConstantDecl VarDecl Block DEC {}
-	| ConstantDecl TypeDecl Block DEC {}
-	| ConstantDecl Block DEC {}
-	| TypeDecl Block DEC {} 
-	| VarDecl Block DEC {} 
-	| Profunct Block DEC {} 
-	| Block DEC {} 
+Program: ConstantOption TypeOption VarOption Profunct Block DEC {}
+	;
+
+ConstantOption: ConstantDecl {}
+	| {}
+	;
+
+TypeOption: TypeDecl {}
+	| {}
+	;
+
+VarOption: VarDecl {}
+	| {}
 	;
 
 Profunct: Profunct ProcedureDecl {} 
 	| Profunct FunctionDecl {} 
 	| ProcedureDecl {}
 	| FunctionDecl {}
+	| {}
 	;
 
 ConstantDecl: CONST ConstSubDecl {} 
