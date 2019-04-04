@@ -11,8 +11,11 @@
 	#ifndef INCLUDES_HPP
 	#define INCLUDES_HPP
 	#include "includes.hpp"
+
 	extern SymbolTable* symbols;
 	extern ExpressionsList* elist;
+	extern StatementList* slist;
+
 	#endif
 }
 

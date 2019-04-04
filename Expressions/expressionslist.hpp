@@ -6,6 +6,8 @@
 
 class ExpressionsList{
 public:
+    ExpressionsList();
+    ~ExpressionsList();
 private:
     std::vector<Expression*> elist;
 };

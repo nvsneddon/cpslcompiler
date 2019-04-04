@@ -23,7 +23,8 @@ set(cpsl_srcs
 	Statements/statementlist.hpp
 	Expressions/expression.hpp
 	Expressions/expression.cpp
-	Expressions/expressionlist.hpp
+	Expressions/expressionslist.hpp
+	Expressions/expressionslist.cpp
 	Types/type.cpp
 	Types/type.hpp
 	includes.hpp
