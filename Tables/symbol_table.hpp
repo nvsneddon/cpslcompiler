@@ -4,14 +4,18 @@
 #include <iostream>
 #include <vector>
 #include <map>
-#include "../Types/type.hpp"
+#include "../includes.hpp"
+
 
 class SymbolTable{
     public:
-        void add();
+        void addVariable(std::map<std::string, int> mymap);
+        void printStringLabels();
+        int appendString(std::string str);
     private:
         std::vector<std::map<std::string, int>> variables;    
         std::vector<std::map<std::string, std::string>> toPrint;
+        std::vector<std::string> stringVariables;
 };
 
 

@@ -1,10 +1,11 @@
 #include "write.hpp"
 #include <iostream>
 #include <string>
+#include "../includes.hpp"
 
 using namespace std;
 
-void Write::write(std::string msg){
+void Write::write(string msg){
     static int counter = 0;
     for (int i = 0; i < msg.length(); i++){
         if (msg[i] == '\n'){

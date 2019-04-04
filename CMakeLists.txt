@@ -14,13 +14,15 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_COMPILE_FLAGS}")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
 
 set(cpsl_srcs
+	Tables/symbol_table.hpp
+	Tables/symbol_table.cpp
 	main.cpp
 	Statements/write.hpp
 	Statements/write.cpp
 	Statements/statement.hpp
 	Statements/statementlist.hpp
-	Tables/symbol_table.hpp
-	Tables/symbol_table.cpp
+	Tables/tables.hpp
+	Expressions/expression.hpp
 	includes.hpp
 	Types/type.cpp
 	Types/type.hpp
