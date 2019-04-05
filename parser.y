@@ -250,12 +250,11 @@ ReadValues: ReadValues COMMA LValue {}
 	| LValue {}
 	;
 WriteStatement: WRITE POPEN ExpressionsList PCLOSE {
-
+		$3->write();
+		delete $3;
 	}
 	;
 ProcedureCall: ID POPEN ExpressionsList PCLOSE {
-		$3->write();
-		delete $3;
 	}
 	| ID POPEN PCLOSE {}
 	;
@@ -355,7 +354,6 @@ Expression: Expression OR Expression {}
 				std::cerr << "Somehow a wrong whitespace character showed up!";
 			}
 		}
-		std::cerr << c << " is the character\n";
 		$$ = new Character(int(c)); //TODO Make sure that this isn't spaghetti code. I think the index is 1 because the str looks like 'x'
 	}
 	| NUMBER {
