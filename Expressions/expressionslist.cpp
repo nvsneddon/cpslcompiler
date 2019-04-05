@@ -1,4 +1,5 @@
 #include "expressionslist.hpp"
+#include "../Statements/write.hpp"
 #include <iostream>
 
 ExpressionsList::ExpressionsList(){
@@ -16,6 +17,15 @@ void ExpressionsList::add(Type* t){
 
 void ExpressionsList::write(){
     for(int i = 0; i < elist.size(); i++){
-        std::cout << elist[i]->getExpression()->getExpression() << std::endl;
+        if(Integer* integ = dynamic_cast<Integer*>(elist[i]->getExpression())) {
+            // old was safely casted to NewType
+            Write::write(std::to_string(elist[i]->getExpression()->getExpression()));
+        }
+        else if(Character* chr = dynamic_cast<Character*>(elist[i]->getExpression())) {
+            // old was safely casted to NewType
+            std::string s;
+            s += char(elist[i]->getExpression()->getExpression());
+            Write::write(s);
+        }
     }
 }

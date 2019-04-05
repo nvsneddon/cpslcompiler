@@ -3,9 +3,8 @@
 #include <string>
 #include "../includes.hpp"
 
-using namespace std;
 
-void Write::write(string msg){
+void Write::write(std::string msg){
     static int counter = 0;
     for (int i = 0; i < msg.length(); i++){
         if (msg[i] == '\n'){
@@ -13,12 +12,12 @@ void Write::write(string msg){
             msg.insert(i, "\\n");
         }
     }
-    string label = "msg" + to_string(counter++);
-    cout << ".data" << endl;
-    cout << label << ": .asciiz \"" << msg << "\"" << endl;
-    cout << ".text" << endl;
-    cout << "li $v0, 4" << endl;
-    cout << "la $a0, " << label << endl;
-    cout << "syscall" << endl;
+    std::string label = "msg" + std::to_string(counter++);
+    std::cout << ".data" << std::endl;
+    std::cout << label << ": .asciiz \"" << msg << "\"" << std::endl;
+    std::cout << ".text" << std::endl;
+    std::cout << "li $v0, 4" << std::endl;
+    std::cout << "la $a0, " << label << std::endl;
+    std::cout << "syscall" << std::endl;
 }
 

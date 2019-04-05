@@ -1,5 +1,6 @@
 %{
 	#include <iostream>
+	#include <cstring>
 
 	extern "C" int yylineno;
 
@@ -254,7 +255,6 @@ WriteStatement: WRITE POPEN ExpressionsList PCLOSE {
 	;
 ProcedureCall: ID POPEN ExpressionsList PCLOSE {
 		$3->write();
-		std::cout << $1 << std::endl;
 		delete $3;
 	}
 	| ID POPEN PCLOSE {}
@@ -276,12 +276,6 @@ Expression: Expression OR Expression {}
 	| Expression AND Expression {}
 	| Expression EQ Expression {
 		int result = ($1->getExpression() == $3->getExpression() ? 1 : 0);
-		if(result == 1){
-			std::cout << "Correct!" << std::endl;
-		} 
-		else {
-			std::cout << "Wrong!!" << std::endl;
-		}
 		$$ = new Bool(result);
 		delete $1;
 		delete $3;
@@ -289,60 +283,30 @@ Expression: Expression OR Expression {}
 	| Expression ARROWS Expression {
 		Expression* newexpression;
 		int result = ($1->getExpression() != $3->getExpression()) ? 1 : 0;
-		if(result == 1){
-			std::cout << "They are not equal." << std::endl;
-		} 
-		else {
-			std::cout << "Wrong!!" << std::endl;
-		}
 		$$ = new Bool(result);
 		delete $1;
 		delete $3;
 	}
 	| Expression GTE Expression {
 		int result = ($1->getExpression() >= $3->getExpression()) ? 1 : 0;
-		if(result == 1){
-			std::cout << "Left is greater than or equal to the right" << std::endl;
-		}
-		else {
-			std::cout << "Wrong!!" << std::endl;
-		}
 		$$ = new Bool(result);
 		delete $1;
 		delete $3;
 	}
 	| Expression GT Expression {
 		int result = ($1->getExpression() > $3->getExpression()) ? 1 : 0;
-		if(result == 1){
-			std::cout << "It is greater than that." << std::endl;
-		}
-		else {
-			std::cout << "Wrong!!" << std::endl;
-		}
 		$$ = new Bool(result);
 		delete $1;
 		delete $3;
 	}
 	| Expression LTE Expression {
 		int result = ($1->getExpression() <= $3->getExpression()) ? 1 : 0;
-		if(result == 1){
-			std::cout << "It is less than ore equal to that." << std::endl;
-		}
-		else {
-			std::cout << "Wrong!!" << std::endl;
-		}
 		$$ = new Bool(result);
 		delete $1;
 		delete $3;
 	}
 	| Expression LT Expression {
 		int result = ($1->getExpression() < $3->getExpression()) ? 1 : 0;
-		if(result == 1){
-			std::cout << "It is less than that." << std::endl;
-		}
-		else {
-			std::cout << "Wrong!!" << std::endl;
-		}
 		$$ = new Bool(result);
 		delete $1;
 		delete $3;
@@ -356,23 +320,41 @@ Expression: Expression OR Expression {}
 	| SUB Expression {}
 	| POPEN Expression PCLOSE {}
 	| ID POPEN ExpressionsList PCLOSE {
-		std::cout << $1 << std::endl;
+//		std::cout << $1 << std::endl;
 	}
 	| ID POPEN PCLOSE {
-		std::cout << $1 << std::endl;
+	//	std::cout << $1 << std::endl;
 	}
 	| CHR POPEN Expression PCLOSE {}
 	| ORD POPEN Expression PCLOSE {}
 	| PRED POPEN Expression PCLOSE {}
 	| SUCC POPEN Expression PCLOSE {}
 	| LValue {
-		std::cout << $1 << std::endl;
+		//std::cout << $1 << std::endl;
 	}
 	| STR {
-		std::cout << $1 << std::endl;
+		
 	}
 	| CHAR {
-		$$ = new Character(int($1[1])); //TODO Make sure that this isn't spaghetti code. I think the index is 1 because the str looks like 'x'
+		int length = strlen($1);
+		std::cerr << $1 << std::endl << std::endl;
+		char c;
+		if (length == 3){
+			c = $1[1]; 
+		}
+		else if(length == 4){
+			std::string s;
+			s += $1[1]; 
+			s += $1[2]; 
+			if (strcmp($1, "")){
+				std::cerr << "It is a new line!" << $1 << "This is the proof" << std::endl;
+				c = '\n';
+			}
+			else{
+				std::cerr << s << " is not a new line\n";
+			}
+		}
+		$$ = new Character(int(c)); //TODO Make sure that this isn't spaghetti code. I think the index is 1 because the str looks like 'x'
 	}
 	| NUMBER {
 		$$ = new Integer($1); 
