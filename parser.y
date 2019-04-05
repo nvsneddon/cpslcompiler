@@ -336,7 +336,6 @@ Expression: Expression OR Expression {}
 		
 	}
 	| CHAR {
-		//How do I get this to extract the newline account? 
 		int length = strlen($1);
 		char c;
 		if (length == 3){
