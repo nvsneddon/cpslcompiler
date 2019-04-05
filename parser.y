@@ -336,8 +336,8 @@ Expression: Expression OR Expression {}
 		
 	}
 	| CHAR {
+		//How do I get this to extract the newline account? 
 		int length = strlen($1);
-		std::cerr << $1 << std::endl << std::endl;
 		char c;
 		if (length == 3){
 			c = $1[1]; 
@@ -346,14 +346,17 @@ Expression: Expression OR Expression {}
 			std::string s;
 			s += $1[1]; 
 			s += $1[2]; 
-			if (strcmp($1, "")){
-				std::cerr << "It is a new line!" << $1 << "This is the proof" << std::endl;
+			std::string temp;
+			temp += '\\';
+			temp += 'n';
+			if (! s.compare(temp)){
 				c = '\n';
 			}
 			else{
-				std::cerr << s << " is not a new line\n";
+				std::cerr << "Somehow a wrong whitespace character showed up!";
 			}
 		}
+		std::cerr << c << " is the character\n";
 		$$ = new Character(int(c)); //TODO Make sure that this isn't spaghetti code. I think the index is 1 because the str looks like 'x'
 	}
 	| NUMBER {
