@@ -27,5 +27,8 @@ void ExpressionsList::write(){
             s += char(elist[i]->getExpression()->getExpression());
             Write::write(s);
         }
+        else if(CharacterString* str = dynamic_cast<CharacterString*>(elist[i]->getExpression())){
+            
+        }
     }
 }

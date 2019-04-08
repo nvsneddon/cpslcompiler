@@ -11,11 +11,9 @@ int SymbolTable::appendString(std::string str){
 }
 
 void SymbolTable::printStringLabels(){
-    /*
     std::cout << ".data" << std::endl;
     for(int i = 0; i < stringVariables.size() ; i++){
-        std::cout << "stringlabel1: " << stringVariables[i] << std::endl;
+        std::cout << "stringlabel" << i << ": " << stringVariables[i] << std::endl;
     }
-    */
 }
 
