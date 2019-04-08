@@ -255,17 +255,17 @@ WriteStatement: WRITE POPEN ExpressionsList PCLOSE {
 	}
 	;
 ProcedureCall: ID POPEN ExpressionsList PCLOSE {
-		$3->write();
-		delete $3;
+		//$3->write();
+		//delete $3;
 	}
 	| ID POPEN PCLOSE {}
 	;
 ExpressionsList: ExpressionsList COMMA Expression { 
-		//$1->add($3); 
+		$1->add($3); 
 	} 
 	| Expression {
-		//$$ = new ExpressionsList();
-		//$$->add($1);
+		$$ = new ExpressionsList();
+		$$->add($1);
 	}	
 	;
 

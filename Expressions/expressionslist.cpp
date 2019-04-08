@@ -11,7 +11,7 @@ ExpressionsList::~ExpressionsList(){
         delete elist[i];
 }
 
-void ExpressionsList::write(){
+void ExpressionsList::write(){ //Make this one be able to emit all the functions. See if this is needed as well
     for(int i = 0; i < elist.size(); i++){
         //if(Integer* integ = dynamic_cast<Integer*>(elist[i]->getExpression())) {
         //    // old was safely casted to NewType
