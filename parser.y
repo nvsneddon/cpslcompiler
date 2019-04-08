@@ -25,6 +25,7 @@
 	float val;
 	char* id;
 	Type* tpe;
+	Expression* express;
 	ExpressionsList* elist;
 }
 
@@ -93,7 +94,7 @@
 %type<id> LValue
 %type<id> CHAR
 %type<id> STR
-%type<tpe> Expression
+%type<express> Expression
 %type<elist> ExpressionsList
 
 
@@ -258,7 +259,9 @@ ProcedureCall: ID POPEN ExpressionsList PCLOSE {
 	}
 	| ID POPEN PCLOSE {}
 	;
-ExpressionsList: ExpressionsList COMMA Expression { $1->add($3); } 
+ExpressionsList: ExpressionsList COMMA Expression { 
+		$1->add($3); 
+	} 
 	| Expression {
 		$$ = new ExpressionsList();
 		$$->add($1);
@@ -274,40 +277,40 @@ LValue: ID {$$ = $1;} //Thiis one is for normal variables
 Expression: Expression OR Expression {}
 	| Expression AND Expression {}
 	| Expression EQ Expression {
-		int result = ($1->getExpression() == $3->getExpression() ? 1 : 0);
-		$$ = new Bool(result);
-		delete $1;
-		delete $3;
+		//int result = ($1->getExpression() == $3->getExpression() ? 1 : 0);
+		//$$ = new (result);
+		//delete $1;
+		//delete $3;
 	}
 	| Expression ARROWS Expression {
-		Expression* newexpression;
-		int result = ($1->getExpression() != $3->getExpression()) ? 1 : 0;
-		$$ = new Bool(result);
-		delete $1;
-		delete $3;
+		//Expression* newexpression;
+		//int result = ($1->getExpression() != $3->getExpression()) ? 1 : 0;
+		//$$ = new Bool(result);
+		//delete $1;
+		//delete $3;
 	}
 	| Expression GTE Expression {
-		int result = ($1->getExpression() >= $3->getExpression()) ? 1 : 0;
-		$$ = new Bool(result);
-		delete $1;
-		delete $3;
+		//int result = ($1->getExpression() >= $3->getExpression()) ? 1 : 0;
+		//$$ = new Bool(result);
+		//delete $1;
+		//delete $3;
 	}
 	| Expression GT Expression {
-		int result = ($1->getExpression() > $3->getExpression()) ? 1 : 0;
-		$$ = new Bool(result);
-		delete $1;
-		delete $3;
+		//int result = ($1->getExpression() > $3->getExpression()) ? 1 : 0;
+		//$$ = new Bool(result);
+		//delete $1;
+		//delete $3;
 	}
 	| Expression LTE Expression {
-		int result = ($1->getExpression() <= $3->getExpression()) ? 1 : 0;
-		$$ = new Bool(result);
-		delete $1;
-		delete $3;
+		//int result = ($1->getExpression() <= $3->getExpression()) ? 1 : 0;
+		//$$ = new Bool(result);
+		//delete $1;
+		//delete $3;
 	}
 	| Expression LT Expression {
-		int result = ($1->getExpression() < $3->getExpression()) ? 1 : 0;
-		$$ = new Bool(result);
-		delete $1;
+		//int result = ($1->getExpression() < $3->getExpression()) ? 1 : 0;
+		//$$ = new Bool(result);
+		//delete $1;
 		delete $3;
 	}
 	| Expression ADD Expression {}
@@ -335,29 +338,29 @@ Expression: Expression OR Expression {}
 		
 	}
 	| CHAR {
-		int length = strlen($1);
-		char c;
-		if (length == 3){
-			c = $1[1]; 
-		}
-		else if(length == 4){
-			std::string s;
-			s += $1[1]; 
-			s += $1[2]; 
-			std::string temp;
-			temp += '\\';
-			temp += 'n';
-			if (! s.compare(temp)){
-				c = '\n';
-			}
-			else{
-				std::cerr << "Somehow a wrong whitespace character showed up!";
-			}
-		}
-		$$ = new Character(int(c)); //TODO Make sure that this isn't spaghetti code. I think the index is 1 because the str looks like 'x'
+	//	int length = strlen($1);
+	//	char c;
+	//	if (length == 3){
+	//		c = $1[1]; 
+	//	}
+	//	else if(length == 4){
+	//		std::string s;
+	//		s += $1[1]; 
+	//		s += $1[2]; 
+	//		std::string temp;
+	//		temp += '\\';
+	//		temp += 'n';
+	//		if (! s.compare(temp)){
+	//			c = '\n';
+	//		}
+	//		else{
+	//			std::cerr << "Somehow a wrong whitespace character showed up!";
+	//		}
+	//	}
+	//	$$ = new Character(int(c)); //TODO Make sure that this isn't spaghetti code. I think the index is 1 because the str looks like 'x'
 	}
 	| NUMBER {
-		$$ = new Integer($1); 
+		$$ = new ConstExpression($1); 
 	}
 	;
 %%
