@@ -17,6 +17,7 @@ public:
     ConstExpression(int e);
     ConstExpression(int e, Type* t); 
     int getElement() { return element; }
+    ~ConstExpression();
 private:
     int element;
 };

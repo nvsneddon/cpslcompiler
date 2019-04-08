@@ -8,3 +8,7 @@ ConstExpression::ConstExpression(int e){
 ConstExpression::ConstExpression(int e, Type* t){
 
 }
+
+ConstExpression::~ConstExpression(){
+    delete expressionType;
+}
