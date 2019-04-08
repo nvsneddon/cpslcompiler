@@ -8,14 +8,14 @@
 class Expression{
 public:
     Expression() { }
-private:
+protected:
     Type* expressionType;
 };
 
 class ConstExpression : public Expression{
 public:
-    ConstExpression(int e) { element = e; }
-    ConstExpression() { element = 0; }
+    ConstExpression(int e);
+    ConstExpression(int e, Type* t); 
     int getElement() { return element; }
 private:
     int element;

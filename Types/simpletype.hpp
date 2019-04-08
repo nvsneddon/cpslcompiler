@@ -3,7 +3,7 @@
 
 #include "type.hpp"
 
-class SimpleType {
+class SimpleType : public Type {
 public:
     SimpleType() {};
     virtual int size() { return 4; }
@@ -11,24 +11,24 @@ private:
 protected:
 };
 
-class Integer : public SimpleType{
+class Integer : public SimpleType {
 public:
     Integer() : SimpleType() {};
 private:
 };
 
-class Character : public SimpleType{
+class Character : public SimpleType {
 public:
     Character() : SimpleType() {};
 private:
 };
 
-class CharacterString : public SimpleType{
+class CharacterString : public SimpleType {
 public:
 private:
 };
 
-class Bool : public SimpleType{
+class Bool : public SimpleType {
 public:
     Bool() : SimpleType() {};
 private:

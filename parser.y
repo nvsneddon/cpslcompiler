@@ -361,7 +361,7 @@ Expression: Expression OR Expression {}
 	//	$$ = new Character(int(c)); //TODO Make sure that this isn't spaghetti code. I think the index is 1 because the str looks like 'x'
 	}
 	| NUMBER {
-	//	$$ = new Integer($1); 
+		$$ = new ConstExpression($1); 
 	}
 	;
 %%

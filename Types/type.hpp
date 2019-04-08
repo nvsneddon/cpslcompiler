@@ -3,7 +3,7 @@
 
 class Type{
 public:
-    virtual int Size() = 0;
+    virtual int size() = 0;
 private:
 protected:
 };
