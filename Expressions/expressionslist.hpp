@@ -8,7 +8,6 @@ class ExpressionsList{
 public:
     ExpressionsList();
     ~ExpressionsList();
-    void add(Type* t);
     void write();
 private:
     std::vector<Expression*> elist;
