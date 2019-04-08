@@ -25,7 +25,6 @@ set(cpsl_srcs
 	Expressions/expression.cpp
 	Expressions/expressionslist.hpp
 	Expressions/expressionslist.cpp
-	Types/simpletype.cpp
 	Types/simpletype.hpp
 	Types/type.hpp
 	includes.hpp

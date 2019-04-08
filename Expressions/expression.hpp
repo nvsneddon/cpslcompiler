@@ -9,6 +9,7 @@ class Expression{
 public:
     Expression() { }
 private:
+    Type* expressionType;
 };
 
 class ConstExpression : public Expression{

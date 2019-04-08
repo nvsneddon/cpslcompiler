@@ -6,7 +6,7 @@
 class SimpleType {
 public:
     SimpleType() {};
-    virtual int size();
+    virtual int size() { return 4; }
 private:
 protected:
 };
