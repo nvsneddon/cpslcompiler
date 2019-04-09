@@ -1,7 +1,13 @@
+
+#ifndef REG_EXPRESSION_HPP
+#define REG_EXPRESSION_HPP
+#include "expression.hpp"
+
+class ConstExpression;
 class RegExpression : public Expression{
 public:
     RegExpression();
-    RegExpression(ConstExpression c);
+    RegExpression(ConstExpression* c);
     Expression* add(Expression* other);
     Expression* sub(Expression* other);
     Expression* mult(Expression* other);
@@ -15,7 +21,9 @@ public:
     Expression* eq(Expression* other);
     Expression* andfun(Expression* other);
     Expression* orfun(Expression* other);
+
 private:
     std::string reg;
 };
 
+#endif

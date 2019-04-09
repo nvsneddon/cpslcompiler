@@ -16,6 +16,8 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
 set(cpsl_srcs
 	Tables/symbol_table.hpp
 	Tables/symbol_table.cpp
+	Tables/reg_table.hpp
+	Tables/reg_table.cpp
 	main.cpp
 	Statements/write.hpp
 	Statements/write.cpp
@@ -25,6 +27,8 @@ set(cpsl_srcs
 	Expressions/constexpression.hpp
 	Expressions/constexpression.cpp
 	Expressions/memexpression.hpp
+	Expressions/regexpression.hpp
+	Expressions/regexpression.cpp
 	Expressions/emptyexpression.hpp
 	Expressions/expressionslist.hpp
 	Expressions/expressionslist.cpp

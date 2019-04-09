@@ -3,6 +3,7 @@
 #include "expression.hpp"
 #include "../Types/type.hpp"
 #include "../Types/simpletype.hpp"
+#include "regexpression.hpp"
 
 class ConstExpression : public Expression{
 public:
@@ -22,6 +23,9 @@ public:
     Expression* eq(Expression* other);
     Expression* andfun(Expression* other);
     Expression* orfun(Expression* other);
+
+    void write();
+    RegExpression* getRegExpression();
 
     int getElement() { return element; }
     ~ConstExpression();
