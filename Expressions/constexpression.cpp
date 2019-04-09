@@ -1,4 +1,4 @@
-#include "expression.hpp"
+#include "constexpression.hpp"
 #include <iostream>
 #include <typeinfo>
 
@@ -82,6 +82,63 @@ Expression* ConstExpression::lt(Expression* other){
     bool result;
     if(ConstExpression* con = dynamic_cast<ConstExpression*>(other)){
         result = element < con->getElement();
+    }
+    return new ConstExpression(result ? 1 : 0, new Bool());
+}
+
+
+Expression* ConstExpression::lte(Expression* other){
+    bool result;
+    if(ConstExpression* con = dynamic_cast<ConstExpression*>(other)){
+        result = element <= con->getElement();
+    }
+    return new ConstExpression(result ? 1 : 0, new Bool());
+}
+
+Expression* ConstExpression::gt(Expression* other){
+    bool result;
+    if(ConstExpression* con = dynamic_cast<ConstExpression*>(other)){
+        result = element > con->getElement();
+    }
+    return new ConstExpression(result ? 1 : 0, new Bool());
+}
+
+Expression* ConstExpression::gte(Expression* other){
+    bool result;
+    if(ConstExpression* con = dynamic_cast<ConstExpression*>(other)){
+        result = element >= con->getElement();
+    }
+    return new ConstExpression(result ? 1 : 0, new Bool());
+}
+
+Expression* ConstExpression::ne(Expression* other){
+    bool result;
+    if(ConstExpression* con = dynamic_cast<ConstExpression*>(other)){
+        result = element != con->getElement();
+    }
+    return new ConstExpression(result ? 1 : 0, new Bool());
+}
+
+Expression* ConstExpression::eq(Expression* other){
+    bool result;
+    if(ConstExpression* con = dynamic_cast<ConstExpression*>(other)){
+        result = element == con->getElement();
+    }
+    return new ConstExpression(result ? 1 : 0, new Bool());
+}
+
+Expression* ConstExpression::andfun(Expression* other){
+    bool result;
+    if(ConstExpression* con = dynamic_cast<ConstExpression*>(other)){
+        result = element && con->getElement();
+    }
+    return new ConstExpression(result ? 1 : 0, new Bool());
+}
+
+Expression* ConstExpression::orfun(Expression* other){
+    bool result;
+    if(ConstExpression* con = dynamic_cast<ConstExpression*>(other)){
+        result = element || con->getElement();
     }
     return new ConstExpression(result ? 1 : 0, new Bool());
 }

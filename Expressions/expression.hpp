@@ -14,45 +14,18 @@ public:
     virtual Expression* div(Expression* other) = 0;
     virtual Expression* mod(Expression* other) = 0;
     virtual Expression* lt(Expression* other) = 0;
+    virtual Expression* lte(Expression* other) = 0;
+    virtual Expression* gt(Expression* other) = 0;
+    virtual Expression* gte(Expression* other) = 0;
+    virtual Expression* ne(Expression* other) = 0;
+    virtual Expression* eq(Expression* other) = 0;
+    virtual Expression* andfun(Expression* other) = 0;
+    virtual Expression* orfun(Expression* other) = 0;
+
     Type* getExpressionType() { return expressionType; }
 protected:
     Type* expressionType;
 };
 
-class ConstExpression : public Expression{
-public:
-    ConstExpression(int e);
-    ConstExpression(int e, Type* t); 
-
-    Expression* add(Expression* other);
-    Expression* sub(Expression* other);
-    Expression* mult(Expression* other);
-    Expression* div(Expression* other);
-    Expression* mod(Expression* other);
-    Expression* lt(Expression* other);
-
-    int getElement() { return element; }
-    ~ConstExpression();
-private:
-    int element;
-};
-
-class RegExpression : public Expression{
-public:
-    RegExpression();
-    RegExpression(ConstExpression c);
-    Expression* add(Expression* other);
-private:
-    std::string reg;
-};
-
-class MemExpression : public Expression{
-public:
-    MemExpression();
-    Expression* add(Expression* other);
-private:
-    std::string reg;
-    int offset;
-};
 
 #endif

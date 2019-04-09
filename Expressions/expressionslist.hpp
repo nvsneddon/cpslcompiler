@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "expression.hpp"
+#include "constexpression.hpp"
 #include <iostream>
 
 class ExpressionsList{
