@@ -24,15 +24,10 @@ public:
     ConstExpression(int e, Type* t); 
 
     Expression* add(Expression* other);
-    Expression* add(ConstExpression* other);
     Expression* sub(Expression* other);
-    Expression* sub(ConstExpression* other);
     Expression* mult(Expression* other);
-    Expression* mult(ConstExpression* other);
     Expression* div(Expression* other);
-    Expression* div(ConstExpression* other);
     Expression* mod(Expression* other);
-    Expression* mod(ConstExpression* other);
 
     int getElement() { return element; }
     ~ConstExpression();

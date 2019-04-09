@@ -311,21 +311,36 @@ Expression: Expression OR Expression {}
 		//int result = ($1->getExpression() < $3->getExpression()) ? 1 : 0;
 		//$$ = new Bool(result);
 		//delete $1;
-		delete $3;
+		//delete $3;
 	}
 	| Expression ADD Expression {
-
 		$$ = $1->add($3);
 		delete $1;
 		delete $3;
 	}
-	| Expression SUB Expression {}
-	| Expression MULT Expression {}
-	| Expression DIV Expression {}
-	| Expression PERC Expression {}
+	| Expression SUB Expression {
+		$$ = $1->sub($3);
+		delete $1;
+		delete $3;
+	}
+	| Expression MULT Expression {
+		$$ = $1->mult($3);
+		delete $1;
+		delete $3;
+	}
+	| Expression DIV Expression {
+		$$ = $1->div($3);
+		delete $1;
+		delete $3;
+	}
+	| Expression PERC Expression {
+		$$ = $1->div($3);
+		delete $1;
+		delete $3;	
+	}
 	| TILDA Expression {}
 	| SUB Expression {}
-	| POPEN Expression PCLOSE {}
+	| POPEN Expression PCLOSE { $$ = $2; }
 	| ID POPEN ExpressionsList PCLOSE {
 //		std::cout << $1 << std::endl;
 	}
