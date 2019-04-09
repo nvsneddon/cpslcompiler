@@ -1,8 +1,9 @@
 #include "regexpression.hpp"
 
-RegExpression::RegExpression(ConstExpression* c){
-    reg = "$t0";
-}
+//RegExpression::RegExpression(ConstExpression* c){
+//    reg = rtable->getRegister();
+//    std::cout << "li " << reg << ", " << c->getElement() << std::endl;
+//}
 
 RegExpression::RegExpression(){
     reg = "$t0";

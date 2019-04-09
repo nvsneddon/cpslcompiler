@@ -142,8 +142,3 @@ Expression* ConstExpression::orfun(Expression* other){
     }
     return new ConstExpression(result ? 1 : 0, new Boolean());
 }
-
-
-RegExpression* ConstExpression::getRegExpression(){
-    
-} 

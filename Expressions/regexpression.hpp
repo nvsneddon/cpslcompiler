@@ -1,13 +1,17 @@
 
 #ifndef REG_EXPRESSION_HPP
 #define REG_EXPRESSION_HPP
+#include <iostream>
 #include "expression.hpp"
+#include "../Tables/reg_table.hpp"
+
+extern RegTable* rtable;
 
 class ConstExpression;
 class RegExpression : public Expression{
 public:
     RegExpression();
-    RegExpression(ConstExpression* c);
+    //RegExpression(ConstExpression* c);
     Expression* add(Expression* other);
     Expression* sub(Expression* other);
     Expression* mult(Expression* other);
