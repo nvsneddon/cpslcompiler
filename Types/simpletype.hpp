@@ -15,28 +15,28 @@ protected:
 class Integer : public SimpleType {
 public:
     Integer() : SimpleType() {};
-    virtual std::string getTypeAsString() { return "integer"; };
+    std::string getTypeAsString() { return "integer"; };
 private:
 };
 
 class Char : public SimpleType {
 public:
     Char() : SimpleType() {};
-    virtual std::string getTypeAsString() { return "char"; };
+    std::string getTypeAsString() { return "char"; };
 private:
 };
 
 //Should I name this String or CharacterString?
 class String : public SimpleType { 
 public:
-    virtual std::string getTypeAsString() { return "string"; };
+    std::string getTypeAsString() { return "string"; };
 private:
 };
 
 class Boolean : public SimpleType {
 public:
     Boolean() : SimpleType() {};
-    virtual std::string getTypeAsString() { return "boolean"; };
+    std::string getTypeAsString() { return "boolean"; };
 private:
 };
 
