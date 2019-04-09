@@ -7,7 +7,6 @@
 
 class Expression{
 public:
-    Expression() { }
     virtual Expression* add(Expression* other) = 0;
     virtual Expression* sub(Expression* other) = 0;
     virtual Expression* mult(Expression* other) = 0;
@@ -23,10 +22,8 @@ public:
     virtual Expression* orfun(Expression* other) = 0;
 
     Type* getExpressionType() { return expressionType; }
-    std::string getTypeString() { return typeString; }
 protected:
     Type* expressionType;
-    std::string typeString;
 };
 
 

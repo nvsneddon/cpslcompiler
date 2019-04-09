@@ -25,6 +25,7 @@ set(cpsl_srcs
 	Expressions/constexpression.hpp
 	Expressions/constexpression.cpp
 	Expressions/memexpression.hpp
+	Expressions/emptyexpression.hpp
 	Expressions/expressionslist.hpp
 	Expressions/expressionslist.cpp
 	Types/simpletype.hpp

@@ -9,6 +9,7 @@
 #include "Expressions/constexpression.hpp"
 #include "Expressions/memexpression.hpp"
 #include "Expressions/regexpression.hpp"
+#include "Expressions/emptyexpression.hpp"
 #include "Expressions/expressionslist.hpp"
 #include "Types/type.hpp"
 
