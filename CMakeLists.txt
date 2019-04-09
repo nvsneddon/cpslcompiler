@@ -22,7 +22,9 @@ set(cpsl_srcs
 	Statements/statement.hpp
 	Statements/statementlist.hpp
 	Expressions/expression.hpp
-	Expressions/expression.cpp
+	Expressions/constexpression.hpp
+	Expressions/constexpression.cpp
+	Expressions/memexpression.hpp
 	Expressions/expressionslist.hpp
 	Expressions/expressionslist.cpp
 	Types/simpletype.hpp

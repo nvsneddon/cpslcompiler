@@ -274,32 +274,35 @@ LValue: ID {$$ = $1;} //Thiis one is for normal variables
 	| LValue DEC ID {} //This one is for records
 	| LValue BOPEN Expression BCLOSE {} // And this one is for arrays
 
-Expression: Expression OR Expression {}
-	| Expression AND Expression {}
+Expression: Expression OR Expression {
+		$$ = $1->orfun($3);
+		delete $1;
+		delete $3;
+	}
+	| Expression AND Expression {
+		$$ = $1->andfun($3);
+		delete $1;
+		delete $3;
+	}
 	| Expression EQ Expression {
-		//int result = ($1-> == $3->getExpression() ? 1 : 0);
-		//$$ = new (result);
-		//delete $1;
-		//delete $3;
+		$$ = $1->eq($3);
+		delete $1;
+		delete $3;
 	}
 	| Expression ARROWS Expression {
-		//Expression* newexpression;
-		//int result = ($1->getExpression() != $3->getExpression()) ? 1 : 0;
-		//$$ = new Bool(result);
-		//delete $1;
-		//delete $3;
+		$$ = $1->ne($3);
+		delete $1;
+		delete $3;
 	}
 	| Expression GTE Expression {
-		//int result = ($1->getExpression() >= $3->getExpression()) ? 1 : 0;
-		//$$ = new Bool(result);
-		//delete $1;
-		//delete $3;
+		$$ = $1->gte($3);
+		delete $1;
+		delete $3;
 	}
 	| Expression GT Expression {
-		//int result = ($1->getExpression() > $3->getExpression()) ? 1 : 0;
-		//$$ = new Bool(result);
-		//delete $1;
-		//delete $3;
+		$$ = $1->gt($3);
+		delete $1;
+		delete $3;
 	}
 	| Expression LTE Expression {
 		$$ = $1->lte($3);
