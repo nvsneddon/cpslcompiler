@@ -16,6 +16,7 @@
 	extern SymbolTable* symbols;
 	extern ExpressionsList* elist;
 	extern StatementList* slist;
+	extern RegTable* rtable;
 
 	#endif
 }
