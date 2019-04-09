@@ -277,7 +277,7 @@ LValue: ID {$$ = $1;} //Thiis one is for normal variables
 Expression: Expression OR Expression {}
 	| Expression AND Expression {}
 	| Expression EQ Expression {
-		//int result = ($1->getExpression() == $3->getExpression() ? 1 : 0);
+		//int result = ($1-> == $3->getExpression() ? 1 : 0);
 		//$$ = new (result);
 		//delete $1;
 		//delete $3;
@@ -311,16 +311,36 @@ Expression: Expression OR Expression {}
 		//int result = ($1->getExpression() < $3->getExpression()) ? 1 : 0;
 		//$$ = new Bool(result);
 		//delete $1;
+		//delete $3;
+	}
+	| Expression ADD Expression {
+		$$ = $1->add($3);
+		delete $1;
 		delete $3;
 	}
-	| Expression ADD Expression {}
-	| Expression SUB Expression {}
-	| Expression MULT Expression {}
-	| Expression DIV Expression {}
-	| Expression PERC Expression {}
+	| Expression SUB Expression {
+		$$ = $1->sub($3);
+		delete $1;
+		delete $3;
+	}
+	| Expression MULT Expression {
+		$$ = $1->mult($3);
+		delete $1;
+		delete $3;
+	}
+	| Expression DIV Expression {
+		$$ = $1->div($3);
+		delete $1;
+		delete $3;
+	}
+	| Expression PERC Expression {
+		$$ = $1->div($3);
+		delete $1;
+		delete $3;	
+	}
 	| TILDA Expression {}
 	| SUB Expression {}
-	| POPEN Expression PCLOSE {}
+	| POPEN Expression PCLOSE { $$ = $2; }
 	| ID POPEN ExpressionsList PCLOSE {
 //		std::cout << $1 << std::endl;
 	}
@@ -338,26 +358,26 @@ Expression: Expression OR Expression {}
 		
 	}
 	| CHAR {
-	//	int length = strlen($1);
-	//	char c;
-	//	if (length == 3){
-	//		c = $1[1]; 
-	//	}
-	//	else if(length == 4){
-	//		std::string s;
-	//		s += $1[1]; 
-	//		s += $1[2]; 
-	//		std::string temp;
-	//		temp += '\\';
-	//		temp += 'n';
-	//		if (! s.compare(temp)){
-	//			c = '\n';
-	//		}
-	//		else{
-	//			std::cerr << "Somehow a wrong whitespace character showed up!";
-	//		}
-	//	}
-	//	$$ = new Character(int(c)); //TODO Make sure that this isn't spaghetti code. I think the index is 1 because the str looks like 'x'
+		int length = strlen($1);
+		char c;
+		if (length == 3){
+			c = $1[1]; 
+		}
+		else if(length == 4){
+			std::string s;
+			s += $1[1]; 
+			s += $1[2]; 
+			std::string temp;
+			temp += '\\';
+			temp += 'n';
+			if (! s.compare(temp)){
+				c = '\n';
+			}
+			else{
+				std::cerr << "Somehow a wrong whitespace character showed up!";
+			}
+		}
+		$$ = new ConstExpression(int(c), new Character()); //TODO Make sure that this isn't spaghetti code. I think the index is 1 because the str looks like 'x'
 	}
 	| NUMBER {
 		$$ = new ConstExpression($1); 
