@@ -2,11 +2,14 @@
 #include <iostream>
 
 ConstExpression::ConstExpression(int e){
-    expressionType = new SimpleType();
+    std::cerr << "const\n";
+    expressionType = new Integer();
+    element = e;
 }
 
 ConstExpression::ConstExpression(int e, Type* t){
-
+    expressionType = t;
+    element = e;
 }
 
 ConstExpression::~ConstExpression(){
@@ -16,6 +19,7 @@ ConstExpression::~ConstExpression(){
     
 //Add functions
 Expression* ConstExpression::add(Expression* other){
+    std::cerr << "djifhauewhfu\n";
     return new ConstExpression(25);
 }
     
@@ -23,6 +27,7 @@ Expression* ConstExpression::add(ConstExpression* other){
     if(dynamic_cast<Integer*>(expressionType) == NULL && dynamic_cast<Integer*>(other->getExpressionType()) == NULL) {
         throw "Wrong expression type";
     }   
+    std::cerr << "Did we make it here?\n";
     return new ConstExpression(element + other->getElement());
 }
 

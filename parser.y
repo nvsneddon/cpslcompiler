@@ -251,12 +251,11 @@ ReadValues: ReadValues COMMA LValue {}
 	| LValue {}
 	;
 WriteStatement: WRITE POPEN ExpressionsList PCLOSE {
-
+		$3->write();
+		delete $3;
 	}
 	;
 ProcedureCall: ID POPEN ExpressionsList PCLOSE {
-		//$3->write();
-		//delete $3;
 	}
 	| ID POPEN PCLOSE {}
 	;
@@ -314,7 +313,12 @@ Expression: Expression OR Expression {}
 		//delete $1;
 		delete $3;
 	}
-	| Expression ADD Expression {}
+	| Expression ADD Expression {
+
+		$$ = $1->add($3);
+		delete $1;
+		delete $3;
+	}
 	| Expression SUB Expression {}
 	| Expression MULT Expression {}
 	| Expression DIV Expression {}

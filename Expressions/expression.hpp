@@ -10,6 +10,9 @@ public:
     Expression() { }
     virtual Expression* add(Expression* other) = 0;
     virtual Expression* sub(Expression* other) = 0;
+    virtual Expression* mult(Expression* other) = 0;
+    virtual Expression* div(Expression* other) = 0;
+    virtual Expression* mod(Expression* other) = 0;
     Type* getExpressionType() { return expressionType; }
 protected:
     Type* expressionType;

@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "expression.hpp"
+#include <iostream>
 
 class ExpressionsList{
 public:
