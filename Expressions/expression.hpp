@@ -13,6 +13,7 @@ public:
     virtual Expression* mult(Expression* other) = 0;
     virtual Expression* div(Expression* other) = 0;
     virtual Expression* mod(Expression* other) = 0;
+    virtual Expression* lt(Expression* other) = 0;
     Type* getExpressionType() { return expressionType; }
 protected:
     Type* expressionType;
@@ -28,6 +29,7 @@ public:
     Expression* mult(Expression* other);
     Expression* div(Expression* other);
     Expression* mod(Expression* other);
+    Expression* lt(Expression* other);
 
     int getElement() { return element; }
     ~ConstExpression();

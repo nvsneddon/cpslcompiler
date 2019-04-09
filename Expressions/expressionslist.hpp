@@ -9,7 +9,7 @@ class ExpressionsList{
 public:
     ExpressionsList();
     ~ExpressionsList();
-    void add(Expression* e) { elist.push_back(e); };
+    void add(Expression* e) { elist.push_back(e);};
     void write();
 private:
     std::vector<Expression*> elist;

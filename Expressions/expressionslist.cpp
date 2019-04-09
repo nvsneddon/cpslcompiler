@@ -27,5 +27,10 @@ void ExpressionsList::write(){ //Make this one be able to emit all the functions
                 Write::write(s);
             }
         }
+        else if(Bool* bl = dynamic_cast<Bool*>(elist[i]->getExpressionType())){
+            if(ConstExpression* con = dynamic_cast<ConstExpression*>(elist[i])){
+                Write::write(con->getElement() == 1 ? "True" : "False");
+            }
+        }
     }
 }

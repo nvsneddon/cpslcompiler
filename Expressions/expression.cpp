@@ -1,5 +1,6 @@
 #include "expression.hpp"
 #include <iostream>
+#include <typeinfo>
 
 ConstExpression::ConstExpression(int e){
     expressionType = new Integer();
@@ -74,4 +75,13 @@ Expression* ConstExpression::mod(Expression* other){
         return new ConstExpression(element % con->getElement());
     }
     return new ConstExpression(15);
+}
+
+
+Expression* ConstExpression::lt(Expression* other){
+    bool result;
+    if(ConstExpression* con = dynamic_cast<ConstExpression*>(other)){
+        result = element < con->getElement();
+    }
+    return new ConstExpression(result ? 1 : 0, new Bool());
 }

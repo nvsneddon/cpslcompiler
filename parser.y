@@ -308,10 +308,9 @@ Expression: Expression OR Expression {}
 		//delete $3;
 	}
 	| Expression LT Expression {
-		//int result = ($1->getExpression() < $3->getExpression()) ? 1 : 0;
-		//$$ = new Bool(result);
-		//delete $1;
-		//delete $3;
+		$$ = $1->lt($3);
+		delete $1;
+		delete $3;
 	}
 	| Expression ADD Expression {
 		$$ = $1->add($3);
