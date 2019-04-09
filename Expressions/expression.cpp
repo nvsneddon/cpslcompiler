@@ -85,3 +85,12 @@ Expression* ConstExpression::lt(Expression* other){
     }
     return new ConstExpression(result ? 1 : 0, new Bool());
 }
+
+
+Expression* ConstExpression::lte(Expression* other){
+    bool result;
+    if(ConstExpression* con = dynamic_cast<ConstExpression*>(other)){
+        result = element <= con->getElement();
+    }
+    return new ConstExpression(result ? 1 : 0, new Bool());
+}
