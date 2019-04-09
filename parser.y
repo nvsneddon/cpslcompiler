@@ -378,7 +378,7 @@ Expression: Expression OR Expression {
 				std::cerr << "Somehow a wrong whitespace character showed up!";
 			}
 		}
-		$$ = new ConstExpression(int(c), new Character()); //TODO Make sure that this isn't spaghetti code. I think the index is 1 because the str looks like 'x'
+		$$ = new ConstExpression(int(c), new Char()); //TODO Make sure that this isn't spaghetti code. I think the index is 1 because the str looks like 'x'
 	}
 	| NUMBER {
 		$$ = new ConstExpression($1); 

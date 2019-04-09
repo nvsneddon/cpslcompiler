@@ -19,7 +19,7 @@ void ExpressionsList::write(){ //Make this one be able to emit all the functions
                 Write::write(std::to_string(con->getElement()));
             }
         }
-        else if(Character* chr = dynamic_cast<Character*>(elist[i]->getExpressionType())) {
+        else if(Char* chr = dynamic_cast<Char*>(elist[i]->getExpressionType())) {
             // old was safely casted to NewType
             if(ConstExpression* con = dynamic_cast<ConstExpression*>(elist[i])) {
                 std::string s;
@@ -27,7 +27,7 @@ void ExpressionsList::write(){ //Make this one be able to emit all the functions
                 Write::write(s);
             }
         }
-        else if(Bool* bl = dynamic_cast<Bool*>(elist[i]->getExpressionType())){
+        else if(Boolean* bl = dynamic_cast<Boolean*>(elist[i]->getExpressionType())){
             if(ConstExpression* con = dynamic_cast<ConstExpression*>(elist[i])){
                 Write::write(con->getElement() == 1 ? "True" : "False");
             }

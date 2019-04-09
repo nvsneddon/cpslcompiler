@@ -4,6 +4,7 @@
 class Type{
 public:
     virtual int size() = 0;
+    virtual std::string getTypeAsString() = 0;
 private:
 protected:
 };

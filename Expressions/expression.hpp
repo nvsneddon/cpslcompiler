@@ -23,8 +23,10 @@ public:
     virtual Expression* orfun(Expression* other) = 0;
 
     Type* getExpressionType() { return expressionType; }
+    std::string getTypeString() { return typeString; }
 protected:
     Type* expressionType;
+    std::string typeString;
 };
 
 

@@ -83,7 +83,7 @@ Expression* ConstExpression::lt(Expression* other){
     if(ConstExpression* con = dynamic_cast<ConstExpression*>(other)){
         result = element < con->getElement();
     }
-    return new ConstExpression(result ? 1 : 0, new Bool());
+    return new ConstExpression(result ? 1 : 0, new Boolean());
 }
 
 
@@ -92,7 +92,7 @@ Expression* ConstExpression::lte(Expression* other){
     if(ConstExpression* con = dynamic_cast<ConstExpression*>(other)){
         result = element <= con->getElement();
     }
-    return new ConstExpression(result ? 1 : 0, new Bool());
+    return new ConstExpression(result ? 1 : 0, new Boolean());
 }
 
 Expression* ConstExpression::gt(Expression* other){
@@ -100,7 +100,7 @@ Expression* ConstExpression::gt(Expression* other){
     if(ConstExpression* con = dynamic_cast<ConstExpression*>(other)){
         result = element > con->getElement();
     }
-    return new ConstExpression(result ? 1 : 0, new Bool());
+    return new ConstExpression(result ? 1 : 0, new Boolean());
 }
 
 Expression* ConstExpression::gte(Expression* other){
@@ -108,7 +108,7 @@ Expression* ConstExpression::gte(Expression* other){
     if(ConstExpression* con = dynamic_cast<ConstExpression*>(other)){
         result = element >= con->getElement();
     }
-    return new ConstExpression(result ? 1 : 0, new Bool());
+    return new ConstExpression(result ? 1 : 0, new Boolean());
 }
 
 Expression* ConstExpression::ne(Expression* other){
@@ -116,7 +116,7 @@ Expression* ConstExpression::ne(Expression* other){
     if(ConstExpression* con = dynamic_cast<ConstExpression*>(other)){
         result = element != con->getElement();
     }
-    return new ConstExpression(result ? 1 : 0, new Bool());
+    return new ConstExpression(result ? 1 : 0, new Boolean());
 }
 
 Expression* ConstExpression::eq(Expression* other){
@@ -124,7 +124,7 @@ Expression* ConstExpression::eq(Expression* other){
     if(ConstExpression* con = dynamic_cast<ConstExpression*>(other)){
         result = element == con->getElement();
     }
-    return new ConstExpression(result ? 1 : 0, new Bool());
+    return new ConstExpression(result ? 1 : 0, new Boolean());
 }
 
 Expression* ConstExpression::andfun(Expression* other){
@@ -132,7 +132,7 @@ Expression* ConstExpression::andfun(Expression* other){
     if(ConstExpression* con = dynamic_cast<ConstExpression*>(other)){
         result = element && con->getElement();
     }
-    return new ConstExpression(result ? 1 : 0, new Bool());
+    return new ConstExpression(result ? 1 : 0, new Boolean());
 }
 
 Expression* ConstExpression::orfun(Expression* other){
@@ -140,5 +140,5 @@ Expression* ConstExpression::orfun(Expression* other){
     if(ConstExpression* con = dynamic_cast<ConstExpression*>(other)){
         result = element || con->getElement();
     }
-    return new ConstExpression(result ? 1 : 0, new Bool());
+    return new ConstExpression(result ? 1 : 0, new Boolean());
 }
