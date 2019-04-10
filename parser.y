@@ -271,9 +271,12 @@ ExpressionsList: ExpressionsList COMMA Expression {
 
 Assignment: LValue ASSIGN Expression {}
 	;
-LValue: ID {$$ = $1;} //Thiis one is for normal variables
+LValue: ID {
+		$$ = $1;
+	} //Thiis one is for normal variables
 	| LValue DEC ID {} //This one is for records
 	| LValue BOPEN Expression BCLOSE {} // And this one is for arrays
+	;
 
 Expression: Expression OR Expression {
 		$$ = $1->orfun($3);
@@ -357,7 +360,7 @@ Expression: Expression OR Expression {
 		//std::cout << $1 << std::endl;
 	}
 	| STR {
-		
+
 	}
 	| CHAR {
 		int length = strlen($1);

@@ -1,10 +1,5 @@
 #include "regexpression.hpp"
 
-//RegExpression::RegExpression(ConstExpression* c){
-//    reg = rtable->getRegister();
-//    std::cout << "li " << reg << ", " << c->getElement() << std::endl;
-//}
-
 RegExpression::RegExpression(){
     reg = rtable->getRegister();
 }
@@ -15,41 +10,140 @@ RegExpression::~RegExpression(){
 
 
 Expression* RegExpression::add(Expression* other){
-    return new RegExpression();
+    RegExpression* newreg = new RegExpression();
+    if(ConstExpression* c = dynamic_cast<ConstExpression*>(other)){
+        std::cout << "addi " << newreg->getRegister() << ", " << this->getRegister() << ", " << c->getElement() << std::endl;;
+    }
+    else if(RegExpression* r = dynamic_cast<RegExpression*>(other)){
+        std::cout << "add " << newreg->getRegister() << ", " << this->getRegister() << ", " << r->getRegister() << std::endl;
+    }
+    return newreg;
 }
 Expression* RegExpression::sub(Expression* other) {
-    return new RegExpression();
+    RegExpression* newreg = new RegExpression();
+    if(ConstExpression* c = dynamic_cast<ConstExpression*>(other)){
+        std::cout << "subi " << newreg->getRegister() << ", " << this->getRegister() << ", " << c->getElement() << std::endl;
+    }
+    else if(RegExpression* r = dynamic_cast<RegExpression*>(other)){
+        std::cout << "sub " << newreg->getRegister() << ", " << this->getRegister() << ", " << r->getRegister() << std::endl;
+    }
+    return newreg;
 }
 Expression* RegExpression::mult(Expression* other) {
-    return new RegExpression();
+    RegExpression* newreg = new RegExpression();
+    if(ConstExpression* c = dynamic_cast<ConstExpression*>(other)){
+        std::string tempreg = rtable->getRegister();
+        std::cout << "li " << tempreg << ", " << c->getElement() << std::endl;
+        std::cout << "mult " << this->getRegister() << ", " << tempreg << std::endl;
+        std::cout << "mflo " << newreg->getRegister() << std::endl;
+        rtable->addRegister(tempreg);
+    }
+    else if(RegExpression* r = dynamic_cast<RegExpression*>(other)){
+        std::cout << "mult " << newreg->getRegister() << ", " << this->getRegister() << ", " << r->getRegister() << std::endl;
+    }
+    return newreg;
 }
 Expression* RegExpression::div(Expression* other) {
-    return new RegExpression();
+    RegExpression* newreg = new RegExpression();
+    if(ConstExpression* c = dynamic_cast<ConstExpression*>(other)){
+        std::string tempreg = rtable->getRegister();
+        std::cout << "li " << tempreg << ", " << c->getElement() << std::endl;
+        std::cout << "div " << ", " << this->getRegister() << ", " << tempreg << std::endl;
+        std::cout << "mflo " << newreg->getRegister() << std::endl;
+        rtable->addRegister(tempreg);
+    }
+    else if(RegExpression* r = dynamic_cast<RegExpression*>(other)){
+        std::cout << "div " << newreg->getRegister() << ", " << this->getRegister() << ", " << r->getRegister() << std::endl;
+    }
+    return newreg;
 }
 Expression* RegExpression::mod(Expression* other) {
-    return new RegExpression();
+    RegExpression* newreg = new RegExpression();
+    if(ConstExpression* c = dynamic_cast<ConstExpression*>(other)){
+        std::cout << "addi " << newreg->getRegister() << ", " << this->getRegister() << ", " << c->getElement() << std::endl;
+    }
+    else if(RegExpression* r = dynamic_cast<RegExpression*>(other)){
+        std::cout << "add " << newreg->getRegister() << ", " << this->getRegister() << ", " << r->getRegister() << std::endl;
+    }
+    return newreg;
 }
 Expression* RegExpression::lt(Expression* other) {
-    return new RegExpression();
+    RegExpression* newreg = new RegExpression();
+    if(ConstExpression* c = dynamic_cast<ConstExpression*>(other)){
+        std::cout << "addi " << newreg->getRegister() << ", " << this->getRegister() << ", " << c->getElement() << std::endl;
+    }
+    else if(RegExpression* r = dynamic_cast<RegExpression*>(other)){
+        std::cout << "add " << newreg->getRegister() << ", " << this->getRegister() << ", " << r->getRegister() << std::endl;
+    }
+    return newreg;
 }
 Expression* RegExpression::lte(Expression* other) {
-    return new RegExpression();
+    RegExpression* newreg = new RegExpression();
+    if(ConstExpression* c = dynamic_cast<ConstExpression*>(other)){
+        std::cout << "addi " << newreg->getRegister() << ", " << this->getRegister() << ", " << c->getElement() << std::endl;
+    }
+    else if(RegExpression* r = dynamic_cast<RegExpression*>(other)){
+        std::cout << "add " << newreg->getRegister() << ", " << this->getRegister() << ", " << r->getRegister() << std::endl;
+    }
+    return newreg;
 }
 Expression* RegExpression::gt(Expression* other) {
-    return new RegExpression();
+    RegExpression* newreg = new RegExpression();
+    if(ConstExpression* c = dynamic_cast<ConstExpression*>(other)){
+        std::cout << "addi " << newreg->getRegister() << ", " << this->getRegister() << ", " << c->getElement() << std::endl;
+    }
+    else if(RegExpression* r = dynamic_cast<RegExpression*>(other)){
+        std::cout << "add " << newreg->getRegister() << ", " << this->getRegister() << ", " << r->getRegister() << std::endl;
+    }
+    return newreg;
 }
 Expression* RegExpression::gte(Expression* other) {
-    return new RegExpression();
+    RegExpression* newreg = new RegExpression();
+    if(ConstExpression* c = dynamic_cast<ConstExpression*>(other)){
+        std::cout << "addi " << newreg->getRegister() << ", " << this->getRegister() << ", " << c->getElement() << std::endl;
+    }
+    else if(RegExpression* r = dynamic_cast<RegExpression*>(other)){
+        std::cout << "add " << newreg->getRegister() << ", " << this->getRegister() << ", " << r->getRegister() << std::endl;
+    }
+    return newreg;
 }
 Expression* RegExpression::ne(Expression* other) {
-    return new RegExpression();
+    RegExpression* newreg = new RegExpression();
+    if(ConstExpression* c = dynamic_cast<ConstExpression*>(other)){
+        std::cout << "addi " << newreg->getRegister() << ", " << this->getRegister() << ", " << c->getElement() << std::endl;
+    }
+    else if(RegExpression* r = dynamic_cast<RegExpression*>(other)){
+        std::cout << "add " << newreg->getRegister() << ", " << this->getRegister() << ", " << r->getRegister() << std::endl;
+    }
+    return newreg;
 }
 Expression* RegExpression::eq(Expression* other) {
-    return new RegExpression();
+    RegExpression* newreg = new RegExpression();
+    if(ConstExpression* c = dynamic_cast<ConstExpression*>(other)){
+        std::cout << "addi " << newreg->getRegister() << ", " << this->getRegister() << ", " << c->getElement() << std::endl;
+    }
+    else if(RegExpression* r = dynamic_cast<RegExpression*>(other)){
+        std::cout << "add " << newreg->getRegister() << ", " << this->getRegister() << ", " << r->getRegister() << std::endl;
+    }
+    return newreg;
 }
 Expression* RegExpression::andfun(Expression* other) {
-    return new RegExpression();
+    RegExpression* newreg = new RegExpression();
+    if(ConstExpression* c = dynamic_cast<ConstExpression*>(other)){
+        std::cout << "addi " << newreg->getRegister() << ", " << this->getRegister() << ", " << c->getElement() << std::endl;
+    }
+    else if(RegExpression* r = dynamic_cast<RegExpression*>(other)){
+        std::cout << "add " << newreg->getRegister() << ", " << this->getRegister() << ", " << r->getRegister() << std::endl;
+    }
+    return newreg;
 }
 Expression* RegExpression::orfun(Expression* other) {
-    return new RegExpression();
+    RegExpression* newreg = new RegExpression();
+    if(ConstExpression* c = dynamic_cast<ConstExpression*>(other)){
+        std::cout << "addi " << newreg->getRegister() << ", " << this->getRegister() << ", " << c->getElement() << std::endl;
+    }
+    else if(RegExpression* r = dynamic_cast<RegExpression*>(other)){
+        std::cout << "add " << newreg->getRegister() << ", " << this->getRegister() << ", " << r->getRegister() << std::endl;
+    }
+    return newreg;
 }

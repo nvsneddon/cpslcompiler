@@ -3,16 +3,15 @@
 #define REG_EXPRESSION_HPP
 #include <iostream>
 #include "expression.hpp"
+#include "constexpression.hpp"
 #include "../Tables/reg_table.hpp"
 
 extern RegTable* rtable;
 
-class ConstExpression;
 class RegExpression : public Expression{
 public:
     RegExpression();
     ~RegExpression();
-    //RegExpression(ConstExpression* c);
     Expression* add(Expression* other);
     Expression* sub(Expression* other);
     Expression* mult(Expression* other);
@@ -27,6 +26,7 @@ public:
     Expression* andfun(Expression* other);
     Expression* orfun(Expression* other);
 
+    std::string getRegister(){ return reg; }
 private:
     std::string reg;
 };
