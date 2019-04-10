@@ -16,16 +16,23 @@ ConstExpression::~ConstExpression(){
     delete expressionType;
 }
 
+RegExpression* ConstExpression::copyAsRegExpression(){
+    RegExpression* returnexpr = new RegExpression();
+    std::cout << "li " << returnexpr->getRegister() << ", " << element << std::endl;
+    return returnexpr;
+}
     
 //Add functions
 Expression* ConstExpression::add(Expression* other){
+    if(dynamic_cast<Integer*>(expressionType) == NULL && dynamic_cast<Integer*>(other->getExpressionType()) == NULL) {
+        throw "Wrong expression type";
+    }   
     if(ConstExpression* con = dynamic_cast<ConstExpression*>(other)){
-        if(dynamic_cast<Integer*>(expressionType) == NULL && dynamic_cast<Integer*>(other->getExpressionType()) == NULL) {
-            throw "Wrong expression type";
-        }   
         return new ConstExpression(element + con->getElement());
     }
-    return new ConstExpression(15);
+    RegExpression* returnexpr = other->copyAsRegExpression();
+    
+    return returnexpr;
 }
 
 

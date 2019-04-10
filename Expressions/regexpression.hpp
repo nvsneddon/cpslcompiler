@@ -3,7 +3,6 @@
 #define REG_EXPRESSION_HPP
 #include <iostream>
 #include "expression.hpp"
-#include "constexpression.hpp"
 #include "../Tables/reg_table.hpp"
 
 extern RegTable* rtable;
@@ -25,6 +24,8 @@ public:
     Expression* eq(Expression* other);
     Expression* andfun(Expression* other);
     Expression* orfun(Expression* other);
+
+    RegExpression* copyAsRegExpression();
 
     std::string getRegister(){ return reg; }
 private:

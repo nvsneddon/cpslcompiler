@@ -1,6 +1,7 @@
 #ifndef cONSTEXPRESSION_HPP 
 #define cONSTEXPRESSION_HPP 
 #include "expression.hpp"
+#include "regexpression.hpp"
 #include "../Types/type.hpp"
 #include "../Types/simpletype.hpp"
 #include "../Tables/reg_table.hpp"
@@ -23,6 +24,8 @@ public:
     Expression* eq(Expression* other);
     Expression* andfun(Expression* other);
     Expression* orfun(Expression* other);
+
+    RegExpression* copyAsRegExpression();
 
     void write();
 
