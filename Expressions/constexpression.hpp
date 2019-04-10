@@ -10,6 +10,7 @@ class ConstExpression : public Expression{
 public:
     ConstExpression(int e);
     ConstExpression(int e, Type* t); 
+    ConstExpression(int e, std::string t);
 
     Expression* add(Expression* other);
     Expression* sub(Expression* other);

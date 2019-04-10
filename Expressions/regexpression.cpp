@@ -2,11 +2,34 @@
 
 RegExpression::RegExpression(){
     reg = rtable->getRegister();
+    expressionType = new Integer();
+}
+
+RegExpression::RegExpression(Type* t){
+    reg = rtable->getRegister();
+    expressionType = t;
+}
+
+RegExpression::RegExpression(std::string t){
+    reg = rtable->getRegister();
+    if(t == "integer"){
+        expressionType = new Integer();
+    }
+    else if(t == "char"){
+        expressionType = new Char();
+    }
+    else if(t == "string"){
+        expressionType = new String();
+    }
+    else if(t == "boolean"){
+        expressionType = new Boolean();
+    }
 }
 
 RegExpression::~RegExpression(){
     rtable->addRegister(reg);
 }
+
 RegExpression* RegExpression::copyAsRegExpression(){
     RegExpression* returnexpr = new RegExpression();
     std::cout << "move " << returnexpr->getRegister() << ", " << reg << std::endl;
@@ -15,23 +38,29 @@ RegExpression* RegExpression::copyAsRegExpression(){
 
 
 Expression* RegExpression::add(Expression* other){
+    if(dynamic_cast<Integer*>(expressionType) == NULL && dynamic_cast<Integer*>(other->getExpressionType()) == NULL) {
+        throw "Wrong expression type";
+    }   
+
     RegExpression* newreg = new RegExpression();
-    //if(ConstExpression* c = dynamic_cast<ConstExpression*>(other)){
-    //    std::cout << "addi " << newreg->getRegister() << ", " << this->getRegister() << ", " << c->getElement() << std::endl;;
-    //}
-    //else if(RegExpression* r = dynamic_cast<RegExpression*>(other)){
-    //    std::cout << "add " << newreg->getRegister() << ", " << this->getRegister() << ", " << r->getRegister() << std::endl;
-    //}
+    RegExpression* thisone = copyAsRegExpression();
+    RegExpression* thatone = other->copyAsRegExpression();
+    std::cout << "add " << thisone->getRegister() << ", " << thatone->getRegister() << std::endl;
+    delete thisone;
+    delete thatone;
     return newreg;
 }
 Expression* RegExpression::sub(Expression* other) {
+    if(dynamic_cast<Integer*>(expressionType) == NULL && dynamic_cast<Integer*>(other->getExpressionType()) == NULL) {
+        throw "Wrong expression type";
+    }   
+
     RegExpression* newreg = new RegExpression();
-    //if(ConstExpression* c = dynamic_cast<ConstExpression*>(other)){
-    //    std::cout << "subi " << newreg->getRegister() << ", " << this->getRegister() << ", " << c->getElement() << std::endl;
-    //}
-    //else if(RegExpression* r = dynamic_cast<RegExpression*>(other)){
-    //    std::cout << "sub " << newreg->getRegister() << ", " << this->getRegister() << ", " << r->getRegister() << std::endl;
-    //}
+    RegExpression* thisone = copyAsRegExpression();
+    RegExpression* thatone = other->copyAsRegExpression();
+    std::cout << "sub " << thisone->getRegister() << ", " << thatone->getRegister() << std::endl;
+    delete thisone;
+    delete thatone;
     return newreg;
 }
 Expression* RegExpression::mult(Expression* other) {

@@ -10,6 +10,8 @@ extern RegTable* rtable;
 class RegExpression : public Expression{
 public:
     RegExpression();
+    RegExpression(Type* t);
+    RegExpression(std::string t);
     ~RegExpression();
     Expression* add(Expression* other);
     Expression* sub(Expression* other);

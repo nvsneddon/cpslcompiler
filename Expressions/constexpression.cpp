@@ -12,6 +12,22 @@ ConstExpression::ConstExpression(int e, Type* t){
     element = e;
 }
 
+ConstExpression::ConstExpression(int e, std::string t){
+    element = e;
+    if(t == "integer"){
+        expressionType = new Integer();
+    }
+    else if(t == "char"){
+        expressionType = new Char();
+    }
+    else if(t == "string"){
+        expressionType = new String();
+    }
+    else if(t == "boolean"){
+        expressionType = new Boolean();
+    }
+}
+
 ConstExpression::~ConstExpression(){
     delete expressionType;
 }
@@ -30,8 +46,9 @@ Expression* ConstExpression::add(Expression* other){
     if(ConstExpression* con = dynamic_cast<ConstExpression*>(other)){
         return new ConstExpression(element + con->getElement());
     }
-    RegExpression* returnexpr = other->copyAsRegExpression();
-    
+    RegExpression* otherexpr = other->copyAsRegExpression();
+    RegExpression* returnexpr = new RegExpression(new Integer());
+    std::cout << "addi " << returnexpr->getRegister() << ", " << otherexpr->getRegister() << ", " << element << std::endl;
     return returnexpr;
 }
 
