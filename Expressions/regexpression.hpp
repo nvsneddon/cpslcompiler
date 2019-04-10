@@ -11,6 +11,7 @@ class ConstExpression;
 class RegExpression : public Expression{
 public:
     RegExpression();
+    ~RegExpression();
     //RegExpression(ConstExpression* c);
     Expression* add(Expression* other);
     Expression* sub(Expression* other);

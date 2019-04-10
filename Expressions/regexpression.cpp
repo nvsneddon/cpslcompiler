@@ -6,7 +6,11 @@
 //}
 
 RegExpression::RegExpression(){
-    reg = "$t0";
+    reg = rtable->getRegister();
+}
+
+RegExpression::~RegExpression(){
+    rtable->addRegister(reg);
 }
 
 
