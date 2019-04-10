@@ -1,5 +1,0 @@
-RegExpression* ConstExpression::copyAsRegExpression(){
-    RegExpression* returnexpr = new RegExpression();
-    std::cout << "li " << returnexpr->getRegister() << ", " << element << std::endl;
-    return returnexpr;
-}

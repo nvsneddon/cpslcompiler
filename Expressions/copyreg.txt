@@ -1,5 +1,0 @@
-RegExpression* RegExpression::copyAsRegExpression(){
-    RegExpression* returnexpr = new RegExpression();
-    std::cout << "move " << returnexpr->getRegister() << ", " << reg << std::endl;
-    return returnexpr;
-}
