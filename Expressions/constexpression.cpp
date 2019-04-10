@@ -49,19 +49,26 @@ Expression* ConstExpression::add(Expression* other){
     RegExpression* otherexpr = other->copyAsRegExpression();
     RegExpression* returnexpr = new RegExpression(new Integer());
     std::cout << "addi " << returnexpr->getRegister() << ", " << otherexpr->getRegister() << ", " << element << std::endl;
+    delete otherexpr;
     return returnexpr;
 }
 
 
 //Subtraction functions
 Expression* ConstExpression::sub(Expression* other){
+    if(dynamic_cast<Integer*>(expressionType) == NULL && dynamic_cast<Integer*>(other->getExpressionType()) == NULL) {
+        throw "Wrong expression type";
+    }   
     if(ConstExpression* con = dynamic_cast<ConstExpression*>(other)){
-        if(dynamic_cast<Integer*>(expressionType) == NULL && dynamic_cast<Integer*>(other->getExpressionType()) == NULL) {
-            throw "Wrong expression type";
-        }   
         return new ConstExpression(element - con->getElement());
     }
-    return new ConstExpression(15);
+    RegExpression* thisexpr = copyAsRegExpression();
+    RegExpression* otherexpr = other->copyAsRegExpression();
+    RegExpression* returnexpr = new RegExpression(new Integer());
+    std::cout << "sub " << returnexpr->getRegister() << ", " << thisexpr->getRegister() << ", " << otherexpr->getRegister() << std::endl;
+    delete thisexpr;
+    delete otherexpr;
+    return returnexpr;
 }
 
 
