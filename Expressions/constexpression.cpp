@@ -32,6 +32,23 @@ ConstExpression::~ConstExpression(){
     delete expressionType;
 }
 
+void ConstExpression::write(){
+    if(expressionType->getTypeAsString() == "integer"){
+        std::cout << "li $v0 1" << std::endl; 
+    }
+    else if(expressionType->getTypeAsString() == "char"){
+        std::cout << "li $v0 11" << std::endl; 
+    }
+    else if(expressionType->getTypeAsString() == "string"){
+
+    }
+    else if(expressionType->getTypeAsString() == "boolean"){
+
+    }
+    std::cout << "li $a0, " << element << std::endl;
+    std::cout << "syscall\n";
+}
+
 RegExpression* ConstExpression::copyAsRegExpression(){
     RegExpression* returnexpr = new RegExpression();
     std::cout << "li " << returnexpr->getRegister() << ", " << element << std::endl;
@@ -74,16 +91,21 @@ Expression* ConstExpression::sub(Expression* other){
 
 //Multiplication functions
 Expression* ConstExpression::mult(Expression* other){
+    if(dynamic_cast<Integer*>(expressionType) == NULL && dynamic_cast<Integer*>(other->getExpressionType()) == NULL) {
+        throw "Wrong expression type";
+    }   
     if(ConstExpression* con = dynamic_cast<ConstExpression*>(other)){
-        if(dynamic_cast<Integer*>(expressionType) == NULL && dynamic_cast<Integer*>(other->getExpressionType()) == NULL) {
-            throw "Wrong expression type";
-        }   
-        return new ConstExpression(element * con->getElement());
+        return new ConstExpression(element - con->getElement());
     }
-    return new ConstExpression(15);
+    RegExpression* thisexpr = copyAsRegExpression();
+    RegExpression* otherexpr = other->copyAsRegExpression();
+    RegExpression* returnexpr = new RegExpression(new Integer());
+    std::cout << "mult " << thisexpr->getRegister() << ", " << otherexpr->getRegister() << std::endl;
+    std::cout << "mflo " << returnexpr->getRegister() << std::endl;
+    delete thisexpr;
+    delete otherexpr;
+    return returnexpr;
 }
-
-
 
 //Division functions
 Expression* ConstExpression::div(Expression* other){

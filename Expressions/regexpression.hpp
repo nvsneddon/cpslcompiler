@@ -28,6 +28,7 @@ public:
     Expression* orfun(Expression* other);
 
     RegExpression* copyAsRegExpression();
+    void write();
 
     std::string getRegister(){ return reg; }
 private:

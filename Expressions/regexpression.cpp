@@ -36,6 +36,22 @@ RegExpression* RegExpression::copyAsRegExpression(){
     return returnexpr;
 }
 
+void RegExpression::write(){
+    if(expressionType->getTypeAsString() == "integer"){
+        std::cout << "li $v0 1" << std::endl; 
+    }
+    else if(expressionType->getTypeAsString() == "char"){
+        std::cout << "li $v0 11" << std::endl; 
+    }
+    else if(expressionType->getTypeAsString() == "string"){
+
+    }
+    else if(expressionType->getTypeAsString() == "boolean"){
+
+    }
+    std::cout << "mv $a0, " << reg << std::endl;
+    std::cout << "syscall\n";
+}
 
 Expression* RegExpression::add(Expression* other){
     if(dynamic_cast<Integer*>(expressionType) == NULL && dynamic_cast<Integer*>(other->getExpressionType()) == NULL) {
@@ -43,9 +59,12 @@ Expression* RegExpression::add(Expression* other){
     }   
 
     RegExpression* newreg = new RegExpression();
+    std::cerr << "Register of newreg in add function " << newreg->getRegister() << std::endl;
     RegExpression* thisone = copyAsRegExpression();
+    std::cerr << "Register of thisone in add function " << thisone->getRegister() << std::endl;
     RegExpression* thatone = other->copyAsRegExpression();
-    std::cout << "add " << thisone->getRegister() << ", " << thatone->getRegister() << std::endl;
+    std::cerr << "Register of thatone in add function " << thatone->getRegister() << std::endl;
+    std::cout << "add " << newreg->getRegister() << ", " << thisone->getRegister() << ", " << thatone->getRegister() << std::endl;
     delete thisone;
     delete thatone;
     return newreg;
@@ -58,7 +77,7 @@ Expression* RegExpression::sub(Expression* other) {
     RegExpression* newreg = new RegExpression();
     RegExpression* thisone = copyAsRegExpression();
     RegExpression* thatone = other->copyAsRegExpression();
-    std::cout << "sub " << thisone->getRegister() << ", " << thatone->getRegister() << std::endl;
+    std::cout << "sub " << newreg->getRegister() << ", " << thisone->getRegister() << ", " << thatone->getRegister() << std::endl;
     delete thisone;
     delete thatone;
     return newreg;

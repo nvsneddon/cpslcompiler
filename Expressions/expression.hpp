@@ -23,7 +23,7 @@ public:
     virtual Expression* orfun(Expression* other) = 0;
 
     virtual RegExpression* copyAsRegExpression() = 0;
-    //virtual void write() = 0;
+    virtual void write() = 0;
 
     Type* getExpressionType() { return expressionType; }
 protected:
