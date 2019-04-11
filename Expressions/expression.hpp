@@ -2,8 +2,10 @@
 #define EXPRESSION_HPP
 
 #include <string>
+#include <iostream>
 #include "../Types/type.hpp"
 #include "../Types/simpletype.hpp"
+
 
 class RegExpression;
 class Expression{

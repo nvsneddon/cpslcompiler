@@ -117,7 +117,6 @@
 %%
 
 Program: ConstantOption TypeOption VarOption Profunct Block DEC {
-		rtable->getStats();
 	}
 	;
 
