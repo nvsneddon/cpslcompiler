@@ -26,7 +26,6 @@ public:
 private:
 };
 
-//Should I name this String or CharacterString?
 class String : public SimpleType { 
 public:
     std::string getTypeAsString() { return "string"; };

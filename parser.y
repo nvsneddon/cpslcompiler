@@ -26,6 +26,7 @@
 	float val;
 	char* id;
 	Type* tpe;
+	SimpleType* stpe;
 	Expression* express;
 	ExpressionsList* elist;
 }
@@ -93,6 +94,8 @@
 %type<id> ID
 %type<val> NUMBER
 %type<id> LValue
+%type<stpe> simpletype 
+%type<tpe> Typestatement
 %type<id> CHAR
 %type<id> STR
 %type<express> Expression
@@ -149,17 +152,39 @@ SubTypeDecl: SubTypeDecl ID EQ Typestatement SEMCOL {}
 
 VarDecl: VAR SubVarDecl {} 
 	; 
-SubVarDecl: SubVarDecl IDList COL Typestatement SEMCOL {} 
-	| IDList COL Typestatement SEMCOL {}
+SubVarDecl: SubVarDecl IDList COL Typestatement SEMCOL {
+
+	} 
+	| IDList COL Typestatement SEMCOL {
+
+	}
 	; 
 
-Typestatement: simpletype {} 
-	| recordtype {} 
-	| arraytype {}
+Typestatement: simpletype {
+		$$ = $1;
+	} 
+	| recordtype {
+	} 
+	| arraytype {
+	}
 	;
 
 
-simpletype: ID {}
+simpletype: ID {
+
+		if(!strcmp($1, "integer") || !strcmp($1, "INTEGER")){
+			$$ = new Integer();	
+		}
+		else if(!strcmp($1, "char") || !strcmp($1, "CHAR")){
+			$$ = new Char();	
+		}
+		else if(!strcmp($1, "string") || !strcmp($1, "STRING")){
+			$$ = new String();	
+		}
+		else if(!strcmp($1, "boolean") || !strcmp($1, "BOOLEAN")){
+			$$ = new Boolean();	
+		}
+	}
 	;
 recordtype: RECORD recordsubtype END {} 
 	| RECORD END {}
@@ -362,14 +387,6 @@ Expression: Expression OR Expression {
 		}
 		else if(!strcmp($1, "false") || !strcmp($1, "FALSE")){
 			$$ = new ConstExpression(0, new Boolean());
-		}
-		else if(!strcmp($1, "integer") || !strcmp($1, "INTEGER")){
-		}
-		else if(!strcmp($1, "char") || !strcmp($1, "CHAR")){
-		}
-		else if(!strcmp($1, "string") || !strcmp($1, "STRING")){
-		}
-		else if(!strcmp($1, "boolean") || !strcmp($1, "BOOLEAN")){
 		}
 		else{
 			//This is where you look for the memory location of the name
