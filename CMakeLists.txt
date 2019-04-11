@@ -33,6 +33,7 @@ set(cpsl_srcs
 	Expressions/regexpression.hpp
 	Expressions/regexpression.cpp
 	Expressions/emptyexpression.hpp
+	Expressions/emptyexpression.cpp
 	Expressions/expressionslist.hpp
 	Expressions/expressionslist.cpp
 	Types/simpletype.hpp

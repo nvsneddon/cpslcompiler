@@ -1,6 +1,7 @@
 %{
 	#include <iostream>
 	#include <cstring>
+	#include <vector>
 
 	extern "C" int yylineno;
 
@@ -29,7 +30,6 @@
 	SimpleType* stpe;
 	Expression* express;
 	ExpressionsList* elist;
-
 }
 
 %token ADD
@@ -148,8 +148,12 @@ ConstSubDecl: ConstantDecl Expression SEMCOL {}
 TypeDecl: TYPE SubTypeDecl {} 
 	;
 
-SubTypeDecl: SubTypeDecl ID EQ Typestatement SEMCOL {} 
-	| ID EQ Typestatement SEMCOL {}
+SubTypeDecl: SubTypeDecl ID EQ Typestatement SEMCOL {
+
+	} 
+	| ID EQ Typestatement SEMCOL {
+		
+	}
 	;
 
 VarDecl: VAR SubVarDecl {} 
@@ -159,7 +163,7 @@ SubVarDecl: SubVarDecl IDList COL Typestatement SEMCOL {
 	} 
 	| IDList COL Typestatement SEMCOL {
 		for(int i = 0; i < $1->ids.size(); i++){
-			std::cerr << $1->ids[i] << std::endl;
+			symbols->addVariable($1->ids[i], new EmptyExpression($3->getCopyPtr()));
 		}
 	}
 	; 
@@ -168,8 +172,10 @@ Typestatement: simpletype {
 		$$ = $1;
 	} 
 	| recordtype {
+		$$ = new Integer();
 	} 
 	| arraytype {
+		$$ = new Integer();
 	}
 	;
 
@@ -202,11 +208,11 @@ arraytype: ARRAY BOPEN Expression COL Expression BCLOSE OF Typestatement {}
 IDList: IDList COMMA ID {
 		//Do I do this or not? With the expressionlist it seems to be working fine.
 		$$=$1;
-		$$->ids.push_back($3);
+		$$->ids.push_back(std::string($3));
 	}  
 	| ID {
 		$$ = new IdList();
-		$$->ids.push_back($1);
+		$$->ids.push_back(std::string($1));
 	}
 	;
 
