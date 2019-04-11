@@ -320,8 +320,14 @@ Assignment: LValue ASSIGN Expression {
 			std::cerr << $1 << " not defined\n";
 			throw "Variable not defined error";
 		}
+		if(mymemory->getExpressionType()->getTypeAsString() != $3->getExpressionType()->getTypeAsString()){
+			std::cerr << "Mismatching types\n";
+			throw "False type error";
+		}
 		mymemory->storeExpression($3);	
-		delete $3;
+		if(dynamic_cast<MemExpression*>($3) == NULL) {
+			delete $3;
+		}
 	}
 	;
 LValue: ID {
