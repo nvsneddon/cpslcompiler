@@ -2,37 +2,37 @@
 
 MemExpression::MemExpression(){
     offset = SymbolTable::getOffset(4);
-    reg = symbols->getReferencePointer();
+    ptr = symbols->getReferencePointer();
     expressionType = new Integer();
 }
 
 MemExpression::MemExpression(Type* t){
     offset = SymbolTable::getOffset(t->size());
-    reg = symbols->getReferencePointer();
+    ptr = symbols->getReferencePointer();
     expressionType = t;
 }
 
 MemExpression::MemExpression(int o){
     offset = o;
-    reg = "$gp";
+    ptr = "$gp";
     expressionType = new Integer();
 }
 
 MemExpression::MemExpression(int o, std::string r){
     offset = o;
-    reg = r;
+    ptr = r;
     expressionType = new Integer();
 }
 
 MemExpression::MemExpression(int o, Type* t){
     offset = o;
-    reg = "$gp";
+    ptr = "$gp";
     expressionType = t;
 }
 
 MemExpression::MemExpression(int o, std::string r, Type* t){
     offset = o;
-    reg = r;
+    ptr = r;
     expressionType = t;
 }
 
@@ -41,9 +41,14 @@ RegExpression* MemExpression::copyAsRegExpression() {
 } 
 
 void MemExpression::write(){
-    
+
 }
 
+void MemExpression::storeExpression(Expression* expr){
+    RegExpression* reg = expr->copyAsRegExpression();
+    std::cout << "sw " << reg->getRegister() << ", " << offset << "(" << ptr << ")" << std::endl;
+    delete reg;
+}
 
 Expression* MemExpression::add(Expression* other) {
     return NULL;

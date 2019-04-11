@@ -28,11 +28,12 @@ public:
     Expression* eq(Expression* other);
     Expression* andfun(Expression* other);
     Expression* orfun(Expression* other);
-
+    
     RegExpression* copyAsRegExpression();
+    void storeExpression(Expression* expr);
     void write();
 private:
-    std::string reg;
+    std::string ptr;
     int offset;
 };
 
