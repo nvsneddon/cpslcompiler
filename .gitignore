@@ -5,6 +5,7 @@ parser.tab.c
 parser.tab.h
 y.tab.c
 cpsl
+/cpsl-files
 .vscode
 /testdirectory
 *.asm
