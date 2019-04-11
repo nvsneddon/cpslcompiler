@@ -17,7 +17,18 @@ std::string SymbolTable::getReferencePointer(){
 }
 
 void SymbolTable::addVariable(std::string varname, Expression* expr){
-    variables[0].insert(std::make_pair("something", new ConstExpression(1)));
+    variables[0].insert(std::make_pair(varname, expr));
+}
+
+void SymbolTable::printStats(){
+    for(int i = 0; i < variables.size(); i++){
+        std::cerr << "This is " << i << std::endl;
+        for (auto it = variables[i].begin(); it != variables[i].end(); it++ ){
+            std::cerr << it->first << std::endl;
+        }
+        std::cerr << "Done with " << i << ". Onto the next.\n";
+    }
+    std::cerr << "We are finished\n";
 }
 
 Expression* SymbolTable::findVariable(std::string myvar){

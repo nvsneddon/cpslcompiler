@@ -21,7 +21,7 @@ class SymbolTable{
         void removeScope();
         std::string getReferencePointer();
         int appendString(std::string str);
-
+        void printStats();
         static int getOffset(int);
     private:
         std::deque<std::map<std::string, Expression*>> variables;    
