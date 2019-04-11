@@ -57,25 +57,25 @@ Expression* MemExpression::sub(Expression* other) {
 } 
 Expression* MemExpression::mult(Expression* other) {
     RegExpression* reg = copyAsRegExpression();
-    Expression* returnexpr = reg->sub(other);
+    Expression* returnexpr = reg->mult(other);
     delete reg;
     return returnexpr;
 } 
 Expression* MemExpression::div(Expression* other) {
     RegExpression* reg = copyAsRegExpression();
-    Expression* returnexpr = reg->mult(other);
+    Expression* returnexpr = reg->div(other);
     delete reg;
     return returnexpr;
 } 
 Expression* MemExpression::mod(Expression* other) {
     RegExpression* reg = copyAsRegExpression();
-    Expression* returnexpr = reg->div(other);
+    Expression* returnexpr = reg->mod(other);
     delete reg;
     return returnexpr;
 } 
 Expression* MemExpression::lt(Expression* other) {
     RegExpression* reg = copyAsRegExpression();
-    Expression* returnexpr = reg->mod(other);
+    Expression* returnexpr = reg->lt(other);
     delete reg;
     return returnexpr;
 } 
