@@ -5,9 +5,9 @@
 #include "../Types/type.hpp"
 #include "../Types/simpletype.hpp"
 
+class RegExpression;
 class Expression{
 public:
-    Expression() { }
     virtual Expression* add(Expression* other) = 0;
     virtual Expression* sub(Expression* other) = 0;
     virtual Expression* mult(Expression* other) = 0;
@@ -21,6 +21,9 @@ public:
     virtual Expression* eq(Expression* other) = 0;
     virtual Expression* andfun(Expression* other) = 0;
     virtual Expression* orfun(Expression* other) = 0;
+
+    virtual RegExpression* copyAsRegExpression() = 0;
+    virtual void write() = 0;
 
     Type* getExpressionType() { return expressionType; }
 protected:

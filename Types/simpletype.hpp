@@ -7,6 +7,7 @@ class SimpleType : public Type {
 public:
     SimpleType() {};
     virtual int size() { return 4; }
+    virtual std::string getTypeAsString() = 0;
 private:
 protected:
 };
@@ -14,23 +15,28 @@ protected:
 class Integer : public SimpleType {
 public:
     Integer() : SimpleType() {};
+    std::string getTypeAsString() { return "integer"; };
 private:
 };
 
-class Character : public SimpleType {
+class Char : public SimpleType {
 public:
-    Character() : SimpleType() {};
+    Char() : SimpleType() {};
+    std::string getTypeAsString() { return "char"; };
 private:
 };
 
-class CharacterString : public SimpleType {
+//Should I name this String or CharacterString?
+class String : public SimpleType { 
 public:
+    std::string getTypeAsString() { return "string"; };
 private:
 };
 
-class Bool : public SimpleType {
+class Boolean : public SimpleType {
 public:
-    Bool() : SimpleType() {};
+    Boolean() : SimpleType() {};
+    std::string getTypeAsString() { return "boolean"; };
 private:
 };
 

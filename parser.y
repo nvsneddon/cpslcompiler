@@ -16,6 +16,7 @@
 	extern SymbolTable* symbols;
 	extern ExpressionsList* elist;
 	extern StatementList* slist;
+	extern RegTable* rtable;
 
 	#endif
 }
@@ -270,14 +271,17 @@ ExpressionsList: ExpressionsList COMMA Expression {
 
 Assignment: LValue ASSIGN Expression {}
 	;
-LValue: ID {$$ = $1;} //Thiis one is for normal variables
+LValue: ID {
+		$$ = $1;
+	} //Thiis one is for normal variables
 	| LValue DEC ID {} //This one is for records
 	| LValue BOPEN Expression BCLOSE {} // And this one is for arrays
+	;
 
 Expression: Expression OR Expression {
 		$$ = $1->orfun($3);
-		delete $1;
 		delete $3;
+		delete $1;
 	}
 	| Expression AND Expression {
 		$$ = $1->andfun($3);
@@ -353,10 +357,18 @@ Expression: Expression OR Expression {
 	| PRED POPEN Expression PCLOSE {}
 	| SUCC POPEN Expression PCLOSE {}
 	| LValue {
-		//std::cout << $1 << std::endl;
+		if(!strcmp($1, "true") || !strcmp($1, "TRUE")){
+			$$ = new ConstExpression(1, new Boolean());
+		}
+		else if(!strcmp($1, "false") || !strcmp($1, "FALSE")){
+			$$ = new ConstExpression(0, new Boolean());
+		}
+		else{
+			//This is where you look for the memory location of the name
+		}
 	}
 	| STR {
-		
+
 	}
 	| CHAR {
 		int length = strlen($1);
@@ -378,7 +390,7 @@ Expression: Expression OR Expression {
 				std::cerr << "Somehow a wrong whitespace character showed up!";
 			}
 		}
-		$$ = new ConstExpression(int(c), new Character()); //TODO Make sure that this isn't spaghetti code. I think the index is 1 because the str looks like 'x'
+		$$ = new ConstExpression(int(c), new Char()); //TODO Make sure that this isn't spaghetti code. I think the index is 1 because the str looks like 'x'
 	}
 	| NUMBER {
 		$$ = new ConstExpression($1); 

@@ -1,7 +1,19 @@
+
+#ifndef REG_EXPRESSION_HPP
+#define REG_EXPRESSION_HPP
+#include <iostream>
+#include "expression.hpp"
+#include "../Statements/write.hpp"
+#include "../Tables/reg_table.hpp"
+
+extern RegTable* rtable;
+
 class RegExpression : public Expression{
 public:
     RegExpression();
-    RegExpression(ConstExpression c);
+    RegExpression(Type* t);
+    RegExpression(std::string t);
+    ~RegExpression();
     Expression* add(Expression* other);
     Expression* sub(Expression* other);
     Expression* mult(Expression* other);
@@ -15,7 +27,13 @@ public:
     Expression* eq(Expression* other);
     Expression* andfun(Expression* other);
     Expression* orfun(Expression* other);
+
+    RegExpression* copyAsRegExpression();
+    void write();
+
+    std::string getRegister(){ return reg; }
 private:
     std::string reg;
 };
 
+#endif
