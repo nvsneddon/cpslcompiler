@@ -22,7 +22,7 @@ RegTable::RegTable(){
     regs.push("$t0");
 }
 
-std::string RegTable::getRegister(){
+std::string RegTable::getNewRegister(){
     if(regs.empty()){
         std::cerr << "Out of registers" << std::endl;
         throw "error";
@@ -33,4 +33,12 @@ std::string RegTable::getRegister(){
 }
 void RegTable::addRegister(std::string r){
     regs.push(r);
+}
+
+void RegTable::getStats(){
+    std::cerr << "Size is " << regs.size() << std::endl;
+    //while(!regs.empty()){
+    //    std::cerr << regs.top() << std::endl;
+    //    regs.pop();
+    //}
 }

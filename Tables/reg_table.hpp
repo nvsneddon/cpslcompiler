@@ -8,8 +8,10 @@
 class RegTable{
 public:
     RegTable();
-    std::string getRegister();
+    std::string getNewRegister();
     void addRegister(std::string r);
+    int getSize(){ return regs.size(); }
+    void getStats();
 private:
     std::stack<std::string> regs;
 };

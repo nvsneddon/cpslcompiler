@@ -1,0 +1,6 @@
+./Expressions/regexpression.cpp:    reg = rtable->getRegister();
+./Expressions/regexpression.cpp:    reg = rtable->getRegister();
+./Expressions/regexpression.cpp:    reg = rtable->getRegister();
+./Expressions/regexpression.cpp:    rtable->addRegister(reg);
+./makefiles/parser.cpp:		std::cerr << rtable->getSize() << std::endl;
+./parser.y:		std::cerr << rtable->getSize() << std::endl;

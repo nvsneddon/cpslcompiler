@@ -116,7 +116,9 @@
 %locations
 %%
 
-Program: ConstantOption TypeOption VarOption Profunct Block DEC {}
+Program: ConstantOption TypeOption VarOption Profunct Block DEC {
+		rtable->getStats();
+	}
 	;
 
 ConstantOption: ConstantDecl {}
@@ -343,103 +345,131 @@ LValue: ID {
 
 Expression: Expression OR Expression {
 		$$ = $1->orfun($3);
-		if(dynamic_cast<MemExpression*>($1) == NULL && dynamic_cast<MemExpression*>($3) == NULL) {
-			delete $3;
+		if(dynamic_cast<MemExpression*>($1) == NULL) {
 			delete $1;
+		}
+		if(dynamic_cast<MemExpression*>($3) == NULL) {
+			delete $3;
 		}
 	}
 	| Expression AND Expression {
 		$$ = $1->andfun($3);
-		if(dynamic_cast<MemExpression*>($1) == NULL && dynamic_cast<MemExpression*>($3) == NULL) {
-			delete $3;
+		if(dynamic_cast<MemExpression*>($1) == NULL) {
 			delete $1;
+		}
+		if(dynamic_cast<MemExpression*>($3) == NULL) {
+			delete $3;
 		}
 	}
 	| Expression EQ Expression {
 		$$ = $1->eq($3);
-		if(dynamic_cast<MemExpression*>($1) == NULL && dynamic_cast<MemExpression*>($3) == NULL) {
-			delete $3;
+		if(dynamic_cast<MemExpression*>($1) == NULL) {
 			delete $1;
+		}
+		if(dynamic_cast<MemExpression*>($3) == NULL) {
+			delete $3;
 		}
 	}
 	| Expression ARROWS Expression {
 		$$ = $1->ne($3);
-		if(dynamic_cast<MemExpression*>($1) == NULL && dynamic_cast<MemExpression*>($3) == NULL) {
-			delete $3;
+		if(dynamic_cast<MemExpression*>($1) == NULL) {
 			delete $1;
+		}
+		if(dynamic_cast<MemExpression*>($3) == NULL) {
+			delete $3;
 		}
 	}
 	| Expression GTE Expression {
 		$$ = $1->gte($3);
-		if(dynamic_cast<MemExpression*>($1) == NULL && dynamic_cast<MemExpression*>($3) == NULL) {
-			delete $3;
+		if(dynamic_cast<MemExpression*>($1) == NULL) {
 			delete $1;
+		}
+		if(dynamic_cast<MemExpression*>($3) == NULL) {
+			delete $3;
 		}
 	}
 	| Expression GT Expression {
 		$$ = $1->gt($3);
-		if(dynamic_cast<MemExpression*>($1) == NULL && dynamic_cast<MemExpression*>($3) == NULL) {
-			delete $3;
+		if(dynamic_cast<MemExpression*>($1) == NULL) {
 			delete $1;
+		}
+		if(dynamic_cast<MemExpression*>($3) == NULL) {
+			delete $3;
 		}
 	}
 	| Expression LTE Expression {
 		$$ = $1->lte($3);
-		if(dynamic_cast<MemExpression*>($1) == NULL && dynamic_cast<MemExpression*>($3) == NULL) {
-			delete $3;
+		if(dynamic_cast<MemExpression*>($1) == NULL) {
 			delete $1;
+		}
+		if(dynamic_cast<MemExpression*>($3) == NULL) {
+			delete $3;
 		}
 	}
 	| Expression LT Expression {
 		$$ = $1->lt($3);
-		if(dynamic_cast<MemExpression*>($1) == NULL && dynamic_cast<MemExpression*>($3) == NULL) {
-			delete $3;
+		if(dynamic_cast<MemExpression*>($1) == NULL) {
 			delete $1;
+		}
+		if(dynamic_cast<MemExpression*>($3) == NULL) {
+			delete $3;
 		}
 	}
 	| Expression ADD Expression {
 		$$ = $1->add($3);
-		if(dynamic_cast<MemExpression*>($1) == NULL && dynamic_cast<MemExpression*>($3) == NULL) {
-			delete $3;
+		if(dynamic_cast<MemExpression*>($1) == NULL) {
 			delete $1;
+		}
+		if(dynamic_cast<MemExpression*>($3) == NULL) {
+			delete $3;
 		}
 	}
 	| Expression SUB Expression {
 		$$ = $1->sub($3);
-		if(dynamic_cast<MemExpression*>($1) == NULL && dynamic_cast<MemExpression*>($3) == NULL) {
-			delete $3;
+		if(dynamic_cast<MemExpression*>($1) == NULL) {
 			delete $1;
+		}
+		if(dynamic_cast<MemExpression*>($3) == NULL) {
+			delete $3;
 		}
 	}
 	| Expression MULT Expression {
 		$$ = $1->mult($3);
-		if(dynamic_cast<MemExpression*>($1) == NULL && dynamic_cast<MemExpression*>($3) == NULL) {
-			delete $3;
+		if(dynamic_cast<MemExpression*>($1) == NULL) {
 			delete $1;
+		}
+		if(dynamic_cast<MemExpression*>($3) == NULL) {
+			delete $3;
 		}
 	}
 	| Expression DIV Expression {
 		$$ = $1->div($3);
-		if(dynamic_cast<MemExpression*>($1) == NULL && dynamic_cast<MemExpression*>($3) == NULL) {
-			delete $3;
+		if(dynamic_cast<MemExpression*>($1) == NULL) {
 			delete $1;
+		}
+		if(dynamic_cast<MemExpression*>($3) == NULL) {
+			delete $3;
 		}
 	}
 	| Expression PERC Expression {
 		$$ = $1->div($3);
-		if(dynamic_cast<MemExpression*>($1) == NULL && dynamic_cast<MemExpression*>($3) == NULL) {
-			delete $3;
+		if(dynamic_cast<MemExpression*>($1) == NULL) {
 			delete $1;
+		}
+		if(dynamic_cast<MemExpression*>($3) == NULL) {
+			delete $3;
 		}
 	}
 	| TILDA Expression {}
 	| SUB Expression {}
-	| POPEN Expression PCLOSE { $$ = $2; }
+	| POPEN Expression PCLOSE { 
+		$$ = $2; 
+	}
 	| ID POPEN ExpressionsList PCLOSE {
 //		std::cout << $1 << std::endl;
 	}
 	| ID POPEN PCLOSE {
-	//	std::cout << $1 << std::endl;
+		//std::cerr << $1 << std::endl;
 	}
 	| CHR POPEN Expression PCLOSE {}
 	| ORD POPEN Expression PCLOSE {}

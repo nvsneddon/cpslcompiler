@@ -28,9 +28,7 @@ ConstExpression::ConstExpression(int e, std::string t){
     }
 }
 
-ConstExpression::~ConstExpression(){
-    delete expressionType;
-}
+ConstExpression::~ConstExpression(){}
 
 void ConstExpression::write(){
     if(expressionType->getTypeAsString() == "integer"){

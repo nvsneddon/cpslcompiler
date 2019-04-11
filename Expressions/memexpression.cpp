@@ -25,6 +25,10 @@ MemExpression::MemExpression(int o, std::string r, Type* t){
     expressionType = t;
 }
 
+MemExpression::~MemExpression(){
+    
+}
+
 RegExpression* MemExpression::copyAsRegExpression() {
     RegExpression* myreg = new RegExpression(expressionType->getCopyPtr());
     std::cout << "lw " << myreg->getRegister() << ", " << offset << "(" << ptr << ")" << std::endl;
@@ -38,9 +42,9 @@ void MemExpression::write(){
 }
 
 void MemExpression::storeExpression(Expression* expr){
-    RegExpression* reg = expr->copyAsRegExpression();
-    std::cout << "sw " << reg->getRegister() << ", " << offset << "(" << ptr << ")" << std::endl;
-    delete reg;
+    RegExpression* regexpression = expr->copyAsRegExpression();
+    std::cout << "sw " << regexpression->getRegister() << ", " << offset << "(" << ptr << ")" << std::endl;
+    delete regexpression;
 }
 
 Expression* MemExpression::add(Expression* other) {

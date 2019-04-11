@@ -24,6 +24,7 @@ public:
 
     virtual RegExpression* copyAsRegExpression() = 0;
     virtual void write() = 0;
+    virtual ~Expression() { delete expressionType; };
 
     Type* getExpressionType() { return expressionType; }
 protected:

@@ -29,6 +29,8 @@ public:
     RegExpression* copyAsRegExpression();
     void storeExpression(Expression* expr);
     void write();
+
+    ~MemExpression();
 private:
     std::string ptr;
     int offset;

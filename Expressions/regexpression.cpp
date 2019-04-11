@@ -1,17 +1,17 @@
 #include "regexpression.hpp"
 
 RegExpression::RegExpression(){
-    reg = rtable->getRegister();
+    reg = rtable->getNewRegister();
     expressionType = new Integer();
 }
 
 RegExpression::RegExpression(Type* t){
-    reg = rtable->getRegister();
+    reg = rtable->getNewRegister();
     expressionType = t;
 }
 
 RegExpression::RegExpression(std::string t){
-    reg = rtable->getRegister();
+    reg = rtable->getNewRegister();
     if(t == "integer"){
         expressionType = new Integer();
     }
