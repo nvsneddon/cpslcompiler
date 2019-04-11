@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "expression.hpp"
+#include "memexpression.hpp"
 #include "constexpression.hpp"
 #include <iostream>
 

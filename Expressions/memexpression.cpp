@@ -32,7 +32,7 @@ RegExpression* MemExpression::copyAsRegExpression() {
 } 
 
 void MemExpression::write(){
-    RegExpression* myreg = new RegExpression(expressionType->getCopyPtr());
+    RegExpression* myreg = copyAsRegExpression();
     myreg->write();
     delete myreg;
 }
