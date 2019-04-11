@@ -51,6 +51,10 @@ void SymbolTable::removeScope(){
         std::cerr << "Cannot remove global scope\n";
         throw "Attempted to delete global scope";
     }
+    
+    for (auto it = variables[0].begin(); it != variables[0].end(); it++ ){
+        delete it->second;
+    }
     variables.pop_front();
 }
 

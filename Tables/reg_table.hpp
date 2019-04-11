@@ -3,6 +3,7 @@
 
 #include <stack>
 #include <string>
+#include <iostream>
 
 class RegTable{
 public:

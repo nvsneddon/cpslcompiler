@@ -23,6 +23,10 @@ RegTable::RegTable(){
 }
 
 std::string RegTable::getRegister(){
+    if(regs.empty()){
+        std::cerr << "Out of registers" << std::endl;
+        throw "error";
+    }
     std::string returnstring = regs.top();
     regs.pop();
     return returnstring;

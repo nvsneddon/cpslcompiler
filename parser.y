@@ -159,7 +159,11 @@ SubTypeDecl: SubTypeDecl ID EQ Typestatement SEMCOL {
 VarDecl: VAR SubVarDecl {} 
 	; 
 SubVarDecl: SubVarDecl IDList COL Typestatement SEMCOL {
-
+		for(int i = 0; i < $2->ids.size(); i++){
+			symbols->declareVariable($2->ids[i], $4->getCopyPtr());
+		}
+		//symbols->printStats();
+		delete $4;
 	} 
 	| IDList COL Typestatement SEMCOL {
 		for(int i = 0; i < $1->ids.size(); i++){
