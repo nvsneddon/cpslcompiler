@@ -363,6 +363,14 @@ Expression: Expression OR Expression {
 		else if(!strcmp($1, "false") || !strcmp($1, "FALSE")){
 			$$ = new ConstExpression(0, new Boolean());
 		}
+		else if(!strcmp($1, "integer") || !strcmp($1, "INTEGER")){
+		}
+		else if(!strcmp($1, "char") || !strcmp($1, "CHAR")){
+		}
+		else if(!strcmp($1, "string") || !strcmp($1, "STRING")){
+		}
+		else if(!strcmp($1, "boolean") || !strcmp($1, "BOOLEAN")){
+		}
 		else{
 			//This is where you look for the memory location of the name
 		}
