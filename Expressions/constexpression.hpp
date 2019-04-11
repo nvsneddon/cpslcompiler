@@ -5,6 +5,7 @@
 #include "../Types/type.hpp"
 #include "../Types/simpletype.hpp"
 #include "../Tables/reg_table.hpp"
+#include "../Statements/write.hpp"
 
 class ConstExpression : public Expression{
 public:

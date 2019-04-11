@@ -3,6 +3,7 @@
 #define REG_EXPRESSION_HPP
 #include <iostream>
 #include "expression.hpp"
+#include "../Statements/write.hpp"
 #include "../Tables/reg_table.hpp"
 
 extern RegTable* rtable;

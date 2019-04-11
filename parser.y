@@ -280,8 +280,8 @@ LValue: ID {
 
 Expression: Expression OR Expression {
 		$$ = $1->orfun($3);
-		delete $1;
 		delete $3;
+		delete $1;
 	}
 	| Expression AND Expression {
 		$$ = $1->andfun($3);
@@ -357,7 +357,21 @@ Expression: Expression OR Expression {
 	| PRED POPEN Expression PCLOSE {}
 	| SUCC POPEN Expression PCLOSE {}
 	| LValue {
-		//std::cout << $1 << std::endl;
+		if(!strcmp($1, "true") || !strcmp($1, "TRUE")){
+			//$$ = new ConstExpression(1, new Boolean());
+			ConstExpression* cexpr = new ConstExpression(1, new Boolean()); 
+			$$ = cexpr->copyAsRegExpression();
+			delete cexpr;
+		}
+		else if(!strcmp($1, "false") || !strcmp($1, "FALSE")){
+			//$$ = new ConstExpression(0, new Boolean());
+			ConstExpression* cexpr = new ConstExpression(0, new Boolean()); 
+			$$ = cexpr->copyAsRegExpression();
+			delete cexpr;
+		}
+		else{
+			//This is where you look for the memory location of the name
+		}
 	}
 	| STR {
 
@@ -385,7 +399,9 @@ Expression: Expression OR Expression {
 		$$ = new ConstExpression(int(c), new Char()); //TODO Make sure that this isn't spaghetti code. I think the index is 1 because the str looks like 'x'
 	}
 	| NUMBER {
-		$$ = new ConstExpression($1); 
+		ConstExpression* cexpr = new ConstExpression($1); 
+		$$ = cexpr->copyAsRegExpression();
+		delete cexpr;
 	}
 	;
 %%
