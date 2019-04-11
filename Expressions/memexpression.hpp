@@ -2,10 +2,18 @@
 #define MEMEXPRESSION_HPP 
 
 #include "expression.hpp"
+#include "../Tables/symbol_table.hpp"
+
+extern SymbolTable* symbols;
 
 class MemExpression : public Expression{
 public:
     MemExpression();
+    MemExpression(int);
+    MemExpression(int, std::string);
+    MemExpression(int, Type*);
+    MemExpression(int, std::string, Type*);
+    MemExpression(RegExpression*);
     Expression* add(Expression* other);
     Expression* sub(Expression* other);
     Expression* mult(Expression* other);
@@ -19,6 +27,8 @@ public:
     Expression* eq(Expression* other);
     Expression* andfun(Expression* other);
     Expression* orfun(Expression* other);
+
+    RegExpression* copyAsRegExpression();
 private:
     std::string reg;
     int offset;

@@ -1,7 +1,46 @@
 #include "symbol_table.hpp"
 
-void SymbolTable::addVariable(std::map<std::string, int> mymap){
-    
+SymbolTable::SymbolTable(){
+    addScope(); 
+}
+
+SymbolTable::~SymbolTable(){
+    for(int i = 0; i < variables.size(); i++){
+        for (auto it = variables[i].begin(); it != variables[i].end(); it++ ){
+            delete it->second;
+        }
+    }
+}
+
+std::string SymbolTable::getReferencePointer(){
+    return "$gp";
+}
+
+void SymbolTable::addVariable(std::string varname, Expression* expr){
+    variables[0].insert(std::make_pair("something", new ConstExpression(1)));
+}
+
+Expression* SymbolTable::findVariable(std::string myvar){
+    for(int i = 0; i < variables.size(); i++){
+        auto it = variables[i].find(myvar);
+        if (it != variables[i].end()){
+            return it->second;
+        }
+    }
+    return NULL;
+}
+
+void SymbolTable::addScope(){
+    std::map<std::string, Expression*> newmap;
+    variables.push_front(newmap);
+}
+
+void SymbolTable::removeScope(){
+    if(variables.size() == 1){
+        std::cerr << "Cannot remove global scope\n";
+        throw "Attempted to delete global scope";
+    }
+    variables.pop_front();
 }
 
 int SymbolTable::appendString(std::string str){
@@ -17,3 +56,10 @@ void SymbolTable::printStringLabels(){
     }
 }
 
+
+int SymbolTable::getOffset(int size){
+    static int offset = 0;
+    int returnvalue = offset;
+    offset += size;
+    return returnvalue;
+}
