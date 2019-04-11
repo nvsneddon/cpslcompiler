@@ -16,8 +16,8 @@ std::string SymbolTable::getReferencePointer(){
     return "$gp";
 }
 
-void SymbolTable::addVariable(std::string varname, Expression* expr){
-    variables[0].insert(std::make_pair(varname, expr));
+void SymbolTable::declareVariable(std::string varname, Type* t){
+    variables[0].insert(std::make_pair(varname, new MemExpression(getOffset(t->size()), getReferencePointer(), t)));
 }
 
 void SymbolTable::printStats(){
@@ -31,7 +31,7 @@ void SymbolTable::printStats(){
     std::cerr << "We are finished\n";
 }
 
-Expression* SymbolTable::findVariable(std::string myvar){
+MemExpression* SymbolTable::findVariable(std::string myvar){
     for(int i = 0; i < variables.size(); i++){
         auto it = variables[i].find(myvar);
         if (it != variables[i].end()){
@@ -42,7 +42,7 @@ Expression* SymbolTable::findVariable(std::string myvar){
 }
 
 void SymbolTable::addScope(){
-    std::map<std::string, Expression*> newmap;
+    std::map<std::string, MemExpression*> newmap;
     variables.push_front(newmap);
 }
 

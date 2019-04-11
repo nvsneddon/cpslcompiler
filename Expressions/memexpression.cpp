@@ -1,16 +1,5 @@
 #include "memexpression.hpp"
 
-MemExpression::MemExpression(){
-    offset = SymbolTable::getOffset(4);
-    ptr = symbols->getReferencePointer();
-    expressionType = new Integer();
-}
-
-MemExpression::MemExpression(Type* t){
-    offset = SymbolTable::getOffset(t->size());
-    ptr = symbols->getReferencePointer();
-    expressionType = t;
-}
 
 MemExpression::MemExpression(int o){
     offset = o;
@@ -37,11 +26,15 @@ MemExpression::MemExpression(int o, std::string r, Type* t){
 }
 
 RegExpression* MemExpression::copyAsRegExpression() {
-    return NULL;
+    RegExpression* myreg = new RegExpression(expressionType->getCopyPtr());
+    std::cout << "lw " << myreg->getRegister() << ", " << offset << "(" << ptr << ")" << std::endl;
+    return myreg;
 } 
 
 void MemExpression::write(){
-
+    RegExpression* myreg = new RegExpression(expressionType->getCopyPtr());
+    myreg->write();
+    delete myreg;
 }
 
 void MemExpression::storeExpression(Expression* expr){
@@ -51,41 +44,80 @@ void MemExpression::storeExpression(Expression* expr){
 }
 
 Expression* MemExpression::add(Expression* other) {
-    return NULL;
+    RegExpression* reg = copyAsRegExpression();
+    Expression* returnexpr = reg->add(other);
+    delete reg;
+    return returnexpr;
 } 
 Expression* MemExpression::sub(Expression* other) {
-    return NULL;
+    RegExpression* reg = copyAsRegExpression();
+    Expression* returnexpr = reg->sub(other);
+    delete reg;
+    return returnexpr;
 } 
 Expression* MemExpression::mult(Expression* other) {
-    return NULL;
+    RegExpression* reg = copyAsRegExpression();
+    Expression* returnexpr = reg->sub(other);
+    delete reg;
+    return returnexpr;
 } 
 Expression* MemExpression::div(Expression* other) {
-    return NULL;
+    RegExpression* reg = copyAsRegExpression();
+    Expression* returnexpr = reg->mult(other);
+    delete reg;
+    return returnexpr;
 } 
 Expression* MemExpression::mod(Expression* other) {
-    return NULL;
+    RegExpression* reg = copyAsRegExpression();
+    Expression* returnexpr = reg->div(other);
+    delete reg;
+    return returnexpr;
 } 
 Expression* MemExpression::lt(Expression* other) {
-    return NULL;
+    RegExpression* reg = copyAsRegExpression();
+    Expression* returnexpr = reg->mod(other);
+    delete reg;
+    return returnexpr;
 } 
 Expression* MemExpression::lte(Expression* other) {
-    return NULL;
+    RegExpression* reg = copyAsRegExpression();
+    Expression* returnexpr = reg->lte(other);
+    delete reg;
+    return returnexpr;
 } 
 Expression* MemExpression::gt(Expression* other) {
-    return NULL;
+    RegExpression* reg = copyAsRegExpression();
+    Expression* returnexpr = reg->gt(other);
+    delete reg;
+    return returnexpr;
 } 
 Expression* MemExpression::gte(Expression* other) {
-    return NULL;
+    RegExpression* reg = copyAsRegExpression();
+    Expression* returnexpr = reg->gte(other);
+    delete reg;
+    return returnexpr;
 } 
 Expression* MemExpression::ne(Expression* other) {
-    return NULL;
+    RegExpression* reg = copyAsRegExpression();
+    Expression* returnexpr = reg->ne(other);
+    delete reg;
+    return returnexpr;
 } 
 Expression* MemExpression::eq(Expression* other) {
-    return NULL;
+    RegExpression* reg = copyAsRegExpression();
+    Expression* returnexpr = reg->eq(other);
+    delete reg;
+    return returnexpr;
 } 
 Expression* MemExpression::andfun(Expression* other) {
-    return NULL;
+    RegExpression* reg = copyAsRegExpression();
+    Expression* returnexpr = reg->andfun(other);
+    delete reg;
+    return returnexpr;
 } 
 Expression* MemExpression::orfun(Expression* other) {
-    return NULL;
+    RegExpression* reg = copyAsRegExpression();
+    Expression* returnexpr = reg->orfun(other);
+    delete reg;
+    return returnexpr;
 } 

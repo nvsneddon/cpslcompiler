@@ -163,7 +163,7 @@ SubVarDecl: SubVarDecl IDList COL Typestatement SEMCOL {
 	} 
 	| IDList COL Typestatement SEMCOL {
 		for(int i = 0; i < $1->ids.size(); i++){
-			symbols->addVariable($1->ids[i], new MemExpression($3->getCopyPtr()));
+			symbols->declareVariable($1->ids[i], $3->getCopyPtr());
 		}
 		//symbols->printStats();
 		delete $3;
@@ -314,7 +314,15 @@ ExpressionsList: ExpressionsList COMMA Expression {
 	}	
 	;
 
-Assignment: LValue ASSIGN Expression {}
+Assignment: LValue ASSIGN Expression {
+		MemExpression* mymemory = symbols->findVariable(std::string($1));
+		if(mymemory == NULL){
+			std::cerr << $1 << " not defined\n";
+			throw "Not defined error";
+		}
+		mymemory->storeExpression($3);	
+		delete $3;
+	}
 	;
 LValue: ID {
 		$$ = $1;
@@ -409,7 +417,12 @@ Expression: Expression OR Expression {
 			$$ = new ConstExpression(0, new Boolean());
 		}
 		else{
-			//This is where you look for the memory location of the name
+			MemExpression* expr = symbols->findVariable(std::string($1));
+			if (expr == NULL){
+				std::cerr << "Unexpected LValue in code!" << std::endl;
+				throw "L Value error";
+			}
+			$$ = expr;
 		}
 	}
 	| STR {

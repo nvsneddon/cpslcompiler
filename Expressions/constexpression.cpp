@@ -52,7 +52,7 @@ void ConstExpression::write(){
 }
 
 RegExpression* ConstExpression::copyAsRegExpression(){
-    RegExpression* returnexpr = new RegExpression();
+    RegExpression* returnexpr = new RegExpression(expressionType->getCopyPtr());
     std::cout << "li " << returnexpr->getRegister() << ", " << element << std::endl;
     return returnexpr;
 }

@@ -31,7 +31,7 @@ RegExpression::~RegExpression(){
 }
 
 RegExpression* RegExpression::copyAsRegExpression(){
-    RegExpression* returnexpr = new RegExpression();
+    RegExpression* returnexpr = new RegExpression(expressionType->getCopyPtr());
     std::cout << "move " << returnexpr->getRegister() << ", " << reg << std::endl;
     return returnexpr;
 }

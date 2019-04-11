@@ -2,14 +2,11 @@
 #define MEMEXPRESSION_HPP 
 
 #include "expression.hpp"
-#include "../Tables/symbol_table.hpp"
-
-extern SymbolTable* symbols;
+#include "regexpression.hpp"
+#include <iostream>
 
 class MemExpression : public Expression{
 public:
-    MemExpression();
-    MemExpression(Type*);
     MemExpression(int);
     MemExpression(int, std::string);
     MemExpression(int, Type*);
