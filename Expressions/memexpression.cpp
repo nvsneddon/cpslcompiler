@@ -1,9 +1,15 @@
 #include "memexpression.hpp"
 
 MemExpression::MemExpression(){
-    offset = 0;
-    reg = "$gp";
+    offset = SymbolTable::getOffset(4);
+    reg = symbols->getReferencePointer();
     expressionType = new Integer();
+}
+
+MemExpression::MemExpression(Type* t){
+    offset = SymbolTable::getOffset(t->size());
+    reg = symbols->getReferencePointer();
+    expressionType = t;
 }
 
 MemExpression::MemExpression(int o){
@@ -34,6 +40,9 @@ RegExpression* MemExpression::copyAsRegExpression() {
     return NULL;
 } 
 
+void MemExpression::write(){
+    
+}
 
 
 Expression* MemExpression::add(Expression* other) {

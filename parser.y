@@ -163,9 +163,10 @@ SubVarDecl: SubVarDecl IDList COL Typestatement SEMCOL {
 	} 
 	| IDList COL Typestatement SEMCOL {
 		for(int i = 0; i < $1->ids.size(); i++){
-			symbols->addVariable($1->ids[i], new EmptyExpression($3->getCopyPtr()));
+			symbols->addVariable($1->ids[i], new MemExpression($3->getCopyPtr()));
 		}
 		symbols->printStats();
+		delete $3;
 	}
 	; 
 

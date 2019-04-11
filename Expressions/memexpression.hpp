@@ -9,6 +9,7 @@ extern SymbolTable* symbols;
 class MemExpression : public Expression{
 public:
     MemExpression();
+    MemExpression(Type*);
     MemExpression(int);
     MemExpression(int, std::string);
     MemExpression(int, Type*);
@@ -29,6 +30,7 @@ public:
     Expression* orfun(Expression* other);
 
     RegExpression* copyAsRegExpression();
+    void write();
 private:
     std::string reg;
     int offset;
