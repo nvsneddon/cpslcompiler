@@ -11,6 +11,7 @@
 #include "Expressions/memexpression.hpp"
 #include "Expressions/emptyexpression.hpp"
 #include "Expressions/expressionslist.hpp"
+#include "Lists/idlist.hpp"
 #include "Types/type.hpp"
 
 #endif

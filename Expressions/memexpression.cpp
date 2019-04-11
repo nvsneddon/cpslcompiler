@@ -29,9 +29,6 @@ MemExpression::MemExpression(int o, std::string r, Type* t){
     reg = r;
     expressionType = t;
 }
-MemExpression::MemExpression(RegExpression*){
-
-}
 
 RegExpression* MemExpression::copyAsRegExpression() {
     return NULL;

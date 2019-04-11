@@ -14,7 +14,6 @@
 	#include "includes.hpp"
 
 	extern SymbolTable* symbols;
-	extern ExpressionsList* elist;
 	extern StatementList* slist;
 	extern RegTable* rtable;
 
@@ -26,9 +25,11 @@
 	float val;
 	char* id;
 	Type* tpe;
+	IdList* ids;
 	SimpleType* stpe;
 	Expression* express;
 	ExpressionsList* elist;
+
 }
 
 %token ADD
@@ -93,6 +94,7 @@
 
 %type<id> ID
 %type<val> NUMBER
+%type<ids> IDList
 %type<id> LValue
 %type<stpe> simpletype 
 %type<tpe> Typestatement
@@ -156,7 +158,9 @@ SubVarDecl: SubVarDecl IDList COL Typestatement SEMCOL {
 
 	} 
 	| IDList COL Typestatement SEMCOL {
-
+		for(int i = 0; i < $1->ids.size(); i++){
+			std::cerr << $1->ids[i] << std::endl;
+		}
 	}
 	; 
 
@@ -195,8 +199,15 @@ recordsubtype: recordsubtype IDList COL Typestatement SEMCOL {}
 arraytype: ARRAY BOPEN Expression COL Expression BCLOSE OF Typestatement {}
 	;
 
-IDList: IDList COMMA ID {}  
-	| ID {}
+IDList: IDList COMMA ID {
+		//Do I do this or not? With the expressionlist it seems to be working fine.
+		$$=$1;
+		$$->ids.push_back($3);
+	}  
+	| ID {
+		$$ = new IdList();
+		$$->ids.push_back($1);
+	}
 	;
 
 ProcedureDecl: PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL body SEMCOL {}
@@ -287,6 +298,7 @@ ProcedureCall: ID POPEN ExpressionsList PCLOSE {
 	;
 ExpressionsList: ExpressionsList COMMA Expression { 
 		$1->add($3); 
+		$$ = $1;
 	} 
 	| Expression {
 		$$ = new ExpressionsList();

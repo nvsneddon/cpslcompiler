@@ -5,6 +5,7 @@ SymbolTable* symbols;
 ExpressionsList* elist;
 StatementList* slist;
 RegTable* rtable;
+IdList* idlist;
 
 
 int main(){

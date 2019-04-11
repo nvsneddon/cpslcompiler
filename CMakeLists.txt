@@ -23,6 +23,8 @@ set(cpsl_srcs
 	Statements/write.cpp
 	Statements/statement.hpp
 	Statements/statementlist.hpp
+	Lists/idlist.cpp
+	Lists/idlist.hpp
 	Expressions/expression.hpp
 	Expressions/constexpression.hpp
 	Expressions/constexpression.cpp
