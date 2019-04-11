@@ -358,16 +358,10 @@ Expression: Expression OR Expression {
 	| SUCC POPEN Expression PCLOSE {}
 	| LValue {
 		if(!strcmp($1, "true") || !strcmp($1, "TRUE")){
-			//$$ = new ConstExpression(1, new Boolean());
-			ConstExpression* cexpr = new ConstExpression(1, new Boolean()); 
-			$$ = cexpr->copyAsRegExpression();
-			delete cexpr;
+			$$ = new ConstExpression(1, new Boolean());
 		}
 		else if(!strcmp($1, "false") || !strcmp($1, "FALSE")){
-			//$$ = new ConstExpression(0, new Boolean());
-			ConstExpression* cexpr = new ConstExpression(0, new Boolean()); 
-			$$ = cexpr->copyAsRegExpression();
-			delete cexpr;
+			$$ = new ConstExpression(0, new Boolean());
 		}
 		else{
 			//This is where you look for the memory location of the name
@@ -399,9 +393,7 @@ Expression: Expression OR Expression {
 		$$ = new ConstExpression(int(c), new Char()); //TODO Make sure that this isn't spaghetti code. I think the index is 1 because the str looks like 'x'
 	}
 	| NUMBER {
-		ConstExpression* cexpr = new ConstExpression($1); 
-		$$ = cexpr->copyAsRegExpression();
-		delete cexpr;
+		$$ = new ConstExpression($1); 
 	}
 	;
 %%
