@@ -306,52 +306,42 @@ ReturnStatement: RETURN Expression {}
 	| RETURN {}
 	;
 ReadStatement: READ POPEN ReadValues PCLOSE {
-		//for(int i = 0; i < $$->lvals.size(); i++){
-		//	MemExpression* mymemory = symbols->findVariable(std::string($$->lvals[i]);
-		//	if(mymemory == NULL){
-		//		std::cerr << $1 << " not defined\n";
-		//		throw "Variable not defined error";
-		//	}
-		//	if(mymemory->getExpressionType()->getTypeAsString() != $3->getExpressionType()->getTypeAsString()){
-		//		std::cerr << "Mismatching types\n";
-		//		throw "False type error";
-		//	}
-		//	
-	 	//	mymemory->storeExpression($3);	
-		//}
+		for(int i = 0; i < $3->lvals.size(); i++){
+			std::string lv = $3->lvals[i];
+			MemExpression* mymemory = symbols->findVariable(std::string($3->lvals[i]));
+			if(mymemory == NULL){
+				std::cerr << $3->lvals[i]<< " not defined in read statement\n";
+				throw "Variable not defined error";
+			}
+			if(mymemory->getExpressionType()->getTypeAsString() == "char"){
+				RegExpression* myreg = new RegExpression(new Integer());
+				std::cout << "li $v0, 12" << std::endl;
+				std::cout << "syscall" << std::endl;
+				std::cout << "move " << myreg->getRegister() << " $v0" << std::endl;
+				mymemory->storeExpression(myreg);
+				delete myreg;
+			}
+			else if(mymemory->getExpressionType()->getTypeAsString() == "integer"){
+				RegExpression* myreg = new RegExpression(new Integer());
+				std::cout << "li $v0, 5" << std::endl;
+				std::cout << "syscall" << std::endl;
+				std::cout << "move " << myreg->getRegister() << " $v0" << std::endl;
+				mymemory->storeExpression(myreg);
+				delete myreg;
+			}
+			else{
+				std::cerr << "Value not an integer or a char\n";
+			}
+		}
 	}
 	;
 ReadValues: ReadValues COMMA LValue {
-		//$$ = $1;
-		//$$->lvals.push_back(std::string($3));
+		$$ = $1;
+		$$->lvals.push_back(std::string($3));
 	} 
 	| LValue { 
-		//$$ = new LValueList();
-		//$$->lvals.push_back(std::string($1));
-		MemExpression* mymemory = symbols->findVariable(std::string($1));
-		if(mymemory == NULL){
-			std::cerr << $1 << " not defined in read statement\n";
-			throw "Variable not defined error";
-		}
-		if(mymemory->getExpressionType()->getTypeAsString() == "char"){
-			RegExpression* myreg = new RegExpression(new Integer());
-			std::cout << "li $v0, 12" << std::endl;
-			std::cout << "syscall" << std::endl;
-			std::cout << "move " << myreg->getRegister() << " $v0" << std::endl;
-			mymemory->storeExpression(myreg);
-			delete myreg;
-		}
-		else if(mymemory->getExpressionType()->getTypeAsString() == "integer"){
-			RegExpression* myreg = new RegExpression(new Integer());
-			std::cout << "li $v0, 5" << std::endl;
-			std::cout << "syscall" << std::endl;
-			std::cout << "move " << myreg->getRegister() << " $v0" << std::endl;
-			mymemory->storeExpression(myreg);
-			delete myreg;
-		}
-		else{
-			std::cerr << "Value not an integer or a char\n";
-		}
+		$$ = new LValueList();
+		$$->lvals.push_back(std::string($1));
 	}
 	;
 WriteStatement: WRITE POPEN ExpressionsList PCLOSE {
