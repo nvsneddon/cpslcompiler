@@ -455,7 +455,7 @@ Expression: Expression OR Expression {
 		}
 	}
 	| Expression PERC Expression {
-		$$ = $1->div($3);
+		$$ = $1->mod($3);
 		if(dynamic_cast<MemExpression*>($1) == NULL) {
 			delete $1;
 		}

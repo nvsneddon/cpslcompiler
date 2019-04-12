@@ -128,7 +128,6 @@ Expression* RegExpression::lte(Expression* other) {
     return newreg;
 }
 Expression* RegExpression::gt(Expression* other) {
-    std::cerr << "Here we are\n";
     RegExpression* newreg = new RegExpression(new Boolean());
     RegExpression* otherreg = other->copyAsRegExpression();
     std::cout << "sgt " << newreg->getRegister() << ", " << reg << ", " << otherreg->getRegister() << std::endl;

@@ -155,7 +155,13 @@ Expression* ConstExpression::lt(Expression* other){
         result = element < con->getElement();
         return new ConstExpression(result ? 1 : 0, new Boolean());
     }
-    throw "fit";
+    RegExpression* thisreg = copyAsRegExpression();
+    RegExpression* newreg = new RegExpression(new Boolean());
+    RegExpression* otherreg = other->copyAsRegExpression();
+    std::cout << "slt " << newreg->getRegister() << ", " << thisreg->getRegister() << ", " << otherreg->getRegister() << std::endl;
+    delete otherreg;
+    delete thisreg;
+    return newreg;
 }
 
 
@@ -165,7 +171,13 @@ Expression* ConstExpression::lte(Expression* other){
         result = element <= con->getElement();
         return new ConstExpression(result ? 1 : 0, new Boolean());
     }
-    throw "fit";
+    RegExpression* thisreg = copyAsRegExpression();
+    RegExpression* newreg = new RegExpression(new Boolean());
+    RegExpression* otherreg = other->copyAsRegExpression();
+    std::cout << "sle " << newreg->getRegister() << ", " << thisreg->getRegister() << ", " << otherreg->getRegister() << std::endl;
+    delete otherreg;
+    delete thisreg;
+    return newreg;
 }
 
 Expression* ConstExpression::gt(Expression* other){
@@ -174,7 +186,13 @@ Expression* ConstExpression::gt(Expression* other){
         result = element > con->getElement();
         return new ConstExpression(result ? 1 : 0, new Boolean());
     }
-    throw "fit";
+    RegExpression* thisreg = copyAsRegExpression();
+    RegExpression* newreg = new RegExpression(new Boolean());
+    RegExpression* otherreg = other->copyAsRegExpression();
+    std::cout << "sgt " << newreg->getRegister() << ", " << thisreg->getRegister() << ", " << otherreg->getRegister() << std::endl;
+    delete otherreg;
+    delete thisreg;
+    return newreg;
 }
 
 Expression* ConstExpression::gte(Expression* other){
@@ -183,7 +201,13 @@ Expression* ConstExpression::gte(Expression* other){
         result = element >= con->getElement();
         return new ConstExpression(result ? 1 : 0, new Boolean());
     }
-    throw "fit";
+    RegExpression* thisreg = copyAsRegExpression();
+    RegExpression* newreg = new RegExpression(new Boolean());
+    RegExpression* otherreg = other->copyAsRegExpression();
+    std::cout << "sge " << newreg->getRegister() << ", " << thisreg->getRegister() << ", " << otherreg->getRegister() << std::endl;
+    delete otherreg;
+    delete thisreg;
+    return newreg;
 }
 
 Expression* ConstExpression::ne(Expression* other){
@@ -192,7 +216,13 @@ Expression* ConstExpression::ne(Expression* other){
         result = element != con->getElement();
         return new ConstExpression(result ? 1 : 0, new Boolean());
     }
-    throw "fit";
+    RegExpression* thisreg = copyAsRegExpression();
+    RegExpression* newreg = new RegExpression(new Boolean());
+    RegExpression* otherreg = other->copyAsRegExpression();
+    std::cout << "sne " << newreg->getRegister() << ", " << thisreg->getRegister() << ", " << otherreg->getRegister() << std::endl;
+    delete otherreg;
+    delete thisreg;
+    return newreg;
 }
 
 Expression* ConstExpression::eq(Expression* other){
@@ -201,7 +231,13 @@ Expression* ConstExpression::eq(Expression* other){
         result = element == con->getElement();
         return new ConstExpression(result ? 1 : 0, new Boolean());
     }
-    throw "fit";
+    RegExpression* thisreg = copyAsRegExpression();
+    RegExpression* newreg = new RegExpression(new Boolean());
+    RegExpression* otherreg = other->copyAsRegExpression();
+    std::cout << "seq " << newreg->getRegister() << ", " << thisreg->getRegister() << ", " << otherreg->getRegister() << std::endl;
+    delete otherreg;
+    delete thisreg;
+    return newreg;
 }
 
 Expression* ConstExpression::andfun(Expression* other){
@@ -210,7 +246,13 @@ Expression* ConstExpression::andfun(Expression* other){
         result = element && con->getElement() == 1;
         return new ConstExpression(result ? 1 : 0, new Boolean());
     }
-    throw "fit";
+    RegExpression* thisreg = copyAsRegExpression();
+    RegExpression* newreg = new RegExpression(new Boolean());
+    RegExpression* otherreg = other->copyAsRegExpression();
+    std::cout << "and " << newreg->getRegister() << ", " << thisreg->getRegister() << ", " << otherreg->getRegister() << std::endl;
+    delete otherreg;
+    delete thisreg;
+    return newreg;
 }
 
 Expression* ConstExpression::orfun(Expression* other){
@@ -219,5 +261,11 @@ Expression* ConstExpression::orfun(Expression* other){
         result = element || con->getElement() == 1;
         return new ConstExpression(result ? 1 : 0, new Boolean());
     }
-    throw "fit";
+    RegExpression* thisreg = copyAsRegExpression();
+    RegExpression* newreg = new RegExpression(new Boolean());
+    RegExpression* otherreg = other->copyAsRegExpression();
+    std::cout << "or " << newreg->getRegister() << ", " << thisreg->getRegister() << ", " << otherreg->getRegister() << std::endl;
+    delete otherreg;
+    delete thisreg;
+    return newreg;
 }
