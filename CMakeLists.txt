@@ -25,6 +25,8 @@ set(cpsl_srcs
 	Statements/statementlist.hpp
 	Lists/idlist.cpp
 	Lists/idlist.hpp
+	Lists/stringlist.hpp
+	Lists/stringlist.cpp
 	Expressions/expression.hpp
 	Expressions/constexpression.hpp
 	Expressions/constexpression.cpp
@@ -35,6 +37,7 @@ set(cpsl_srcs
 	Expressions/expressionslist.hpp
 	Expressions/expressionslist.cpp
 	Types/simpletype.hpp
+	Types/simpletype.cpp
 	Types/type.hpp
 	includes.hpp
 	${BISON_Parser_OUTPUTS}

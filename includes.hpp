@@ -10,6 +10,7 @@
 #include "Expressions/constexpression.hpp"
 #include "Expressions/memexpression.hpp"
 #include "Expressions/expressionslist.hpp"
+#include "Lists/stringlist.hpp"
 #include "Lists/idlist.hpp"
 #include "Types/type.hpp"
 

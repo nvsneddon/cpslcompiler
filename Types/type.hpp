@@ -1,6 +1,8 @@
 #ifndef TYPE_HPP
 #define TYPE_HPP
 
+#include <string>
+
 class Type{
 public:
     virtual int size() = 0;
