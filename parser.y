@@ -17,6 +17,7 @@
 	extern SymbolTable* symbols;
 	extern StatementList* slist;
 	extern RegTable* rtable;
+	extern StringList* strlist;
 
 	#endif
 }
@@ -117,6 +118,9 @@
 %%
 
 Program: ConstantOption TypeOption VarOption Profunct Block DEC {
+	std::cout << "li $v0, 10" << std::endl;
+	std::cout << "syscall" << std::endl;
+	strlist->printLabels();
 	}
 	;
 
@@ -491,7 +495,7 @@ Expression: Expression OR Expression {
 		}
 	}
 	| STR {
-
+		$$ = new ConstExpression(strlist->add(std::string($1)), new String());
 	}
 	| CHAR {
 		int length = strlen($1);

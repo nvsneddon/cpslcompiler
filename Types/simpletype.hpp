@@ -2,8 +2,8 @@
 #define SIMPLE_TYPE_HPP
 
 #include "type.hpp"
-#include "../Lists/stringlist.hpp"
 #include <string>
+
 
 class SimpleType : public Type {
 public:
@@ -33,8 +33,7 @@ private:
 
 class String : public SimpleType { 
 public:
-    String();
-    String(std::string);
+    String() : SimpleType() {};
     std::string getTypeAsString() { return "string"; };
     Type* getCopyPtr() { return new String(); };
 private:

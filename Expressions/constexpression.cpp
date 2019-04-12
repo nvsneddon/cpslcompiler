@@ -42,10 +42,14 @@ void ConstExpression::write(){
         std::cout << "syscall\n";
     }
     else if(expressionType->getTypeAsString() == "string"){
-
+        std::cout << "li $v0, 4" << std::endl; 
+        std::cout << "la $a0, string" << element << std::endl;
+        std::cout << "syscall\n";
     }
     else if(expressionType->getTypeAsString() == "boolean"){
-        Write::write(element == 1 ? "True" : "False");
+        std::cout << "li $v0, 4" << std::endl; 
+        std::cout << "la $a0, string" << element << std::endl;
+        std::cout << "syscall\n";
     }
 }
 

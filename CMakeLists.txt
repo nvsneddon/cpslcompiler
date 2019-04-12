@@ -37,7 +37,6 @@ set(cpsl_srcs
 	Expressions/expressionslist.hpp
 	Expressions/expressionslist.cpp
 	Types/simpletype.hpp
-	Types/simpletype.cpp
 	Types/type.hpp
 	includes.hpp
 	${BISON_Parser_OUTPUTS}

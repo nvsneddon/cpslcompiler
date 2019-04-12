@@ -37,19 +37,34 @@ RegExpression* RegExpression::copyAsRegExpression(){
 }
 
 void RegExpression::write(){
+    static int index = 0;
     if(expressionType->getTypeAsString() == "integer"){
         std::cout << "li $v0, 1" << std::endl; 
+        std::cout << "move $a0, " << reg << std::endl;
+        std::cout << "syscall\n";
     }
     else if(expressionType->getTypeAsString() == "char"){
         std::cout << "li $v0, 11" << std::endl; 
+        std::cout << "move $a0, " << reg << std::endl;
+        std::cout << "syscall\n";
     }
     else if(expressionType->getTypeAsString() == "string"){
+        std::cerr << "Somehow you got a reg type for a string. Good luck\n";
     }
     else if(expressionType->getTypeAsString() == "boolean"){
-        std::cout << "li $v0, 1" << std::endl; 
+        std::cout << "beqz " << reg << ", printfalse" << index << std::endl;
+        std::cout << "la $a0, string1" << std::endl;;
+        std::cout << "li $v0, 4" << std::endl;
+        std::cout << "syscall\n";
+        std::cout << "j end" << index << std::endl;
+        std::cout << "printfalse" << index << ":" << std::endl;
+        std::cout << "la $a0, string0" << std::endl;;
+        std::cout << "li $v0, 4" << std::endl;
+        std::cout << "syscall\n";
+        std::cout << "end" << index << ":" << std::endl;
+        index++;
+
     }
-    std::cout << "move $a0, " << reg << std::endl;
-    std::cout << "syscall\n";
 }
 
 Expression* RegExpression::add(Expression* other){
@@ -113,6 +128,7 @@ Expression* RegExpression::lte(Expression* other) {
     return newreg;
 }
 Expression* RegExpression::gt(Expression* other) {
+    std::cerr << "Here we are\n";
     RegExpression* newreg = new RegExpression(new Boolean());
     RegExpression* otherreg = other->copyAsRegExpression();
     std::cout << "sgt " << newreg->getRegister() << ", " << reg << ", " << otherreg->getRegister() << std::endl;
