@@ -31,6 +31,7 @@
 	SimpleType* stpe;
 	Expression* express;
 	ExpressionsList* elist;
+	LValueList* llist;
 }
 
 %token ADD
@@ -97,6 +98,7 @@
 %type<val> NUMBER
 %type<ids> IDList
 %type<id> LValue
+%type<llist> ReadValues
 %type<stpe> simpletype 
 %type<tpe> Typestatement
 %type<id> CHAR
@@ -299,10 +301,29 @@ StopStatement: STOP {}
 ReturnStatement: RETURN Expression {} 
 	| RETURN {}
 	;
-ReadStatement: READ POPEN ReadValues PCLOSE {}
+ReadStatement: READ POPEN ReadValues PCLOSE {
+		//for(int i = 0; i < $$->lvals.size(); i++){
+		//	MemExpression* mymemory = symbols->findVariable(std::string($$->lvals[i]);
+		//	if(mymemory == NULL){
+		//		std::cerr << $1 << " not defined\n";
+		//		throw "Variable not defined error";
+		//	}
+		//	if(mymemory->getExpressionType()->getTypeAsString() != $3->getExpressionType()->getTypeAsString()){
+		//		std::cerr << "Mismatching types\n";
+		//		throw "False type error";
+		//	}
+		//	
+		//}
+	}
 	;
-ReadValues: ReadValues COMMA LValue {} 
-	| LValue {}
+ReadValues: ReadValues COMMA LValue {
+		$$ = $1;
+		$$->lvals.push_back(std::string($3));
+	} 
+	| LValue { 
+		$$ = new LValueList();
+		$$->lvals.push_back(std::string($1));
+	}
 	;
 WriteStatement: WRITE POPEN ExpressionsList PCLOSE {
 		$3->write();
