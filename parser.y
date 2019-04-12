@@ -269,7 +269,11 @@ Statement: Assignment {}
 	| WhileStatement {} 
 	| RepeatStatement {} 
 	| ForStatement {} 
-	| StopStatement {} 
+	| StopStatement {
+		std::cout << "li $v0, 10" << std::endl;
+		std::cout << "syscall" << std::endl;
+		exit(0);
+	} 
 	| ReturnStatement {} 
 	| ReadStatement {} 
 	| WriteStatement {} 
