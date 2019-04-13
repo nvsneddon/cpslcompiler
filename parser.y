@@ -324,56 +324,56 @@ ReturnStatement: RETURN Expression {}
 ReadStatement: READ POPEN ReadValues PCLOSE {}
 	;
 ReadValues: ReadValues COMMA LValue {
-			MemExpression* mymemory = dynamic_cast<MemExpression*>($3);
-			if(mymemory == NULL){
-				std::cerr << "Expression not defined in read statement\n";
-				throw "Variable not defined error";
-			}
-			if(mymemory->getExpressionType()->getTypeAsString() == "char"){
-				RegExpression* myreg = new RegExpression(new Integer());
-				std::cout << "li $v0, 12" << std::endl;
-				std::cout << "syscall" << std::endl;
-				std::cout << "move " << myreg->getRegister() << " $v0" << std::endl;
-				mymemory->storeExpression(myreg);
-				delete myreg;
-			}
-			else if(mymemory->getExpressionType()->getTypeAsString() == "integer"){
-				RegExpression* myreg = new RegExpression(new Integer());
-				std::cout << "li $v0, 5" << std::endl;
-				std::cout << "syscall" << std::endl;
-				std::cout << "move " << myreg->getRegister() << " $v0" << std::endl;
-				mymemory->storeExpression(myreg);
-				delete myreg;
-			}
-			else{
-				std::cerr << "Value not an integer or a char\n";
-			}
+		MemExpression* mymemory = dynamic_cast<MemExpression*>($3);
+		if(mymemory == NULL){
+			std::cerr << "Expression not defined in read statement\n";
+			throw "Variable not defined error";
+		}
+		if(mymemory->getExpressionType()->getTypeAsString() == "char"){
+			RegExpression* myreg = new RegExpression(new Integer());
+			std::cout << "li $v0, 12" << std::endl;
+			std::cout << "syscall" << std::endl;
+			std::cout << "move " << myreg->getRegister() << " $v0" << std::endl;
+			mymemory->storeExpression(myreg);
+			delete myreg;
+		}
+		else if(mymemory->getExpressionType()->getTypeAsString() == "integer"){
+			RegExpression* myreg = new RegExpression(new Integer());
+			std::cout << "li $v0, 5" << std::endl;
+			std::cout << "syscall" << std::endl;
+			std::cout << "move " << myreg->getRegister() << " $v0" << std::endl;
+			mymemory->storeExpression(myreg);
+			delete myreg;
+		}
+		else{
+			std::cerr << "Value not an integer or a char\n";
+		}
 	} 
 	| LValue { 
-			MemExpression* mymemory = dynamic_cast<MemExpression*>($1);
-			if(mymemory == NULL){
-				std::cerr << "Variable not defined in read statement\n";
-				throw "Variable not defined error";
-			}
-			if(mymemory->getExpressionType()->getTypeAsString() == "char"){
-				RegExpression* myreg = new RegExpression(new Integer());
-				std::cout << "li $v0, 12" << std::endl;
-				std::cout << "syscall" << std::endl;
-				std::cout << "move " << myreg->getRegister() << " $v0" << std::endl;
-				mymemory->storeExpression(myreg);
-				delete myreg;
-			}
-			else if(mymemory->getExpressionType()->getTypeAsString() == "integer"){
-				RegExpression* myreg = new RegExpression(new Integer());
-				std::cout << "li $v0, 5" << std::endl;
-				std::cout << "syscall" << std::endl;
-				std::cout << "move " << myreg->getRegister() << " $v0" << std::endl;
-				mymemory->storeExpression(myreg);
-				delete myreg;
-			}
-			else{
-				std::cerr << "Value not an integer or a char\n";
-			}
+		MemExpression* mymemory = dynamic_cast<MemExpression*>($1);
+		if(mymemory == NULL){
+			std::cerr << "Variable not defined in read statement\n";
+			throw "Variable not defined error";
+		}
+		if(mymemory->getExpressionType()->getTypeAsString() == "char"){
+			RegExpression* myreg = new RegExpression(new Integer());
+			std::cout << "li $v0, 12" << std::endl;
+			std::cout << "syscall" << std::endl;
+			std::cout << "move " << myreg->getRegister() << " $v0" << std::endl;
+			mymemory->storeExpression(myreg);
+			delete myreg;
+		}
+		else if(mymemory->getExpressionType()->getTypeAsString() == "integer"){
+			RegExpression* myreg = new RegExpression(new Integer());
+			std::cout << "li $v0, 5" << std::endl;
+			std::cout << "syscall" << std::endl;
+			std::cout << "move " << myreg->getRegister() << " $v0" << std::endl;
+			mymemory->storeExpression(myreg);
+			delete myreg;
+		}
+		else{
+			std::cerr << "Value not an integer or a char\n";
+		}
 	}
 	;
 WriteStatement: WRITE POPEN ExpressionsList PCLOSE {
@@ -468,7 +468,7 @@ LValue: ID {
 			}
 			Write::comment("This is where the array is going to be assigned. The Expression is not constant.");
 			RegExpression* r = $3->copyAsRegExpression();
-			std::cout << "add " << r->getRegister() << ", " << r->getRegister() << ", " << arraymem->getPtrReference() << std::endl;
+			//std::cout << "add " << r->getRegister() << ", " << r->getRegister() << ", " << arraymem->getPtrReference() << std::endl;
 			$$ = arrayptr->getExpressionAt(arraymem->getOffset(), arraymem->getPtrReference(), r);
 		}
 		MemExpression* m3 = dynamic_cast<MemExpression*>($3);

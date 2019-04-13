@@ -31,6 +31,7 @@ MemExpression* Array::getExpressionAt(int arraylocation, std::string ptr, int in
 MemExpression* Array::getExpressionAt(int arraylocation, std::string ptr, Expression* indexexpr){
     //int address = ((index-low)*arrayType->size() + arraylocation);
     //return new MemExpression(address, ptr, arrayType->getCopyPtr(), true);
+    //indexexpr->write();
     RegExpression* temp = indexexpr->copyAsRegExpression();
     Expression* temp1 = temp->sub(new ConstExpression(arraylocation));
     delete temp;
@@ -39,6 +40,8 @@ MemExpression* Array::getExpressionAt(int arraylocation, std::string ptr, Expres
     Expression* temp3 = temp2->add(new ConstExpression(arraylocation));
     delete temp2;
     RegExpression* arraymemlocation = temp3->copyAsRegExpression();
+    delete temp3;
+    std::cout << "add " << arraymemlocation->getRegister() << ", " << arraymemlocation->getRegister() << ", " << ptr << std::endl;
     return new TempMemExpression(arraymemlocation);
 }
 
