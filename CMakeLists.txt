@@ -38,6 +38,8 @@ set(cpsl_srcs
 	Expressions/expressionslist.cpp
 	Types/simpletype.hpp
 	Types/type.hpp
+	Types/array.hpp
+	Types/array.cpp
 	includes.hpp
 	${BISON_Parser_OUTPUTS}
 	${FLEX_Scanner_OUTPUTS}

@@ -13,5 +13,6 @@
 #include "Lists/stringlist.hpp"
 #include "Lists/idlist.hpp"
 #include "Types/type.hpp"
+#include "Types/array.hpp"
 
 #endif
