@@ -96,7 +96,7 @@
 %type<id> ID
 %type<val> NUMBER
 %type<ids> IDList
-%type<id> LValue
+%type<express> LValue
 %type<stpe> simpletype 
 %type<tpe> Typestatement
 %type<id> CHAR
@@ -306,9 +306,9 @@ ReturnStatement: RETURN Expression {}
 ReadStatement: READ POPEN ReadValues PCLOSE {}
 	;
 ReadValues: ReadValues COMMA LValue {
-			MemExpression* mymemory = symbols->findVariable(std::string($3));
+			MemExpression* mymemory = dynamic_cast<MemExpression*>($3);
 			if(mymemory == NULL){
-				std::cerr << $3 << " not defined in read statement\n";
+				std::cerr << "Expression not defined in read statement\n";
 				throw "Variable not defined error";
 			}
 			if(mymemory->getExpressionType()->getTypeAsString() == "char"){
@@ -332,9 +332,9 @@ ReadValues: ReadValues COMMA LValue {
 			}
 	} 
 	| LValue { 
-			MemExpression* mymemory = symbols->findVariable(std::string($1));
+			MemExpression* mymemory = dynamic_cast<MemExpression*>($1);
 			if(mymemory == NULL){
-				std::cerr << $1 << " not defined in read statement\n";
+				std::cerr << "Variable not defined in read statement\n";
 				throw "Variable not defined error";
 			}
 			if(mymemory->getExpressionType()->getTypeAsString() == "char"){
@@ -378,9 +378,9 @@ ExpressionsList: ExpressionsList COMMA Expression {
 	;
 
 Assignment: LValue ASSIGN Expression {
-		MemExpression* mymemory = symbols->findVariable(std::string($1));
+		MemExpression* mymemory = dynamic_cast<MemExpression*>($1);
 		if(mymemory == NULL){
-			std::cerr << $1 << " not defined\n";
+			std::cerr << "Bad l value\n";
 			throw "Variable not defined error";
 		}
 		if(mymemory->getExpressionType()->getTypeAsString() != $3->getExpressionType()->getTypeAsString()){
@@ -394,7 +394,21 @@ Assignment: LValue ASSIGN Expression {
 	}
 	;
 LValue: ID {
-		$$ = $1;
+		//$$ = $1;
+		MemExpression* expr = symbols->findVariable(std::string($1));
+		if (expr != NULL){
+			$$ = expr;
+		}
+		if(!strcmp($1, "true") || !strcmp($1, "TRUE")){
+			$$ = new ConstExpression(1, new Boolean());
+		}
+		else if(!strcmp($1, "false") || !strcmp($1, "FALSE")){
+			$$ = new ConstExpression(0, new Boolean());
+		}
+		else{
+			std::cerr << "Variable not defined" << std::endl;
+			throw "L Value error";
+		}
 	} //Thiis one is for normal variables
 	| LValue DEC ID {} //This one is for records
 	| LValue BOPEN Expression BCLOSE {} // And this one is for arrays
@@ -533,20 +547,7 @@ Expression: Expression OR Expression {
 	| PRED POPEN Expression PCLOSE {}
 	| SUCC POPEN Expression PCLOSE {}
 	| LValue {
-		if(!strcmp($1, "true") || !strcmp($1, "TRUE")){
-			$$ = new ConstExpression(1, new Boolean());
-		}
-		else if(!strcmp($1, "false") || !strcmp($1, "FALSE")){
-			$$ = new ConstExpression(0, new Boolean());
-		}
-		else{
-			MemExpression* expr = symbols->findVariable(std::string($1));
-			if (expr == NULL){
-				std::cerr << "Unexpected LValue in code!" << std::endl;
-				throw "L Value error";
-			}
-			$$ = expr;
-		}
+		$$ = $1;
 	}
 	| STR {
 		$$ = new ConstExpression(strlist->add(std::string($1)), new String());
