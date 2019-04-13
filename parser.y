@@ -459,7 +459,7 @@ LValue: ID {
 			std::cerr << "We do get here\n";
 
 			$$ = arrayptr->getExpressionAt(arraymem->getOffset(), arraymem->getPtrReference(), cexpr->getElement());
-		} else if{
+		} else{
 			
 		}
 		MemExpression* m3 = dynamic_cast<MemExpression*>($3);
