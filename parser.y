@@ -305,12 +305,12 @@ StopStatement: STOP {}
 ReturnStatement: RETURN Expression {} 
 	| RETURN {}
 	;
-ReadStatement: READ POPEN ReadValues PCLOSE {
-		for(int i = 0; i < $3->lvals.size(); i++){
-			std::string lv = $3->lvals[i];
-			MemExpression* mymemory = symbols->findVariable(std::string($3->lvals[i]));
+ReadStatement: READ POPEN ReadValues PCLOSE {}
+	;
+ReadValues: ReadValues COMMA LValue {
+			MemExpression* mymemory = symbols->findVariable(std::string($3));
 			if(mymemory == NULL){
-				std::cerr << $3->lvals[i]<< " not defined in read statement\n";
+				std::cerr << $3 << " not defined in read statement\n";
 				throw "Variable not defined error";
 			}
 			if(mymemory->getExpressionType()->getTypeAsString() == "char"){
@@ -332,16 +332,32 @@ ReadStatement: READ POPEN ReadValues PCLOSE {
 			else{
 				std::cerr << "Value not an integer or a char\n";
 			}
-		}
-	}
-	;
-ReadValues: ReadValues COMMA LValue {
-		$$ = $1;
-		$$->lvals.push_back(std::string($3));
 	} 
 	| LValue { 
-		$$ = new LValueList();
-		$$->lvals.push_back(std::string($1));
+			MemExpression* mymemory = symbols->findVariable(std::string($1));
+			if(mymemory == NULL){
+				std::cerr << $1 << " not defined in read statement\n";
+				throw "Variable not defined error";
+			}
+			if(mymemory->getExpressionType()->getTypeAsString() == "char"){
+				RegExpression* myreg = new RegExpression(new Integer());
+				std::cout << "li $v0, 12" << std::endl;
+				std::cout << "syscall" << std::endl;
+				std::cout << "move " << myreg->getRegister() << " $v0" << std::endl;
+				mymemory->storeExpression(myreg);
+				delete myreg;
+			}
+			else if(mymemory->getExpressionType()->getTypeAsString() == "integer"){
+				RegExpression* myreg = new RegExpression(new Integer());
+				std::cout << "li $v0, 5" << std::endl;
+				std::cout << "syscall" << std::endl;
+				std::cout << "move " << myreg->getRegister() << " $v0" << std::endl;
+				mymemory->storeExpression(myreg);
+				delete myreg;
+			}
+			else{
+				std::cerr << "Value not an integer or a char\n";
+			}
 	}
 	;
 WriteStatement: WRITE POPEN ExpressionsList PCLOSE {
