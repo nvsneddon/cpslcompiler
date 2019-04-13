@@ -29,6 +29,7 @@
 	Type* tpe;
 	IdList* ids;
 	SimpleType* stpe;
+	Array* atpe;
 	Expression* express;
 	ExpressionsList* elist;
 }
@@ -98,6 +99,7 @@
 %type<ids> IDList
 %type<express> LValue
 %type<stpe> simpletype 
+%type<atpe> arraytype
 %type<tpe> Typestatement
 %type<id> CHAR
 %type<id> STR
@@ -213,7 +215,21 @@ recordtype: RECORD recordsubtype END {}
 recordsubtype: recordsubtype IDList COL Typestatement SEMCOL {}
 	| IDList COL Typestatement SEMCOL {}
 	;
-arraytype: ARRAY BOPEN Expression COL Expression BCLOSE OF Typestatement {}
+arraytype: ARRAY BOPEN Expression COL Expression BCLOSE OF Typestatement {
+		ConstExpression* lowexpr = dynamic_cast<ConstExpression*>($3);
+		ConstExpression* hiexpr = dynamic_cast<ConstExpression*>($5);
+
+		if(hiexpr == NULL or lowexpr == NULL){
+			std::cerr << "Array expression doesn't evaluate to a constant. Cannot initialize.\n";
+			throw "error";
+		}
+		if(dynamic_cast<Integer*>(lowexpr->getExpressionType()) == NULL or dynamic_cast<Integer*>(hiexpr->getExpressionType()) == NULL){
+			std::cerr << "Expressions of arrays must be integers\n";
+			throw "error";
+		}
+		Type* arraytype = new Array(lowexpr->getElement(), hiexpr->getElement());
+		MemExpression* arraymem = new MemExpression(SymbolTable::getOffset(arraytype->size()));
+	}
 	;
 
 IDList: IDList COMMA ID {
@@ -399,7 +415,7 @@ LValue: ID {
 		if (expr != NULL){
 			$$ = expr;
 		}
-		if(!strcmp($1, "true") || !strcmp($1, "TRUE")){
+		else if(!strcmp($1, "true") || !strcmp($1, "TRUE")){
 			$$ = new ConstExpression(1, new Boolean());
 		}
 		else if(!strcmp($1, "false") || !strcmp($1, "FALSE")){

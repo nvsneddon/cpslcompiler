@@ -30,6 +30,8 @@ public:
     void storeExpression(Expression* expr);
     void write();
 
+    int getOffset(){ return offset; }
+
     ~MemExpression();
 private:
     std::string ptr;
