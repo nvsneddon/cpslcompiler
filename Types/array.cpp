@@ -33,5 +33,5 @@ MemExpression* Array::getExpressionAt(int arraylocation){
 }
 
 Type* Array::getCopyPtr(){
-    return new Array(low, hi);
+    return new Array(low, hi, );
 }

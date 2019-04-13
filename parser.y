@@ -185,10 +185,10 @@ Typestatement: simpletype {
 		$$ = $1;
 	} 
 	| recordtype {
-		$$ = new Integer();
+		//$$ = new Integer();
 	} 
 	| arraytype {
-		$$ = new Integer();
+		$$ = $1;
 	}
 	;
 
@@ -228,7 +228,7 @@ arraytype: ARRAY BOPEN Expression COL Expression BCLOSE OF Typestatement {
 			throw "error";
 		}
 		Type* arraytype = new Array(lowexpr->getElement(), hiexpr->getElement());
-		MemExpression* arraymem = new MemExpression(SymbolTable::getOffset(arraytype->size()));
+		$$ = arraytype;
 	}
 	;
 
@@ -427,7 +427,32 @@ LValue: ID {
 		}
 	} //Thiis one is for normal variables
 	| LValue DEC ID {} //This one is for records
-	| LValue BOPEN Expression BCLOSE {} // And this one is for arrays
+	| LValue BOPEN Expression BCLOSE {
+		if(ConstExpression* cexpression = dynamic_cast<ConstExpression*>($1)){
+			std::cerr << "Cannot get array from boolean value" << std::endl;
+			std::cerr << cexpression->getElement() << cexpression->getExpressionType()->getTypeAsString() << std::endl;
+ 
+			throw "fit";
+		}
+
+		ConstExpression* cexpr = dynamic_cast<ConstExpression*>($3);
+		if(cexpr->getExpressionType()->getTypeAsString() != "integer"){
+			std::cerr << "Expression is not an integer\n";
+			throw "Error";
+		}
+		if(cexpr != NULL){
+			Array* arrayptr = dynamic_cast<Array*>($1->getExpressionType());
+			if(arrayptr == NULL){
+				std::cerr << "Somehow this got messed up!" << std::endl;
+				std::cerr << $1->getExpressionType()->getTypeAsString() << std::endl;
+				throw "error";
+			}
+			$$ = arrayptr->getExpressionAt(cexpr->getElement());
+		}
+		if(dynamic_cast<MemExpression*>($3) == NULL) {
+			delete $3;
+		}
+	} // And this one is for arrays
 	;
 
 Expression: Expression OR Expression {

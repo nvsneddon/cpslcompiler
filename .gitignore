@@ -4,6 +4,7 @@ parser.output
 parser.tab.c
 parser.tab.h
 y.tab.c
+*.cpsl
 cpsl
 /cpsl-files
 .vscode
