@@ -11,6 +11,7 @@ RegExpression* TempMemExpression::copyAsRegExpression() {
 
 void TempMemExpression::storeExpression(Expression* expr){
     RegExpression* regexpression = expr->copyAsRegExpression();
+    Write::comment("In the store expression from tempmemexpression");
     std::cout << "sw " << regexpression->getRegister() << ", " << "(" << offsetreg->getRegister() << ")" << std::endl;
     delete regexpression;
 }

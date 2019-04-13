@@ -21,3 +21,7 @@ void Write::write(std::string msg){
     std::cout << "syscall" << std::endl;
 }
 
+void Write::comment(std::string msg){
+    std::cout << "#" << msg << std::endl;
+}
+

@@ -420,6 +420,7 @@ Assignment: LValue ASSIGN Expression {
 	;
 LValue: ID {
 		//$$ = $1;
+		Write::comment("Looking for " + std::string($1));
 		MemExpression* expr = symbols->findVariable(std::string($1));
 		if (expr != NULL){
 			$$ = expr;
@@ -456,7 +457,7 @@ LValue: ID {
 				std::cerr << $1->getExpressionType()->getTypeAsString() << std::endl;
 				throw "error";
 			}
-
+			Write::comment("This is where the array is going to be assigned. The Expression is constant.");
 			$$ = arrayptr->getExpressionAt(arraymem->getOffset(), arraymem->getPtrReference(), cexpr->getElement());
 		} else {
 			Array* arrayptr = dynamic_cast<Array*>($1->getExpressionType());
@@ -465,8 +466,10 @@ LValue: ID {
 				std::cerr << $1->getExpressionType()->getTypeAsString() << std::endl;
 				throw "error";
 			}
-
-			$$ = arrayptr->getExpressionAt(arraymem->getOffset(), arraymem->getPtrReference(), $3->copyAsRegExpression());
+			Write::comment("This is where the array is going to be assigned. The Expression is not constant.");
+			RegExpression* r = $3->copyAsRegExpression();
+			std::cout << "add " << r->getRegister() << ", " << r->getRegister() << ", " << arraymem->getPtrReference() << std::endl;
+			$$ = arrayptr->getExpressionAt(arraymem->getOffset(), arraymem->getPtrReference(), r);
 		}
 		MemExpression* m3 = dynamic_cast<MemExpression*>($3);
 		if(m3 == NULL) {

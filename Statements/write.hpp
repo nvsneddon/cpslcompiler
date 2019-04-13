@@ -6,6 +6,7 @@
 class Write : public Statement{
     public:
         static void write(std::string msg);
+        static void comment(std::string msg);
     private:
 };
 #endif
