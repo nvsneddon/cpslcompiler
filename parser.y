@@ -456,11 +456,17 @@ LValue: ID {
 				std::cerr << $1->getExpressionType()->getTypeAsString() << std::endl;
 				throw "error";
 			}
-			std::cerr << "We do get here\n";
 
 			$$ = arrayptr->getExpressionAt(arraymem->getOffset(), arraymem->getPtrReference(), cexpr->getElement());
-		} else{
-			
+		} else {
+			Array* arrayptr = dynamic_cast<Array*>($1->getExpressionType());
+			if(arrayptr == NULL){
+				std::cerr << "Somehow this got messed up!" << std::endl;
+				std::cerr << $1->getExpressionType()->getTypeAsString() << std::endl;
+				throw "error";
+			}
+
+			$$ = arrayptr->getExpressionAt(arraymem->getOffset(), arraymem->getPtrReference(), $3->copyAsRegExpression());
 		}
 		MemExpression* m3 = dynamic_cast<MemExpression*>($3);
 		if(m3 == NULL) {

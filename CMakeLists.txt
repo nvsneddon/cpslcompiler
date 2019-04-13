@@ -32,6 +32,8 @@ set(cpsl_srcs
 	Expressions/constexpression.cpp
 	Expressions/memexpression.hpp
 	Expressions/memexpression.cpp
+	Expressions/tempmemexpression.hpp
+	Expressions/tempmemexpression.cpp
 	Expressions/regexpression.hpp
 	Expressions/regexpression.cpp
 	Expressions/expressionslist.hpp

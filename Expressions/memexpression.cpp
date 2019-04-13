@@ -1,32 +1,41 @@
 #include "memexpression.hpp"
 
 
-MemExpression::MemExpression(int o){
-    offset = o;
-    ptr = "$gp";
-    expressionType = new Integer();
-    temporary = false;
+MemExpression::MemExpression() : MemExpression(-1, "$gp", new Integer(), true) {}
+
+MemExpression::MemExpression(Type* t) : MemExpression(-1, "$gp", t, true) {}
+MemExpression::MemExpression(std::string p, Type* t) : MemExpression(-1, p, t, true) {}
+
+MemExpression::MemExpression(int o) 
+: MemExpression(o, "$gp", new Integer(), false) {
+    //offset = o;
+    //ptr = "$gp";
+    //expressionType = new Integer();
+    //temporary = false;
 }
 
-MemExpression::MemExpression(int o, std::string r){
-    offset = o;
-    ptr = r;
-    expressionType = new Integer();
-    temporary = false;
+MemExpression::MemExpression(int o, std::string r) 
+: MemExpression(0, r, new Integer(), false) {
+    //offset = o;
+    //ptr = r;
+    //expressionType = new Integer();
+    //temporary = false;
 }
 
-MemExpression::MemExpression(int o, Type* t){
-    offset = o;
-    ptr = "$gp";
-    expressionType = t;
-    temporary = false;
+MemExpression::MemExpression(int o, Type* t) 
+: MemExpression(o, "$gp", t, false){
+    //offset = o;
+    //ptr = "$gp";
+    //expressionType = t;
+    //temporary = false;
 }
 
-MemExpression::MemExpression(int o, Type* t, bool farray){
-    offset = o;
-    ptr = "$gp";
-    expressionType = t;
-    temporary = farray;
+MemExpression::MemExpression(int o, Type* t, bool farray) 
+: MemExpression(o, "$gp", t, farray) {
+    //offset = o;
+    //ptr = "$gp";
+    //expressionType = t;
+    //temporary = farray;
 }
 
 MemExpression::MemExpression(int o, std::string r, Type* t)

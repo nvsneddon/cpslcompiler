@@ -9,6 +9,7 @@
 #include "../Tables/symbol_table.hpp"
 #include "../Expressions/expression.hpp"
 #include "../Expressions/memexpression.hpp"
+#include "../Expressions/tempmemexpression.hpp"
 
 extern SymbolTable* symbols;
 
@@ -21,6 +22,7 @@ public:
     int size() { return numofelements * arrayType->size(); }
     std::string getTypeAsString() { return "array of " + arrayType->getTypeAsString(); }
     MemExpression* getExpressionAt(int, std::string, int);
+    MemExpression* getExpressionAt(int, std::string, Expression*);
     Type* getType() { return arrayType; }
 private:
     Type* arrayType;

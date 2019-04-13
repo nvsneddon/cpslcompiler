@@ -13,7 +13,7 @@ public:
     MemExpression(int, std::string, Type*);
     MemExpression(int, Type*, bool);
     MemExpression(int, std::string, Type*, bool);
-    MemExpression(RegExpression*);
+    //MemExpression(RegExpression*);
     Expression* add(Expression* other);
     Expression* sub(Expression* other);
     Expression* mult(Expression* other);
@@ -28,16 +28,19 @@ public:
     Expression* andfun(Expression* other);
     Expression* orfun(Expression* other);
     
-    RegExpression* copyAsRegExpression();
-    void storeExpression(Expression* expr);
+    virtual RegExpression* copyAsRegExpression();
+    virtual void storeExpression(Expression* expr);
     void write();
 
     int getOffset(){ return offset; }
     std::string getPtrReference() { return ptr; }
-    bool isTemporary(){ return temporary; };
+    virtual bool isTemporary(){ return temporary; };
 
-    ~MemExpression();
-private:
+    virtual ~MemExpression();
+protected:
+    MemExpression();
+    MemExpression(Type*);
+    MemExpression(std::string, Type*);
     std::string ptr;
     bool temporary;
     int offset;
