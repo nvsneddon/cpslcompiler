@@ -11,6 +11,8 @@ public:
     MemExpression(int, std::string);
     MemExpression(int, Type*);
     MemExpression(int, std::string, Type*);
+    MemExpression(int, Type*, bool);
+    MemExpression(int, std::string, Type*, bool);
     MemExpression(RegExpression*);
     Expression* add(Expression* other);
     Expression* sub(Expression* other);
@@ -31,10 +33,12 @@ public:
     void write();
 
     int getOffset(){ return offset; }
+    bool fromArray(){ return genfromarray; };
 
     ~MemExpression();
 private:
     std::string ptr;
+    bool genfromarray;
     int offset;
 };
 

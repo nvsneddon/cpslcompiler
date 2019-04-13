@@ -19,11 +19,12 @@ public:
     Array(int l, int h, std::string);
     Type* getCopyPtr();
     int size() { return sizenum; }
-    std::string getTypeAsString() { return "array"; }
-    MemExpression* getExpressionAt(int);
+    std::string getTypeAsString() { return "array of " + arrayType->getTypeAsString(); }
+    RegExpression* getExpressionAt(int);
     int getOffset(int, int);
+    Type* getType() { return arrayType; }
 private:
-    std::vector<MemExpression*> memory;
+    Type* arrayType;
     int low, hi, sizenum;
 };
 

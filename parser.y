@@ -227,8 +227,9 @@ arraytype: ARRAY BOPEN Expression COL Expression BCLOSE OF Typestatement {
 			std::cerr << "Expressions of arrays must be integers\n";
 			throw "error";
 		}
-		Type* arraytype = new Array(lowexpr->getElement(), hiexpr->getElement());
-		$$ = arraytype;
+		Type* arraytype = new Array(lowexpr->getElement(), hiexpr->getElement(), $8->getCopyPtr());
+		//$$ = arraytype;
+		$$ = NULL;
 	}
 	;
 
@@ -404,7 +405,12 @@ Assignment: LValue ASSIGN Expression {
 			throw "False type error";
 		}
 		mymemory->storeExpression($3);	
-		if(dynamic_cast<MemExpression*>($3) == NULL) {
+		MemExpression* m = dynamic_cast<MemExpression*>($3); 
+
+		if(m == NULL) {
+			delete $3;
+		}
+		else if(m->fromArray()){
 			delete $3;
 		}
 	}
@@ -434,9 +440,9 @@ LValue: ID {
  
 			throw "fit";
 		}
-
+		MemExpression* arraymem = dynamic_cast<MemExpression*>($1);
 		ConstExpression* cexpr = dynamic_cast<ConstExpression*>($3);
-		if(cexpr->getExpressionType()->getTypeAsString() != "integer"){
+		if($3->getExpressionType()->getTypeAsString() != "integer"){
 			std::cerr << "Expression is not an integer\n";
 			throw "Error";
 		}
