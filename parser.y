@@ -31,7 +31,6 @@
 	SimpleType* stpe;
 	Expression* express;
 	ExpressionsList* elist;
-	LValueList* llist;
 }
 
 %token ADD
@@ -98,7 +97,6 @@
 %type<val> NUMBER
 %type<ids> IDList
 %type<id> LValue
-%type<llist> ReadValues
 %type<stpe> simpletype 
 %type<tpe> Typestatement
 %type<id> CHAR
