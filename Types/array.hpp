@@ -18,14 +18,13 @@ public:
     Array(int l, int h, Type*);
     Array(int l, int h, std::string);
     Type* getCopyPtr();
-    int size() { return sizenum; }
+    int size() { return numofelements * arrayType->size(); }
     std::string getTypeAsString() { return "array of " + arrayType->getTypeAsString(); }
-    RegExpression* getExpressionAt(int);
-    int getOffset(int, int);
+    MemExpression* getExpressionAt(int, std::string, int);
     Type* getType() { return arrayType; }
 private:
     Type* arrayType;
-    int low, hi, sizenum;
+    int low, hi, numofelements;
 };
 
 #endif

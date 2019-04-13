@@ -227,9 +227,10 @@ arraytype: ARRAY BOPEN Expression COL Expression BCLOSE OF Typestatement {
 			std::cerr << "Expressions of arrays must be integers\n";
 			throw "error";
 		}
-		Type* arraytype = new Array(lowexpr->getElement(), hiexpr->getElement(), $8->getCopyPtr());
+		Array* arraytype = new Array(lowexpr->getElement(), hiexpr->getElement(), $8->getCopyPtr());
 		//$$ = arraytype;
-		$$ = NULL;
+		delete $8;
+		$$ = arraytype;
 	}
 	;
 
@@ -402,6 +403,8 @@ Assignment: LValue ASSIGN Expression {
 		}
 		if(mymemory->getExpressionType()->getTypeAsString() != $3->getExpressionType()->getTypeAsString()){
 			std::cerr << "Mismatching types\n";
+			std::cerr << mymemory->getExpressionType()->getTypeAsString() << std::endl;
+			std::cerr << $3->getExpressionType()->getTypeAsString() << std::endl;
 			throw "False type error";
 		}
 		mymemory->storeExpression($3);	
@@ -410,7 +413,7 @@ Assignment: LValue ASSIGN Expression {
 		if(m == NULL) {
 			delete $3;
 		}
-		else if(m->fromArray()){
+		else if(m->isTemporary()){
 			delete $3;
 		}
 	}
@@ -453,9 +456,17 @@ LValue: ID {
 				std::cerr << $1->getExpressionType()->getTypeAsString() << std::endl;
 				throw "error";
 			}
-			$$ = arrayptr->getExpressionAt(cexpr->getElement());
+			std::cerr << "We do get here\n";
+
+			$$ = arrayptr->getExpressionAt(arraymem->getOffset(), arraymem->getPtrReference(), cexpr->getElement());
+		} else if{
+			
 		}
-		if(dynamic_cast<MemExpression*>($3) == NULL) {
+		MemExpression* m3 = dynamic_cast<MemExpression*>($3);
+		if(m3 == NULL) {
+			delete $3;
+		}
+		else if(m3->isTemporary()){
 			delete $3;
 		}
 	} // And this one is for arrays
@@ -463,118 +474,222 @@ LValue: ID {
 
 Expression: Expression OR Expression {
 		$$ = $1->orfun($3);
-		if(dynamic_cast<MemExpression*>($1) == NULL) {
+		MemExpression* m1 = dynamic_cast<MemExpression*>($1);
+		MemExpression* m3 = dynamic_cast<MemExpression*>($3);
+		if(m1 == NULL) {
 			delete $1;
 		}
-		if(dynamic_cast<MemExpression*>($3) == NULL) {
+		else if(m1->isTemporary()){
+			delete $1;
+		}
+		if(m3 == NULL) {
+			delete $3;
+		}
+		else if(m3->isTemporary()){
 			delete $3;
 		}
 	}
 	| Expression AND Expression {
 		$$ = $1->andfun($3);
-		if(dynamic_cast<MemExpression*>($1) == NULL) {
+		MemExpression* m1 = dynamic_cast<MemExpression*>($1);
+		MemExpression* m3 = dynamic_cast<MemExpression*>($3);
+		if(m1 == NULL) {
 			delete $1;
 		}
-		if(dynamic_cast<MemExpression*>($3) == NULL) {
+		else if(m1->isTemporary()){
+			delete $1;
+		}
+		if(m3 == NULL) {
+			delete $3;
+		}
+		else if(m3->isTemporary()){
 			delete $3;
 		}
 	}
 	| Expression EQ Expression {
 		$$ = $1->eq($3);
-		if(dynamic_cast<MemExpression*>($1) == NULL) {
+		MemExpression* m1 = dynamic_cast<MemExpression*>($1);
+		MemExpression* m3 = dynamic_cast<MemExpression*>($3);
+		if(m1 == NULL) {
 			delete $1;
 		}
-		if(dynamic_cast<MemExpression*>($3) == NULL) {
+		else if(m1->isTemporary()){
+			delete $1;
+		}
+		if(m3 == NULL) {
+			delete $3;
+		}
+		else if(m3->isTemporary()){
 			delete $3;
 		}
 	}
 	| Expression ARROWS Expression {
 		$$ = $1->ne($3);
-		if(dynamic_cast<MemExpression*>($1) == NULL) {
+		MemExpression* m1 = dynamic_cast<MemExpression*>($1);
+		MemExpression* m3 = dynamic_cast<MemExpression*>($3);
+		if(m1 == NULL) {
 			delete $1;
 		}
-		if(dynamic_cast<MemExpression*>($3) == NULL) {
+		else if(m1->isTemporary()){
+			delete $1;
+		}
+		if(m3 == NULL) {
+			delete $3;
+		}
+		else if(m3->isTemporary()){
 			delete $3;
 		}
 	}
 	| Expression GTE Expression {
 		$$ = $1->gte($3);
-		if(dynamic_cast<MemExpression*>($1) == NULL) {
+		MemExpression* m1 = dynamic_cast<MemExpression*>($1);
+		MemExpression* m3 = dynamic_cast<MemExpression*>($3);
+		if(m1 == NULL) {
 			delete $1;
 		}
-		if(dynamic_cast<MemExpression*>($3) == NULL) {
+		else if(m1->isTemporary()){
+			delete $1;
+		}
+		if(m3 == NULL) {
+			delete $3;
+		}
+		else if(m3->isTemporary()){
 			delete $3;
 		}
 	}
 	| Expression GT Expression {
 		$$ = $1->gt($3);
-		if(dynamic_cast<MemExpression*>($1) == NULL) {
+		MemExpression* m1 = dynamic_cast<MemExpression*>($1);
+		MemExpression* m3 = dynamic_cast<MemExpression*>($3);
+		if(m1 == NULL) {
 			delete $1;
 		}
-		if(dynamic_cast<MemExpression*>($3) == NULL) {
+		else if(m1->isTemporary()){
+			delete $1;
+		}
+		if(m3 == NULL) {
+			delete $3;
+		}
+		else if(m3->isTemporary()){
 			delete $3;
 		}
 	}
 	| Expression LTE Expression {
 		$$ = $1->lte($3);
-		if(dynamic_cast<MemExpression*>($1) == NULL) {
+		MemExpression* m1 = dynamic_cast<MemExpression*>($1);
+		MemExpression* m3 = dynamic_cast<MemExpression*>($3);
+		if(m1 == NULL) {
 			delete $1;
 		}
-		if(dynamic_cast<MemExpression*>($3) == NULL) {
+		else if(m1->isTemporary()){
+			delete $1;
+		}
+		if(m3 == NULL) {
+			delete $3;
+		}
+		else if(m3->isTemporary()){
 			delete $3;
 		}
 	}
 	| Expression LT Expression {
 		$$ = $1->lt($3);
-		if(dynamic_cast<MemExpression*>($1) == NULL) {
+		MemExpression* m1 = dynamic_cast<MemExpression*>($1);
+		MemExpression* m3 = dynamic_cast<MemExpression*>($3);
+		if(m1 == NULL) {
 			delete $1;
 		}
-		if(dynamic_cast<MemExpression*>($3) == NULL) {
+		else if(m1->isTemporary()){
+			delete $1;
+		}
+		if(m3 == NULL) {
+			delete $3;
+		}
+		else if(m3->isTemporary()){
 			delete $3;
 		}
 	}
 	| Expression ADD Expression {
 		$$ = $1->add($3);
-		if(dynamic_cast<MemExpression*>($1) == NULL) {
+		MemExpression* m1 = dynamic_cast<MemExpression*>($1);
+		MemExpression* m3 = dynamic_cast<MemExpression*>($3);
+		if(m1 == NULL) {
 			delete $1;
 		}
-		if(dynamic_cast<MemExpression*>($3) == NULL) {
+		else if(m1->isTemporary()){
+			delete $1;
+		}
+		if(m3 == NULL) {
+			delete $3;
+		}
+		else if(m3->isTemporary()){
 			delete $3;
 		}
 	}
 	| Expression SUB Expression {
 		$$ = $1->sub($3);
-		if(dynamic_cast<MemExpression*>($1) == NULL) {
+		MemExpression* m1 = dynamic_cast<MemExpression*>($1);
+		MemExpression* m3 = dynamic_cast<MemExpression*>($3);
+		if(m1 == NULL) {
 			delete $1;
 		}
-		if(dynamic_cast<MemExpression*>($3) == NULL) {
+		else if(m1->isTemporary()){
+			delete $1;
+		}
+		if(m3 == NULL) {
+			delete $3;
+		}
+		else if(m3->isTemporary()){
 			delete $3;
 		}
 	}
 	| Expression MULT Expression {
 		$$ = $1->mult($3);
-		if(dynamic_cast<MemExpression*>($1) == NULL) {
+		MemExpression* m1 = dynamic_cast<MemExpression*>($1);
+		MemExpression* m3 = dynamic_cast<MemExpression*>($3);
+		if(m1 == NULL) {
 			delete $1;
 		}
-		if(dynamic_cast<MemExpression*>($3) == NULL) {
+		else if(m1->isTemporary()){
+			delete $1;
+		}
+		if(m3 == NULL) {
+			delete $3;
+		}
+		else if(m3->isTemporary()){
 			delete $3;
 		}
 	}
 	| Expression DIV Expression {
 		$$ = $1->div($3);
-		if(dynamic_cast<MemExpression*>($1) == NULL) {
+		MemExpression* m1 = dynamic_cast<MemExpression*>($1);
+		MemExpression* m3 = dynamic_cast<MemExpression*>($3);
+		if(m1 == NULL) {
 			delete $1;
 		}
-		if(dynamic_cast<MemExpression*>($3) == NULL) {
+		else if(m1->isTemporary()){
+			delete $1;
+		}
+		if(m3 == NULL) {
+			delete $3;
+		}
+		else if(m3->isTemporary()){
 			delete $3;
 		}
 	}
 	| Expression PERC Expression {
 		$$ = $1->mod($3);
-		if(dynamic_cast<MemExpression*>($1) == NULL) {
+		MemExpression* m1 = dynamic_cast<MemExpression*>($1);
+		MemExpression* m3 = dynamic_cast<MemExpression*>($3);
+		if(m1 == NULL) {
 			delete $1;
 		}
-		if(dynamic_cast<MemExpression*>($3) == NULL) {
+		else if(m1->isTemporary()){
+			delete $1;
+		}
+		if(m3 == NULL) {
+			delete $3;
+		}
+		else if(m3->isTemporary()){
 			delete $3;
 		}
 	}

@@ -33,12 +33,13 @@ public:
     void write();
 
     int getOffset(){ return offset; }
-    bool fromArray(){ return genfromarray; };
+    std::string getPtrReference() { return ptr; }
+    bool isTemporary(){ return temporary; };
 
     ~MemExpression();
 private:
     std::string ptr;
-    bool genfromarray;
+    bool temporary;
     int offset;
 };
 

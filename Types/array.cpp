@@ -5,8 +5,7 @@ Array::Array(int l, int h, Type* tprm) : low(l), hi(h){
     //    memory.push_back(new MemExpression(symbols->getOffset(tprm->size()), tprm->getCopyPtr()));
     //}
     arrayType = tprm;
-    sizenum = hi-low+1;
-    delete tprm;
+    numofelements = hi-low+1;
 }
 
 Array::Array(int l, int h) :
@@ -15,7 +14,7 @@ Array::Array(int l, int h) :
 Array::Array(int l, int h, std::string tstring){
     low = l;
     hi = h;
-    sizenum = hi-low+1;
+    numofelements = hi-low+1;
     if(tstring == "integer"){
         arrayType = new Integer();
     }
@@ -27,8 +26,9 @@ Array::Array(int l, int h, std::string tstring){
     }
 }
 
-RegExpression* Array::getExpressionAt(int arraylocation){
-    return NULL;
+MemExpression* Array::getExpressionAt(int arraylocation, std::string ptr, int index){
+    int address = ((index-low)*arrayType->size() + arraylocation);
+    return new MemExpression(address, ptr, arrayType->getCopyPtr(), true);
 }
 
 Type* Array::getCopyPtr(){

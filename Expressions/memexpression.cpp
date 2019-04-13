@@ -5,40 +5,38 @@ MemExpression::MemExpression(int o){
     offset = o;
     ptr = "$gp";
     expressionType = new Integer();
-    genfromarray = false;
+    temporary = false;
 }
 
 MemExpression::MemExpression(int o, std::string r){
     offset = o;
     ptr = r;
     expressionType = new Integer();
-    genfromarray = false;
+    temporary = false;
 }
 
 MemExpression::MemExpression(int o, Type* t){
     offset = o;
     ptr = "$gp";
     expressionType = t;
-    genfromarray = false;
+    temporary = false;
 }
 
 MemExpression::MemExpression(int o, Type* t, bool farray){
     offset = o;
     ptr = "$gp";
     expressionType = t;
-    genfromarray = farray;
+    temporary = farray;
 }
 
-MemExpression::MemExpression(int o, std::string r, Type* t){
+MemExpression::MemExpression(int o, std::string r, Type* t)
+: MemExpression(o, r, t, false) {}
+
+MemExpression::MemExpression(int o, std::string r, Type* t, bool farray) {
     offset = o;
     ptr = r;
     expressionType = t;
-    genfromarray = false;
-}
-
-MemExpression::MemExpression(int o, std::string r, Type* t, bool farray)
-: MemExpression(o, r, t) {
-    genfromarray = farray;    
+    temporary = farray;    
 }
 
 MemExpression::~MemExpression(){
