@@ -22,13 +22,20 @@ Array::Array(int l, int h, std::string tstring){
         arrayType = new Boolean();
     }
 }
-
 MemExpression* Array::getExpressionAt(int arraylocation, std::string ptr, int index){
-    int address = ((index-low)*arrayType->size() + arraylocation);
-    return new MemExpression(address, ptr, arrayType->getCopyPtr(), true);
+    return getExpressionAt(arraylocation, ptr, index, false);
 }
 
 MemExpression* Array::getExpressionAt(int arraylocation, std::string ptr, Expression* indexexpr){
+    return getExpressionAt(arraylocation, ptr, indexexpr, false);
+}
+
+MemExpression* Array::getExpressionAt(int arraylocation, std::string ptr, int index, bool isconstant){
+    int address = ((index-low)*arrayType->size() + arraylocation);
+    return new MemExpression(address, ptr, arrayType->getCopyPtr(), true, isconstant);
+}
+
+MemExpression* Array::getExpressionAt(int arraylocation, std::string ptr, Expression* indexexpr, bool isconstant){
     //int address = ((index-low)*arrayType->size() + arraylocation);
     //return new MemExpression(address, ptr, arrayType->getCopyPtr(), true);
     //indexexpr->write();
@@ -42,7 +49,7 @@ MemExpression* Array::getExpressionAt(int arraylocation, std::string ptr, Expres
     RegExpression* arraymemlocation = temp3->copyAsRegExpression();
     delete temp3;
     std::cout << "add " << arraymemlocation->getRegister() << ", " << arraymemlocation->getRegister() << ", " << ptr << std::endl;
-    return new TempMemExpression(arraymemlocation, arrayType->getCopyPtr());
+    return new TempMemExpression(arraymemlocation, arrayType->getCopyPtr(), isconstant);
 }
 
 Type* Array::getCopyPtr(){

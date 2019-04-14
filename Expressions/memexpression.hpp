@@ -13,6 +13,8 @@ public:
     MemExpression(int, std::string, Type*);
     MemExpression(int, Type*, bool);
     MemExpression(int, std::string, Type*, bool);
+    MemExpression(int, Type*, bool, bool);
+    MemExpression(int, std::string, Type*, bool, bool);
     //MemExpression(RegExpression*);
     Expression* add(Expression* other);
     Expression* sub(Expression* other);
@@ -41,8 +43,11 @@ protected:
     MemExpression();
     MemExpression(Type*);
     MemExpression(std::string, Type*);
+    MemExpression(Type*, bool);
+    MemExpression(std::string, Type*, bool);
     std::string ptr;
     bool temporary;
+    bool isconstant;
     int offset;
 };
 

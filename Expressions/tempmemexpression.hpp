@@ -7,6 +7,7 @@ class TempMemExpression : public MemExpression {
 public:
     TempMemExpression(RegExpression*);
     TempMemExpression(RegExpression*, Type*);
+    TempMemExpression(RegExpression*, Type*, bool);
 
     RegExpression* copyAsRegExpression();
     bool isTemporary(){ return true; };

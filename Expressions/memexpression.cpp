@@ -1,51 +1,37 @@
 #include "memexpression.hpp"
 
 
-MemExpression::MemExpression() : MemExpression(-1, "$gp", new Integer(), true) {}
+MemExpression::MemExpression() : MemExpression(-1, "$gp", new Integer(), true, false) {}
 
-MemExpression::MemExpression(Type* t) : MemExpression(-1, "$gp", t, true) {}
-MemExpression::MemExpression(std::string p, Type* t) : MemExpression(-1, p, t, true) {}
+MemExpression::MemExpression(Type* t) : MemExpression(-1, "$gp", t, true, false) {}
+MemExpression::MemExpression(std::string p, Type* t) : MemExpression(-1, p, t, true, false) {}
+
+MemExpression::MemExpression(Type* t, bool c) : MemExpression(-1, "$gp", t, true, c) {}
+MemExpression::MemExpression(std::string p, Type* t, bool c) : MemExpression(-1, p, t, true, c) {}
 
 MemExpression::MemExpression(int o) 
-: MemExpression(o, "$gp", new Integer(), false) {
-    //offset = o;
-    //ptr = "$gp";
-    //expressionType = new Integer();
-    //temporary = false;
-}
+: MemExpression(o, "$gp", new Integer(), false, false) {}
 
 MemExpression::MemExpression(int o, std::string r) 
-: MemExpression(0, r, new Integer(), false) {
-    //offset = o;
-    //ptr = r;
-    //expressionType = new Integer();
-    //temporary = false;
-}
+: MemExpression(0, r, new Integer(), false, false) {}
 
 MemExpression::MemExpression(int o, Type* t) 
-: MemExpression(o, "$gp", t, false){
-    //offset = o;
-    //ptr = "$gp";
-    //expressionType = t;
-    //temporary = false;
-}
+: MemExpression(o, "$gp", t, false, false){}
 
 MemExpression::MemExpression(int o, Type* t, bool farray) 
-: MemExpression(o, "$gp", t, farray) {
-    //offset = o;
-    //ptr = "$gp";
-    //expressionType = t;
-    //temporary = farray;
-}
+: MemExpression(o, "$gp", t, farray, false) {}
 
 MemExpression::MemExpression(int o, std::string r, Type* t)
-: MemExpression(o, r, t, false) {}
+: MemExpression(o, r, t, false, false) {}
 
-MemExpression::MemExpression(int o, std::string r, Type* t, bool farray) {
+MemExpression::MemExpression(int o, std::string r, Type* t, bool farray) : MemExpression(o, r, t, farray, false) {}
+
+MemExpression::MemExpression(int o, std::string r, Type* t, bool farray, bool c) {
     offset = o;
     ptr = r;
     expressionType = t;
     temporary = farray;    
+    isconstant = c;
 }
 
 MemExpression::~MemExpression(){

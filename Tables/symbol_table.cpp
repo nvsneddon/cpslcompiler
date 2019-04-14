@@ -17,7 +17,16 @@ std::string SymbolTable::getReferencePointer(){
 }
 
 void SymbolTable::declareVariable(std::string varname, Type* t){
+    auto it = constants.find(varname);
+    if(it != constants.end() && findVariable(varname) != NULL){
+        std::cerr << "Cannot declare a variable again\n";
+        throw "error";
+    }
     variables[0].insert(std::make_pair(varname, new MemExpression(getOffset(t->size()), getReferencePointer(), t)));
+}
+
+void SymbolTable::declareConstant(std::string varname, Type* t){
+    constants.insert(std::make_pair(varname, new MemExpression(getOffset(t->size()), getReferencePointer(), t)));
 }
 
 void SymbolTable::printStats(){
@@ -29,6 +38,14 @@ void SymbolTable::printStats(){
         std::cerr << "Done with " << i << ". Onto the next.\n";
     }
     std::cerr << "We are finished\n";
+}
+
+MemExpression* SymbolTable::findConstant(std::string myvar){
+    auto constit = constants.find(myvar);
+    if (constit != constants.end()){
+        return constit->second;
+    }
+    return NULL;
 }
 
 MemExpression* SymbolTable::findVariable(std::string myvar){

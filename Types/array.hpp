@@ -23,6 +23,8 @@ public:
     std::string getTypeAsString() { return "array of " + arrayType->getTypeAsString(); }
     MemExpression* getExpressionAt(int, std::string, int);
     MemExpression* getExpressionAt(int, std::string, Expression*);
+    MemExpression* getExpressionAt(int, std::string, int, bool);
+    MemExpression* getExpressionAt(int, std::string, Expression*, bool);
     Type* getType() { return arrayType; }
 private:
     Type* arrayType;

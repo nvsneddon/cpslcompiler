@@ -2,6 +2,7 @@
 
 TempMemExpression::TempMemExpression(RegExpression* reg) : offsetreg(reg){}
 TempMemExpression::TempMemExpression(RegExpression* reg, Type* t) : MemExpression(t), offsetreg(reg){}
+TempMemExpression::TempMemExpression(RegExpression* reg, Type* t, bool isconst) : MemExpression(t, isconst), offsetreg(reg){}
 
 RegExpression* TempMemExpression::copyAsRegExpression() {
     RegExpression* myreg = new RegExpression(expressionType->getCopyPtr());
