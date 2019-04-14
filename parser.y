@@ -416,6 +416,10 @@ Assignment: LValue ASSIGN Expression {
 		else if(m->isTemporary()){
 			delete $3;
 		}
+
+		if(dynamic_cast<TempMemExpression*>($1) != NULL){
+			delete $1;
+		}
 	}
 	;
 LValue: ID {
@@ -457,18 +461,17 @@ LValue: ID {
 				std::cerr << $1->getExpressionType()->getTypeAsString() << std::endl;
 				throw "error";
 			}
-			Write::comment("This is where the array is going to be assigned. The Expression is constant.");
+			Write::comment("This is where the array is going to be found. The Expression is constant.");
 			$$ = arrayptr->getExpressionAt(arraymem->getOffset(), arraymem->getPtrReference(), cexpr->getElement());
 		} else {
 			Array* arrayptr = dynamic_cast<Array*>($1->getExpressionType());
 			if(arrayptr == NULL){
-				std::cerr << "Somehow this got messed up!" << std::endl;
+				std::cerr << "Cannot index this variable type!" << std::endl;
 				std::cerr << $1->getExpressionType()->getTypeAsString() << std::endl;
 				throw "error";
 			}
-			Write::comment("This is where the array is going to be assigned. The Expression is not constant.");
+			Write::comment("This is where the array is going to be found. The Expression is not constant.");
 			RegExpression* r = $3->copyAsRegExpression();
-			//std::cout << "add " << r->getRegister() << ", " << r->getRegister() << ", " << arraymem->getPtrReference() << std::endl;
 			$$ = arrayptr->getExpressionAt(arraymem->getOffset(), arraymem->getPtrReference(), r);
 		}
 		MemExpression* m3 = dynamic_cast<MemExpression*>($3);
