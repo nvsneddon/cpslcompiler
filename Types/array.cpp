@@ -2,6 +2,10 @@
 
 Array::Array(int l, int h, Type* tprm) : low(l), hi(h){
     arrayType = tprm;
+    if(l > h){
+        std::cerr << "Array declarations is bad\n";
+        throw "fit";
+    }
     numofelements = hi-low+1;
 }
 
@@ -11,6 +15,10 @@ Array::Array(int l, int h) :
 Array::Array(int l, int h, std::string tstring){
     low = l;
     hi = h;
+    if(l > h){
+        std::cerr << "Array declarations is bad\n";
+        throw "fit";
+    }
     numofelements = hi-low+1;
     if(tstring == "integer"){
         arrayType = new Integer();
