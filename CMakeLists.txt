@@ -42,6 +42,8 @@ set(cpsl_srcs
 	Types/type.hpp
 	Types/array.hpp
 	Types/array.cpp
+	Types/record.hpp
+	Types/record.cpp
 	includes.hpp
 	${BISON_Parser_OUTPUTS}
 	${FLEX_Scanner_OUTPUTS}
