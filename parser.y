@@ -148,8 +148,12 @@ Profunct: Profunct ProcedureDecl {}
 ConstantDecl: CONST ConstSubDecl {} 
 	;
 
-ConstSubDecl: ConstantDecl Expression SEMCOL {} 
-	| Expression SEMCOL {}
+ConstSubDecl: ConstSubDecl ID EQ Expression SEMCOL {
+		symbols->declareConstant($2, $4);	
+	} 
+	| ID EQ Expression SEMCOL {
+		symbols->declareConstant($1, $3);	
+	}
 	; 
 
 TypeDecl: TYPE SubTypeDecl {} 
@@ -350,6 +354,7 @@ ReadValues: ReadValues COMMA LValue {
 		}
 	} 
 	| LValue { 
+
 		MemExpression* mymemory = dynamic_cast<MemExpression*>($1);
 		if(mymemory == NULL){
 			std::cerr << "Variable not defined in read statement\n";
@@ -425,19 +430,25 @@ Assignment: LValue ASSIGN Expression {
 LValue: ID {
 		//$$ = $1;
 		Write::comment("Looking for " + std::string($1));
-		MemExpression* expr = symbols->findVariable(std::string($1));
-		if (expr != NULL){
-			$$ = expr;
-		}
-		else if(!strcmp($1, "true") || !strcmp($1, "TRUE")){
-			$$ = new ConstExpression(1, new Boolean());
-		}
-		else if(!strcmp($1, "false") || !strcmp($1, "FALSE")){
-			$$ = new ConstExpression(0, new Boolean());
+		Expression* c = symbols->findConstant(std::string($1));
+		if (c != NULL){
+			$$ = c;
 		}
 		else{
-			std::cerr << "Variable not defined" << std::endl;
-			throw "L Value error";
+			MemExpression* expr = symbols->findVariable(std::string($1));
+			if (expr != NULL){
+				$$ = expr;
+			}
+			else if(!strcmp($1, "true") || !strcmp($1, "TRUE")){
+				$$ = new ConstExpression(1, new Boolean());
+			}
+			else if(!strcmp($1, "false") || !strcmp($1, "FALSE")){
+				$$ = new ConstExpression(0, new Boolean());
+			}
+			else{
+				std::cerr << "Variable not defined" << std::endl;
+				throw "L Value error";
+			}
 		}
 	} //Thiis one is for normal variables
 	| LValue DEC ID {} //This one is for records

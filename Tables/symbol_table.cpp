@@ -25,8 +25,8 @@ void SymbolTable::declareVariable(std::string varname, Type* t){
     variables[0].insert(std::make_pair(varname, new MemExpression(getOffset(t->size()), getReferencePointer(), t)));
 }
 
-void SymbolTable::declareConstant(std::string varname, Type* t){
-    constants.insert(std::make_pair(varname, new MemExpression(getOffset(t->size()), getReferencePointer(), t)));
+void SymbolTable::declareConstant(std::string varname, Expression* ex){
+    constants.insert(std::make_pair(varname, ex));
 }
 
 void SymbolTable::printStats(){
@@ -40,7 +40,7 @@ void SymbolTable::printStats(){
     std::cerr << "We are finished\n";
 }
 
-MemExpression* SymbolTable::findConstant(std::string myvar){
+Expression* SymbolTable::findConstant(std::string myvar){
     auto constit = constants.find(myvar);
     if (constit != constants.end()){
         return constit->second;

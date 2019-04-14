@@ -17,9 +17,9 @@ class SymbolTable{
         SymbolTable(); 
         ~SymbolTable();
         MemExpression* findVariable(std::string myvar);
-        MemExpression* findConstant(std::string myvar);
+        Expression* findConstant(std::string myvar);
         void declareVariable(std::string, Type*);
-        void declareConstant(std::string, Type*);
+        void declareConstant(std::string, Expression*);
         void printStringLabels();
         void addScope();
         void removeScope();
@@ -29,7 +29,7 @@ class SymbolTable{
         static int getOffset(int);
     private:
         std::deque<std::map<std::string, MemExpression*>> variables;    
-        std::map<std::string, MemExpression*> constants;
+        std::map<std::string, Expression*> constants;
         std::vector<std::map<std::string, std::string>> toPrint;
         std::vector<std::string> stringVariables;
 };

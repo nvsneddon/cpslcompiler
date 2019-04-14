@@ -37,6 +37,7 @@ public:
     int getOffset(){ return offset; }
     std::string getPtrReference() { return ptr; }
     virtual bool isTemporary(){ return temporary; };
+    bool constant(){ return isconstant; }
 
     virtual ~MemExpression();
 protected:
