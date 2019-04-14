@@ -163,10 +163,12 @@ TypeDecl: TYPE SubTypeDecl {};
 
 SubTypeDecl: SubTypeDecl ID EQ Typestatement SEMCOL {
 	symbols->declareType(std::string($2), $4->getCopyPtr());
+	//symbols->declareType(std::string($2), $4);
 	delete $4;
 } 
 | ID EQ Typestatement SEMCOL {
 	symbols->declareType(std::string($1), $3->getCopyPtr());
+	//symbols->declareType(std::string($1), $3);
 	delete $3;
 };
 
@@ -189,7 +191,6 @@ SubVarDecl: SubVarDecl IDList COL Typestatement SEMCOL {
 
 Typestatement: simpletype {
 	$$ = $1;
-	std::cerr << "Here I am " << std::endl;
 } 
 | recordtype {
 	//$$ = new Integer();
@@ -229,7 +230,6 @@ recordsubtype: recordsubtype IDList COL Typestatement SEMCOL {}
 arraytype: ARRAY BOPEN Expression COL Expression BCLOSE OF Typestatement {
 	ConstExpression* lowexpr = dynamic_cast<ConstExpression*>($3);
 	ConstExpression* hiexpr = dynamic_cast<ConstExpression*>($5);
-	std::cerr << "did we make it here?" << std::endl;
 	if(hiexpr == NULL or lowexpr == NULL){
 		std::cerr << "Array expression doesn't evaluate to a constant. Cannot initialize.\n";
 		throw "error";
@@ -238,9 +238,7 @@ arraytype: ARRAY BOPEN Expression COL Expression BCLOSE OF Typestatement {
 		std::cerr << "Expressions of arrays must be integers\n";
 		throw "error";
 	}
-	std::cerr << "maing an array with " << lowexpr->getElement() << " and " << hiexpr->getElement() << std::endl;
 	Array* arraytype = new Array(lowexpr->getElement(), hiexpr->getElement(), $8->getCopyPtr());
-	//$$ = arraytype;
 	//delete $8;
 	$$ = arraytype;
 }
@@ -635,12 +633,6 @@ Expression: Expression OR Expression {
 	MemExpression* m3 = dynamic_cast<MemExpression*>($3);
 	ConstExpression* c1 = dynamic_cast<ConstExpression*>($1);
 	ConstExpression* c3 = dynamic_cast<ConstExpression*>($$);
-	if(c1 != NULL){
-		std::cerr << "C1 is " << c1->getElement() << std::endl;
-	}
-	if(c3 != NULL){
-		std::cerr << "$$ is " << c3->getElement() << std::endl;
-	}
 	//if(m1 == NULL) {
 	//	delete $1;
 	//}
