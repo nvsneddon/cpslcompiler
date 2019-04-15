@@ -5,10 +5,14 @@ int LoopLabels::whileLabel(){
     return label++;
 }
 
+int LoopLabels::repeatLabel(){
+    static int label = 0;
+    return label++;
+}
+
 int LoopLabels::ifLabel(){
     return iflabel;
 }
-
 
 int LoopLabels::elseIfLabel(){
     return iflabel;

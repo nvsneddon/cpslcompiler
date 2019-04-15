@@ -114,6 +114,8 @@
 %type<num> iflabel
 %type<num> elseifbegin
 %type<num> elseiflabel
+%type<num> repeatlabel
+%type<num> RepeatStatement
 %type<express> Expression
 %type<elist> ExpressionsList
 
@@ -455,7 +457,28 @@ whilelabel: WHILE{
 	$$ = x;
 };
 
-RepeatStatement: REPEAT StatementSequence UNTIL Expression {};
+RepeatStatement: repeatlabel StatementSequence UNTIL Expression {
+	if(ConstExpression* c = dynamic_cast<ConstExpression*>($4)){
+		if(c->getElement() != 0){
+		}
+		else{
+			std::cout << "j repeat" << $1 << std::endl;
+		}
+	}
+	else{
+		RegExpression* r = $4->copyAsRegExpression();
+		std::cout << "beqz " << r->getRegister() << ", repeat" << $1 << std::endl;
+		delete r;
+	}
+	$$ = $1;
+	delete $4;
+};
+
+repeatlabel: REPEAT{
+	int x = LoopLabels::whileLabel();
+	std::cout << "repeat" << x << ":" << std::endl;
+	$$ = x;
+}
 
 ForStatement: FOR ID ASSIGN Expression todownto Expression DO StatementSequence END {};
 

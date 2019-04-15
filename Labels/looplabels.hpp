@@ -6,6 +6,7 @@ class LoopLabels{
 public:
     LoopLabels() : iflabel(0), endlabelnr(0) {}
     static int whileLabel();
+    static int repeatLabel();
     int ifLabel();
     int elseIfLabel();
     int elseLabel();
