@@ -15,5 +15,6 @@
 #include "Types/type.hpp"
 #include "Types/array.hpp"
 #include "Types/record.hpp"
+#include "Labels/looplabels.hpp"
 
 #endif

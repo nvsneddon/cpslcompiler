@@ -27,6 +27,8 @@ set(cpsl_srcs
 	Lists/idlist.hpp
 	Lists/stringlist.hpp
 	Lists/stringlist.cpp
+	Labels/looplabels.hpp
+	Labels/looplabels.cpp
 	Expressions/expression.hpp
 	Expressions/constexpression.hpp
 	Expressions/constexpression.cpp

@@ -24,6 +24,7 @@
 
 %union
 {
+	int num;
 	float val;
 	char* id;
 	Type* tpe;
@@ -106,6 +107,8 @@
 %type<tpe> Typestatement
 %type<id> CHAR
 %type<id> STR
+%type<num> whilebegin
+%type<num> whilelabel
 %type<express> Expression
 %type<elist> ExpressionsList
 
@@ -326,7 +329,33 @@ ElseIfStatement: ElseIfStatement ELSEIF Expression THEN StatementSequence {}
 
 ElseStatement: ELSE StatementSequence {};
 
-WhileStatement: WHILE Expression DO StatementSequence END {};
+WhileStatement: whilebegin DO StatementSequence END {
+	std::cout << "j while_test" << $1 << std::endl;
+	std::cout << "while_end" << $1 << ":" << std::endl; 
+};
+
+whilebegin: whilelabel Expression{
+	if(ConstExpression* c = dynamic_cast<ConstExpression*>($2)){
+		if(c->getElement() != 0){
+			//while evaluates to true
+		}
+		else{
+			std::cout << "j while_end" << $1 << std::endl;
+		}
+	}
+	else{
+		RegExpression* r = $2->copyAsRegExpression();
+		std::cout << "beqz " << r->getRegister() << ", while_end" << $1 << std::endl;
+		delete r;
+	}
+	$$ = $1;
+};
+
+whilelabel: WHILE{
+	int x = LoopLabels::WhileLabel();
+	std::cout << "while_test" << x << ":" << std::endl;
+	$$ = x;
+};
 
 RepeatStatement: REPEAT StatementSequence UNTIL Expression {};
 
