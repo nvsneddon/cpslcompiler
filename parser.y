@@ -783,8 +783,15 @@ Expression: Expression OR Expression {
 | ID POPEN PCLOSE {
 	//std::cerr << $1 << std::endl;
 }
-| CHR POPEN Expression PCLOSE {}
-| ORD POPEN Expression PCLOSE {}
+| CHR POPEN Expression PCLOSE {
+	$3->chr();
+	$$ = $3;
+	//std::cerr << "I htink that worked kind of\n";
+}
+| ORD POPEN Expression PCLOSE {
+	$3->ord();
+	$$ = $3;
+}
 | PRED POPEN Expression PCLOSE {
 	$$ = $3->sub(new ConstExpression(1));
 	delete $3;

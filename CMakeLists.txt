@@ -30,6 +30,7 @@ set(cpsl_srcs
 	Labels/looplabels.hpp
 	Labels/looplabels.cpp
 	Expressions/expression.hpp
+	Expressions/expression.cpp
 	Expressions/constexpression.hpp
 	Expressions/constexpression.cpp
 	Expressions/memexpression.hpp

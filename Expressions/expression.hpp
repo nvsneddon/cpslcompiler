@@ -23,6 +23,8 @@ public:
     virtual Expression* eq(Expression* other) = 0;
     virtual Expression* andfun(Expression* other) = 0;
     virtual Expression* orfun(Expression* other) = 0;
+    void ord();
+    void chr();
 
     virtual RegExpression* copyAsRegExpression() = 0;
     virtual void write() = 0;
