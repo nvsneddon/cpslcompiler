@@ -40,7 +40,7 @@ MemExpression* Record::getExpression(std::string label, int offset){
     auto it = types.find(label);
     auto it2 = indexnumber.find(label);
     if (it != types.end() && it2 != indexnumber.end()){
-        return new MemExpression(it2->second, refPointer, it->second->getCopyPtr(), true);
+        return new MemExpression(it2->second+offset, refPointer, it->second->getCopyPtr(), true);
     }
     return NULL;
 }
