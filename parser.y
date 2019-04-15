@@ -785,8 +785,14 @@ Expression: Expression OR Expression {
 }
 | CHR POPEN Expression PCLOSE {}
 | ORD POPEN Expression PCLOSE {}
-| PRED POPEN Expression PCLOSE {}
-| SUCC POPEN Expression PCLOSE {}
+| PRED POPEN Expression PCLOSE {
+	$$ = $3->sub(new ConstExpression(1));
+	delete $3;
+}
+| SUCC POPEN Expression PCLOSE {
+	$$ = $3->add(new ConstExpression(1));
+	delete $3;
+}
 | LValue {
 	$$ = $1;
 }
