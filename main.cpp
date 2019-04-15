@@ -7,6 +7,7 @@ StatementList* slist;
 RegTable* rtable;
 IdList* idlist;
 StringList* strlist;
+LoopLabels* llbl;
 
 
 int main(){
@@ -15,10 +16,12 @@ int main(){
 	slist = new StatementList();
 	rtable = new RegTable();
 	strlist = new StringList();
+	llbl = new LoopLabels();
 	yyparse();
 	delete symbols;
 	delete elist;
 	delete slist;
 	delete rtable;
 	delete strlist;
+	delete llbl;
 }

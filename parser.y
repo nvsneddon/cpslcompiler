@@ -17,6 +17,7 @@
 	extern SymbolTable* symbols;
 	extern StatementList* slist;
 	extern RegTable* rtable;
+	extern LoopLabels* llbl;
 	extern StringList* strlist;
 
 	#endif
@@ -109,6 +110,10 @@
 %type<id> STR
 %type<num> whilebegin
 %type<num> whilelabel
+%type<num> ifbegin
+%type<num> iflabel
+%type<num> elseifbegin
+%type<num> elseiflabel
 %type<express> Expression
 %type<elist> ExpressionsList
 
@@ -319,13 +324,51 @@ Statement: Assignment {}
 | ProcedureCall {} 
 | {};
 
-IfStatement: IF Expression THEN StatementSequence ElseIfStatement ElseStatement END {}
-| IF Expression THEN StatementSequence ElseStatement END {}
-| IF Expression THEN StatementSequence ElseIfStatement END {}
-| IF Expression THEN StatementSequence END {};
+IfStatement: ifbegin THEN StatementSequence ElseIfStatement ElseStatement END {
+	std::cout << llbl->getEndLabel() << ":" << std::endl;
+	llbl->incEndLabel();
+}
+| ifbegin THEN StatementSequence ElseStatement END {
+	std::cout << llbl->getEndLabel() << ":" << std::endl;
+	llbl->incEndLabel();
+}
+| ifbegin THEN StatementSequence ElseIfStatement END {
+	std::cout << llbl->getEndLabel() << ":" << std::endl;
+	llbl->incEndLabel();
+}
+| ifbegin THEN StatementSequence END {
+	std::cout << "eval" << $1 << ":" << std::endl;
+};
 
-ElseIfStatement: ElseIfStatement ELSEIF Expression THEN StatementSequence {}
-| ELSEIF Expression THEN StatementSequence {};
+ifbegin: iflabel Expression {
+	if(ConstExpression* c = dynamic_cast<ConstExpression*>($2)){
+		if(c->getElement() != 0){
+			//while evaluates to true
+		}
+		else{
+			std::cout << "j eval" << $1 << std::endl;
+		}
+	}
+	else{
+		RegExpression* r = $2->copyAsRegExpression();
+		std::cout << "beqz " << r->getRegister() << ", eval" << $1 << std::endl;
+		delete r;
+	}
+	$$ = $1;
+};
+
+iflabel: IF {
+	$$ = llbl->ifLabel();
+};
+
+
+ElseIfStatement: ElseIfStatement elseifbegin THEN StatementSequence {}
+| elseifbegin THEN StatementSequence {};
+
+elseifbegin: elseiflabel Expression {};
+
+elseiflabel: ELSEIF {};
+
 
 ElseStatement: ELSE StatementSequence {};
 
@@ -349,10 +392,11 @@ whilebegin: whilelabel Expression{
 		delete r;
 	}
 	$$ = $1;
+	delete $2;
 };
 
 whilelabel: WHILE{
-	int x = LoopLabels::WhileLabel();
+	int x = LoopLabels::whileLabel();
 	std::cout << "while_test" << x << ":" << std::endl;
 	$$ = x;
 };
@@ -691,18 +735,18 @@ Expression: Expression OR Expression {
 	MemExpression* m3 = dynamic_cast<MemExpression*>($3);
 	ConstExpression* c1 = dynamic_cast<ConstExpression*>($1);
 	ConstExpression* c3 = dynamic_cast<ConstExpression*>($$);
-	//if(m1 == NULL) {
-	//	delete $1;
-	//}
-	//else if(m1->isTemporary()){
-	//	delete $1;
-	//}
+	if(m1 == NULL) {
+		delete $1;
+	}
+	else if(m1->isTemporary()){
+		delete $1;
+	}
 	if(m3 == NULL) {
 		delete $3;
 	}
-	//else if(m3->isTemporary()){
-	//	delete $3;
-	//}
+	else if(m3->isTemporary()){
+		delete $3;
+	}
 }
 | Expression SUB Expression {
 	$$ = $1->sub($3);
