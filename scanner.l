@@ -6,7 +6,7 @@
 
 %option noyywrap
 %option yylineno
-DIGIT 	[0-9]
+DIGIT 	[-]*[0-9]
 id  [a-zA-Z][a-zA-Z0-9_]*
 
 %%
