@@ -324,50 +324,98 @@ Statement: Assignment {}
 | ProcedureCall {} 
 | {};
 
-IfStatement: ifbegin THEN StatementSequence ElseIfStatement ElseStatement END {
+IfStatement: ifbegin THEN ifbody ElseIfStatement ElseStatement END {
+	Write::comment("End of ifstatement with an elseif and else statement");
 	std::cout << llbl->getEndLabel() << ":" << std::endl;
 	llbl->incEndLabel();
+	llbl->incIfLabel();
 }
-| ifbegin THEN StatementSequence ElseStatement END {
+| ifbegin THEN ifbody ElseStatement END {
+	Write::comment("End of ifstatement with an else statement");
 	std::cout << llbl->getEndLabel() << ":" << std::endl;
 	llbl->incEndLabel();
+	llbl->incIfLabel();
 }
-| ifbegin THEN StatementSequence ElseIfStatement END {
+| ifbegin THEN ifbody ElseIfStatement END {
+	Write::comment("End of ifstatement with an elseif statement");
+	std::cout << "eval" << llbl->ifLabel() << ":" << std::endl;
 	std::cout << llbl->getEndLabel() << ":" << std::endl;
 	llbl->incEndLabel();
+	llbl->incIfLabel();
 }
 | ifbegin THEN StatementSequence END {
-	std::cout << "eval" << $1 << ":" << std::endl;
+	//std::cout << "eval" << $1 << ":" << std::endl;
+	//std::cout << llbl->getEndLabel() << ":" << std::endl;
+	std::cout << "eval" << llbl->ifLabel() << ":" << std::endl;
+	llbl->incIfLabel();
+	llbl->incEndLabel();
+	Write::comment("End of ifstatement with no else or else if");
+};
+
+ifbody: StatementSequence {
+	std::cout << "j " << llbl->getEndLabel() << std::endl;
+	std::cout << "eval" << llbl->ifLabel() << ":\n";
+	llbl->incIfLabel();
+	Write::comment("Inside ifbody");
 };
 
 ifbegin: iflabel Expression {
 	if(ConstExpression* c = dynamic_cast<ConstExpression*>($2)){
 		if(c->getElement() != 0){
-			//while evaluates to true
+
 		}
 		else{
-			std::cout << "j eval" << $1 << std::endl;
+			std::cout << "j " << llbl->ifLabel() << std::endl;
 		}
 	}
 	else{
 		RegExpression* r = $2->copyAsRegExpression();
-		std::cout << "beqz " << r->getRegister() << ", eval" << $1 << std::endl;
+		std::cout << "beqz " << r->getRegister() << ", eval" << llbl->ifLabel() << std::endl;
 		delete r;
 	}
-	$$ = $1;
+	delete $2;
+	Write::comment("If begin");
 };
 
-iflabel: IF {
-	$$ = llbl->ifLabel();
+iflabel: IF {$$ = llbl->ifLabel();};
+
+
+ElseIfStatement: ElseIfStatement elseifbegin THEN StatementSequence {
+	std::cout << "j " << llbl->getEndLabel() << std::endl;
+	std::cout << "eval" << llbl->ifLabel() << ":\n";
+	llbl->incIfLabel();
+	Write::comment("elseif statement with prior elseif statements");
+}
+| elseifbegin THEN StatementSequence {
+	std::cout << "j " << llbl->getEndLabel() << std::endl;
+	std::cout << "eval" << llbl->ifLabel() << ":\n";
+	llbl->incIfLabel();
+	Write::comment("elseif statement with no prior elseif statement");
 };
 
+elseifbegin: elseiflabel Expression {
+	if(ConstExpression* c = dynamic_cast<ConstExpression*>($2)){
+		if(c->getElement() != 0){
 
-ElseIfStatement: ElseIfStatement elseifbegin THEN StatementSequence {}
-| elseifbegin THEN StatementSequence {};
+		}
+		else{
+			std::cout << "j " << llbl->ifLabel() << std::endl;
+		}
+	}
+	else{
+		RegExpression* r = $2->copyAsRegExpression();
+		std::cout << "beqz " << r->getRegister() << ", eval" << llbl->ifLabel() << std::endl;
+		delete r;
+	}
+	Write::comment("Else if begin");
+	delete $2;
+};
 
-elseifbegin: elseiflabel Expression {};
-
-elseiflabel: ELSEIF {};
+elseiflabel: ELSEIF {
+	//std::cout << "eval" << llbl->ifLabel() << ":" << std::endl; 
+	//llbl->incIfLabel();
+	//Write::comment("Else if label");
+};
 
 
 ElseStatement: ELSE StatementSequence {};

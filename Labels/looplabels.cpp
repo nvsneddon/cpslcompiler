@@ -6,15 +6,14 @@ int LoopLabels::whileLabel(){
 }
 
 int LoopLabels::ifLabel(){
-    return iflabel++;
+    return iflabel;
 }
 
 
 int LoopLabels::elseIfLabel(){
-    return iflabel++;
+    return iflabel;
 }
 
 int LoopLabels::elseLabel(){
-    int iflabel = 0;
-    return iflabel++;
+    return iflabel;
 }
