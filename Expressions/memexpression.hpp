@@ -46,6 +46,7 @@ protected:
     MemExpression(std::string, Type*);
     MemExpression(Type*, bool);
     MemExpression(std::string, Type*, bool);
+
     std::string ptr;
     bool temporary;
     bool isconstant;

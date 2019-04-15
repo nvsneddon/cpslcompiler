@@ -14,5 +14,6 @@
 #include "Lists/idlist.hpp"
 #include "Types/type.hpp"
 #include "Types/array.hpp"
+#include "Types/record.hpp"
 
 #endif

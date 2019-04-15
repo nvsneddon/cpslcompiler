@@ -30,6 +30,7 @@
 	IdList* ids;
 	SimpleType* stpe;
 	Array* atpe;
+	Record* rcrd;
 	Expression* express;
 	ExpressionsList* elist;
 }
@@ -98,6 +99,8 @@
 %type<val> NUMBER
 %type<ids> IDList
 %type<express> LValue
+%type<rcrd> recordsubtype
+%type<rcrd> recordtype
 %type<tpe> simpletype 
 %type<atpe> arraytype
 %type<tpe> Typestatement
@@ -193,7 +196,7 @@ Typestatement: simpletype {
 	$$ = $1;
 } 
 | recordtype {
-	//$$ = new Integer();
+	$$ = $1;
 } 
 | arraytype {
 	$$ = $1;
@@ -221,11 +224,22 @@ simpletype: ID {
 	}
 }
 ;
-recordtype: RECORD recordsubtype END {} 
+recordtype: RECORD recordsubtype END { $$ = $2; } 
 | RECORD END {}
 ;
-recordsubtype: recordsubtype IDList COL Typestatement SEMCOL {}
-| IDList COL Typestatement SEMCOL {}
+recordsubtype: recordsubtype IDList COL Typestatement SEMCOL {
+	for(int i = 0; i < $2->ids.size(); i++){
+		$$->addType($2->ids[i], $4->getCopyPtr());
+	}
+	delete $4;
+}
+| IDList COL Typestatement SEMCOL {
+	$$ = new Record();
+	for(int i = 0; i < $1->ids.size(); i++){
+		$$->addType($1->ids[i], $3->getCopyPtr());
+	}
+	delete $3;
+}
 ;
 arraytype: ARRAY BOPEN Expression COL Expression BCLOSE OF Typestatement {
 	ConstExpression* lowexpr = dynamic_cast<ConstExpression*>($3);
@@ -381,13 +395,16 @@ ReadValues: ReadValues COMMA LValue {
 		std::cerr << "Value not an integer or a char\n";
 	}
 };
+
 WriteStatement: WRITE POPEN ExpressionsList PCLOSE {
 	$3->write();
 	delete $3;
 };
+
 ProcedureCall: ID POPEN ExpressionsList PCLOSE {
 }
 | ID POPEN PCLOSE {};
+
 ExpressionsList: ExpressionsList COMMA Expression { 
 	$1->add($3); 
 	$$ = $1;
@@ -447,7 +464,19 @@ LValue: ID {
 		}
 	}
 } //Thiis one is for normal variables
-| LValue DEC ID {} //This one is for records
+| LValue DEC ID {
+	if(MemExpression* mlv = dynamic_cast<MemExpression*>($1)){
+		Record* r = dynamic_cast<Record*>(mlv->getExpressionType());
+		if (r == NULL){
+			std::cerr << "Record not found!" << std::endl;
+			throw "error";
+		}
+		$$ = r->getExpression(std::string($3), mlv->getOffset());
+	} else {
+		std::cerr << "This didn't go well for the record\n";
+		throw "error";
+	}
+} //This one is for records
 | LValue BOPEN Expression BCLOSE {
 	if(ConstExpression* cexpression = dynamic_cast<ConstExpression*>($1)){
 		std::cerr << "Cannot get array from boolean value" << std::endl;
