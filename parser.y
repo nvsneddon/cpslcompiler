@@ -492,7 +492,7 @@ ForStatement: ForExpr DOWNTO Expression DO StatementSequence END {
 	std::cout << "addi " << r->getRegister() << ", " << r->getRegister() << ", -1" << std::endl;
 	RegExpression* r2 = $3->copyAsRegExpression();
 	m->storeExpression(r);
-	std::cout << "bge " << r->getRegister() << ", " << r2->getRegister() << std::endl; 
+	std::cout << "bge " << r->getRegister() << ", " << r2->getRegister() << ", forbody" << $1 << std::endl; 
 
 	symbols->removeScope();
 	symbols->removeForVar();
@@ -1019,11 +1019,18 @@ Expression: Expression OR Expression {
 		std::string temp;
 		temp += '\\';
 		temp += 'n';
+		std::string temp2;
+		temp2 += '\\';
+		temp2 += 't';
 		if (! s.compare(temp)){
 			c = '\n';
 		}
+		else if (! s.compare(temp2)){
+			c = '\t';
+		}
 		else{
-			std::cerr << "Somehow a wrong whitespace character showed up!";
+			std::cerr << "Somehow a wrong whitespace character showed up!\n";
+			throw "whitespace error";
 		}
 	}
 	$$ = new ConstExpression(int(c), new Char());
