@@ -28,6 +28,7 @@ class SymbolTable{
         std::string getReferencePointer();
         int appendString(std::string str);
         void printStats();
+        MemExpression* getForVariable();
         static int getOffset(int);
     private:
         std::deque<std::map<std::string, MemExpression*>> variables;    
@@ -35,6 +36,7 @@ class SymbolTable{
         std::vector<std::map<std::string, std::string>> toPrint;
         std::vector<std::string> stringVariables;
         std::map<std::string, Type*> types;
+        std::deque<MemExpression*> forvariables;
 };
 
 

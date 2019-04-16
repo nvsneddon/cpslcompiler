@@ -14,6 +14,11 @@ int LoopLabels::ifLabel(){
     return iflabel;
 }
 
+int LoopLabels::forLabel(){
+    static int lbl = 0;
+    return lbl++;
+}
+
 int LoopLabels::elseIfLabel(){
     return iflabel;
 }

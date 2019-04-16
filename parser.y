@@ -115,6 +115,7 @@
 %type<num> elseifbegin
 %type<num> elseiflabel
 %type<num> repeatlabel
+%type<num> ForExpr 
 %type<num> RepeatStatement
 %type<express> Expression
 %type<elist> ExpressionsList
@@ -477,12 +478,33 @@ repeatlabel: REPEAT{
 	int x = LoopLabels::whileLabel();
 	std::cout << "repeat" << x << ":" << std::endl;
 	$$ = x;
+};
+
+ForStatement: ForExpr DOWNTO Expression DO StatementSequence END {
+
+	symbols->removeScope();
 }
+| ForExpr TO Expression DO StatementSequence END {
 
-ForStatement: FOR ID ASSIGN Expression todownto Expression DO StatementSequence END {};
+	symbols->removeScope();
+};
 
-todownto: TO {}
-| DOWNTO {};
+ForExpr: FOR ID ASSIGN Expression{
+	//This part makes initializes the expression
+	int x = LoopLabels::forLabel();
+	symbols->addScope();
+	symbols->declareVariable(std::string($2), $4->getExpressionType() -> getCopyPtr());
+	MemExpression* m = symbols->findVariable(std::string($2));
+	m->storeExpression($4);
+	if(MemExpression* m2 = dynamic_cast<MemExpression*>($4)){
+		if(m2->isTemporary()){
+			delete $4;
+		}
+	}
+	delete $4;
+	std::cout << "forbody" << x << std::endl;
+	$$ = x;
+};
 
 StopStatement: STOP {};
 

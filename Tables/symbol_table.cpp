@@ -74,6 +74,10 @@ void SymbolTable::addScope(){
     variables.push_front(newmap);
 }
 
+MemExpression* SymbolTable::getForVariable(){
+    return forvariables[0];
+}
+
 void SymbolTable::removeScope(){
     if(variables.size() == 1){
         std::cerr << "Cannot remove global scope\n";

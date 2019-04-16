@@ -7,6 +7,7 @@ public:
     LoopLabels() : iflabel(0), endlabelnr(0) {}
     static int whileLabel();
     static int repeatLabel();
+    static int forLabel();
     int ifLabel();
     int elseIfLabel();
     int elseLabel();
