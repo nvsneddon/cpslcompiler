@@ -177,12 +177,11 @@ TypeDecl: TYPE SubTypeDecl {};
 SubTypeDecl: SubTypeDecl ID EQ Typestatement SEMCOL {
 	symbols->declareType(std::string($2), $4->getCopyPtr());
 	//symbols->declareType(std::string($2), $4);
-	delete $4;
+	//delete $4;
 } 
 | ID EQ Typestatement SEMCOL {
 	symbols->declareType(std::string($1), $3->getCopyPtr());
-	//symbols->declareType(std::string($1), $3);
-	delete $3;
+	//delete $3;
 };
 
 VarDecl: VAR SubVarDecl {}; 
@@ -241,14 +240,14 @@ recordsubtype: recordsubtype IDList COL Typestatement SEMCOL {
 	for(int i = 0; i < $2->ids.size(); i++){
 		$$->addType($2->ids[i], $4->getCopyPtr());
 	}
-	delete $4;
+	//delete $4;
 }
 | IDList COL Typestatement SEMCOL {
 	$$ = new Record();
 	for(int i = 0; i < $1->ids.size(); i++){
 		$$->addType($1->ids[i], $3->getCopyPtr());
 	}
-	delete $3;
+	//delete $3;
 }
 ;
 arraytype: ARRAY BOPEN Expression COL Expression BCLOSE OF Typestatement {
@@ -562,7 +561,7 @@ ExpressionsList: ExpressionsList COMMA Expression {
 | Expression {
 	$$ = new ExpressionsList();
 	$$->add($1);
-}	;
+};
 
 Assignment: LValue ASSIGN Expression {
 	MemExpression* mymemory = dynamic_cast<MemExpression*>($1);
@@ -941,6 +940,7 @@ Expression: Expression OR Expression {
 	$$ = $1;
 }
 | STR {
+	std::cerr << $1 << " incoming string\n";
 	$$ = new ConstExpression(strlist->add(std::string($1)), new String());
 }
 | CHAR {
