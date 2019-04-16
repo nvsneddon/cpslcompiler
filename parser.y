@@ -318,6 +318,8 @@ Statement: Assignment {}
 | StopStatement {
 	std::cout << "li $v0, 10" << std::endl;
 	std::cout << "syscall" << std::endl;
+	//print out the rest of the labels
+	strlist->printLabels();
 	exit(0);
 } 
 | ReturnStatement {} 
