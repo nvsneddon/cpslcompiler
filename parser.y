@@ -914,12 +914,28 @@ Expression: Expression OR Expression {
 	$$ = $3;
 }
 | PRED POPEN Expression PCLOSE {
-	$$ = $3->sub(new ConstExpression(1));
-	delete $3;
+	ConstExpression* c = new ConstExpression(1);
+	$$ = $3->sub(c);
+	delete c;
+	MemExpression* m3 = dynamic_cast<MemExpression*>($3);
+	if(m3 == NULL){
+		delete $3;
+	}
+	else if (m3->isTemporary()){
+		delete $3;
+	}
 }
 | SUCC POPEN Expression PCLOSE {
-	$$ = $3->add(new ConstExpression(1));
-	delete $3;
+	ConstExpression* c = new ConstExpression(1);
+	$$ = $3->add(c);
+	delete c;
+	MemExpression* m3 = dynamic_cast<MemExpression*>($3);
+	if(m3 == NULL){
+		delete $3;
+	}
+	else if (m3->isTemporary()){
+		delete $3;
+	}
 }
 | LValue {
 	$$ = $1;
