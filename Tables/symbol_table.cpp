@@ -16,13 +16,24 @@ std::string SymbolTable::getReferencePointer(){
     return "$gp";
 }
 
-void SymbolTable::declareVariable(std::string varname, Type* t){
+void SymbolTable::declareVariable(std::string varname, Type* t, bool forvar){
     auto it = constants.find(varname);
     if(it != constants.end() && findVariable(varname) != NULL){
         std::cerr << "Cannot declare a variable again\n";
         throw "error";
     }
-    variables[0].insert(std::make_pair(varname, new MemExpression(getOffset(t->size()), getReferencePointer(), t)));
+    MemExpression* m = new MemExpression(getOffset(t->size()), getReferencePointer(), t);
+    if(forvar)
+        forvariables.push_front(m);
+    variables[0].insert(std::make_pair(varname, m));
+}
+
+void SymbolTable::declareVariable(std::string varname, Type* t){
+    declareVariable(varname, t, false);
+}
+
+void SymbolTable::declareForVariable(std::string varname, Type* t){
+    declareVariable(varname, t, true);
 }
 
 void SymbolTable::declareConstant(std::string varname, ConstExpression* ex){
@@ -87,6 +98,10 @@ void SymbolTable::removeScope(){
     for (auto it = variables[0].begin(); it != variables[0].end(); it++ ){
         delete it->second;
     }
+    variables.pop_front();
+}
+
+void SymbolTable::removeForVar(){
     variables.pop_front();
 }
 

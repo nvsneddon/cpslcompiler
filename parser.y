@@ -481,19 +481,53 @@ repeatlabel: REPEAT{
 };
 
 ForStatement: ForExpr DOWNTO Expression DO StatementSequence END {
+	MemExpression* m = symbols->getForVariable();
+	RegExpression* r = m->copyAsRegExpression();
+	std::cout << "addi " << r->getRegister() << ", " << r->getRegister() << ", -1" << std::endl;
+	RegExpression* r2 = $3->copyAsRegExpression();
+	m->storeExpression(r);
+	std::cout << "bge " << r->getRegister() << ", " << r2->getRegister() << std::endl; 
 
 	symbols->removeScope();
+	symbols->removeForVar();
+	delete r;
+	delete r2;
+	if (MemExpression* m = dynamic_cast<MemExpression*>($3)){
+		if(m->isTemporary()){
+			delete $3;
+		}
+	}
+	else{
+		delete $3;
+	}
 }
 | ForExpr TO Expression DO StatementSequence END {
+	MemExpression* m = symbols->getForVariable();
+	RegExpression* r = m->copyAsRegExpression();
+	std::cout << "addi " << r->getRegister() << ", " << r->getRegister() << ", 1" << std::endl;
+	RegExpression* r2 = $3->copyAsRegExpression();
+	m->storeExpression(r);
+	std::cout << "ble " << r->getRegister() << ", " << r2->getRegister() << ", forbody" << $1 << std::endl; 
 
 	symbols->removeScope();
+	symbols->removeForVar();
+	delete r;
+	delete r2;
+	if (MemExpression* m = dynamic_cast<MemExpression*>($3)){
+		if(m->isTemporary()){
+			delete $3;
+		}
+	}
+	else{
+		delete $3;
+	}
 };
 
 ForExpr: FOR ID ASSIGN Expression{
 	//This part makes initializes the expression
 	int x = LoopLabels::forLabel();
 	symbols->addScope();
-	symbols->declareVariable(std::string($2), $4->getExpressionType() -> getCopyPtr());
+	symbols->declareForVariable(std::string($2), $4->getExpressionType() -> getCopyPtr());
 	MemExpression* m = symbols->findVariable(std::string($2));
 	m->storeExpression($4);
 	if(MemExpression* m2 = dynamic_cast<MemExpression*>($4)){
@@ -502,7 +536,7 @@ ForExpr: FOR ID ASSIGN Expression{
 		}
 	}
 	delete $4;
-	std::cout << "forbody" << x << std::endl;
+	std::cout << "forbody" << x << ":" << std::endl;
 	$$ = x;
 };
 

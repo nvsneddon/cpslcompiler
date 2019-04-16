@@ -20,11 +20,14 @@ class SymbolTable{
         ConstExpression* findConstant(std::string myvar);
         Type* findType(std::string mytype);
         void declareVariable(std::string, Type*);
+        void declareVariable(std::string, Type*, bool);
+        void declareForVariable(std::string, Type*);
         void declareConstant(std::string, ConstExpression*);
         void declareType(std::string, Type*);
         void printStringLabels();
         void addScope();
         void removeScope();
+        void removeForVar();
         std::string getReferencePointer();
         int appendString(std::string str);
         void printStats();
