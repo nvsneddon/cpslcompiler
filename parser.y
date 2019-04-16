@@ -608,7 +608,7 @@ LValue: ID {
 			$$ = new ConstExpression(0, new Boolean());
 		}
 		else{
-			std::cerr << "Variable not defined" << std::endl;
+			std::cerr << "Variable " << $1 << " not defined" << std::endl;
 			throw "L Value error";
 		}
 	}
@@ -940,7 +940,6 @@ Expression: Expression OR Expression {
 	$$ = $1;
 }
 | STR {
-	std::cerr << $1 << " incoming string\n";
 	$$ = new ConstExpression(strlist->add(std::string($1)), new String());
 }
 | CHAR {

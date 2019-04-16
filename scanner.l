@@ -72,6 +72,6 @@ id  [a-zA-Z][a-zA-Z0-9_]*
 {DIGIT}+ {yylval.val = atoi(yytext); return NUMBER;}
 0x({DIGIT}+) {yylval.val = atoi(yytext); return NUMBER;}
 \'.\'|\'\\n\' {yylval.id = strdup(yytext); return CHAR;}
-\".*\" {yylval.id = strdup(yytext); return STR;}
+\"[^\"]*\" {yylval.id = strdup(yytext); return STR;}
 $(.*)\n {}
 [ \t\n] {}
