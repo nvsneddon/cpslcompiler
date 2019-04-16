@@ -139,6 +139,12 @@ Program: ConstantOption TypeOption VarOption Profunct Block DEC {
 	strlist->printLabels();
 };
 
+Program: ConstantOption TypeOption VarOption Block DEC {
+	std::cout << "li $v0, 10" << std::endl;
+	std::cout << "syscall" << std::endl;
+	strlist->printLabels();
+};
+
 ConstantOption: ConstantDecl {}
 	| {};
 
@@ -151,8 +157,7 @@ VarOption: VarDecl {}
 Profunct: Profunct ProcedureDecl {} 
 | Profunct FunctionDecl {} 
 | ProcedureDecl {}
-| FunctionDecl {}
-| {};
+| FunctionDecl {};
 
 ConstantDecl: CONST ConstSubDecl {} ;
 
@@ -647,9 +652,11 @@ Assignment: LValue ASSIGN Expression {
 		delete $1;
 	}
 };
+
 LValue: ID {
 	//$$ = $1;
-	Write::comment("Looking for " + std::string($1));
+	//Write::comment("Looking for " + std::string($1));
+	//std::cerr << "Id here is " << std::string($1) << std::endl;
 	Expression* c = symbols->findConstant(std::string($1));
 	if (c != NULL){
 		$$ = c;
@@ -1020,7 +1027,7 @@ Expression: Expression OR Expression {
 			std::cerr << "Somehow a wrong whitespace character showed up!";
 		}
 	}
-	$$ = new ConstExpression(int(c), new Char()); //TODO Make sure that this isn't spaghetti code. I think the index is 1 because the str looks like 'x'
+	$$ = new ConstExpression(int(c), new Char());
 }
 | NUMBER {
 	$$ = new ConstExpression($1); 

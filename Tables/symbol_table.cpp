@@ -102,7 +102,7 @@ void SymbolTable::removeScope(){
 }
 
 void SymbolTable::removeForVar(){
-    variables.pop_front();
+    forvariables.pop_front();
 }
 
 int SymbolTable::appendString(std::string str){
