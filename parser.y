@@ -873,8 +873,8 @@ Expression: Expression OR Expression {
 	$$ = $1->add($3);
 	MemExpression* m1 = dynamic_cast<MemExpression*>($1);
 	MemExpression* m3 = dynamic_cast<MemExpression*>($3);
-	ConstExpression* c1 = dynamic_cast<ConstExpression*>($1);
-	ConstExpression* c3 = dynamic_cast<ConstExpression*>($$);
+	//ConstExpression* c1 = dynamic_cast<ConstExpression*>($1);
+	//ConstExpression* c3 = dynamic_cast<ConstExpression*>($$);
 	if(m1 == NULL) {
 		delete $1;
 	}
@@ -957,7 +957,18 @@ Expression: Expression OR Expression {
 	}
 }
 | TILDA Expression {}
-| SUB Expression {}
+| SUB Expression {
+	Expression* e = $2->sub($2);
+	Expression* e2 = e->sub($2);
+	$$ = e2;
+	MemExpression* m1 = dynamic_cast<MemExpression*>($2);
+	if(m1 == NULL) {
+		delete $2;
+	}
+	else if(m1->isTemporary()){
+		delete $2;
+	}
+}
 | POPEN Expression PCLOSE { 
 	$$ = $2; 
 }
