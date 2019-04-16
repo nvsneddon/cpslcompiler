@@ -137,9 +137,8 @@ Program: ConstantOption TypeOption VarOption Profunct Block DEC {
 	std::cout << "li $v0, 10" << std::endl;
 	std::cout << "syscall" << std::endl;
 	strlist->printLabels();
-};
-
-Program: ConstantOption TypeOption VarOption Block DEC {
+}
+| ConstantOption TypeOption VarOption Block DEC {
 	std::cout << "li $v0, 10" << std::endl;
 	std::cout << "syscall" << std::endl;
 	strlist->printLabels();
