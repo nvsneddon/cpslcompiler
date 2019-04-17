@@ -341,6 +341,9 @@ IfStatement: ifbody ElseIfStatement ElseStatement END {
 | ifbody ElseStatement END {
 	Write::comment("End of ifstatement with an else statement");
 	std::cout << llbl->getEndLabel() << ":" << std::endl;
+	if(llbl->getEndLabel() == ""){
+		std::cerr << "GRRR!!!!" << std::endl;
+	}
 	llbl->popEndLabel();
 	llbl->incIfLabel();
 }
