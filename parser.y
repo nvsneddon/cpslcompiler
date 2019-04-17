@@ -335,28 +335,28 @@ Statement: Assignment {}
 IfStatement: ifbody ElseIfStatement ElseStatement END {
 	Write::comment("End of ifstatement with an elseif and else statement");
 	std::cout << llbl->getEndLabel() << ":" << std::endl;
-	llbl->incEndLabel();
+	llbl->popEndLabel();
 	llbl->incIfLabel();
 }
 | ifbody ElseStatement END {
 	Write::comment("End of ifstatement with an else statement");
 	std::cout << llbl->getEndLabel() << ":" << std::endl;
-	llbl->incEndLabel();
+	llbl->popEndLabel();
 	llbl->incIfLabel();
 }
 | ifbody ElseIfStatement END {
 	Write::comment("End of ifstatement with an elseif statement");
 	std::cout << "eval" << llbl->ifLabel() << ":" << std::endl;
 	std::cout << llbl->getEndLabel() << ":" << std::endl;
-	llbl->incEndLabel();
+	llbl->popEndLabel();
 	llbl->incIfLabel();
 }
 | ifbegin THEN StatementSequence END {
 	//std::cout << "eval" << $1 << ":" << std::endl;
 	std::cout << llbl->getEndLabel() << ":" << std::endl;
 	std::cout << "eval" << $1 << ":" << std::endl;
+	llbl->popEndLabel();
 	llbl->incIfLabel();
-	llbl->incEndLabel();
 	Write::comment("End of ifstatement with no else or else if");
 };
 
@@ -373,7 +373,7 @@ ifbegin: iflabel Expression {
 
 		}
 		else{
-			std::cout << "j " << $1 << std::endl;
+			std::cout << "j eval" << $1 << std::endl;
 		}
 	}
 	else{
@@ -388,19 +388,20 @@ ifbegin: iflabel Expression {
 
 iflabel: IF {
 	llbl->incIfLabel();
+	llbl->startEndLabel();
 	$$ = llbl->ifLabel();
 	};
 
 
 ElseIfStatement: ElseIfStatement elseifbegin THEN StatementSequence {
 	std::cout << "j " << llbl->getEndLabel() << std::endl;
-	std::cout << "eval" << llbl->ifLabel() << ":\n";
+	std::cout << "eval" << $2 << ":\n";
 	//llbl->incIfLabel();
 	//Write::comment("elseif statement with prior elseif statements");
 }
 | elseifbegin THEN StatementSequence {
 	std::cout << "j " << llbl->getEndLabel() << std::endl;
-	std::cout << "eval" << llbl->ifLabel() << ":\n";
+	std::cout << "eval" << $1 << ":\n";
 	//llbl->incIfLabel();
 	//Write::comment("elseif statement with no prior elseif statement");
 };

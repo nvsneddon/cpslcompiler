@@ -1,6 +1,7 @@
 #ifndef LOOPLABELS_HPP
 #define LOOPLABELS_HPP
 #include <string>
+#include <deque>
 
 class LoopLabels{
 public:
@@ -12,10 +13,12 @@ public:
     int elseIfLabel();
     int elseLabel();
     //void resetEndLabel() { labelnr = 0; }
-    void incEndLabel() { endlabelnr++; }
+    void startEndLabel() { endlabeldeque.push_front(endlabelnr++); } 
     void incIfLabel() { iflabel++; }
-    std::string getEndLabel() { return "end" + endlabelnr; }
+    void popEndLabel() { endlabeldeque.pop_front(); }
+    std::string getEndLabel() { return "end" + endlabeldeque[0]; }
 private:
+    std::deque<int> endlabeldeque;
     int endlabelnr;
     int iflabel;
 };
