@@ -5,6 +5,7 @@ parser.output
 parser.tab.c
 parser.tab.h
 y.tab.c
+lex.yy.c
 *.cpsl
 cpsl
 /cpsl-files
