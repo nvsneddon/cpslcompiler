@@ -2,6 +2,8 @@
 #define REG_TABLE_HPP
 
 #include <stack>
+#include <vector>
+#include <algorithm>
 #include <string>
 #include <iostream>
 
@@ -14,6 +16,7 @@ public:
     void getStats();
 private:
     std::stack<std::string> regs;
+    std::vector<std::string> usedregs;
 };
 
 #endif

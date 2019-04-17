@@ -121,13 +121,29 @@
 %type<elist> ExpressionsList
 
 
+//%left OR
+//%left AND
+//%left ADD SUB
+//%left MULT DIV PERC
+//%nonassoc EQ ARROWS GT GTE LT LTE
+//%right TILDA
+//%right NEG
+
+//%right NEG
+//%right TILDA
+//%nonassoc EQ ARROWS GT GTE LT LTE
+//%left MULT DIV PERC
+//%left ADD SUB
+//%left AND
+//%left OR
+
+%right TILDA
+%right NEG
+%nonassoc EQ ARROWS GT GTE LT LTE
 %left OR
 %left AND
 %left ADD SUB
 %left MULT DIV PERC
-%nonassoc EQ ARROWS GT GTE LT LTE
-%right TILDA
-%right NEG
 
 %define parse.error verbose
 %locations
@@ -282,12 +298,16 @@ IDList: IDList COMMA ID {
 	$$->ids.push_back(std::string($1));
 };
 
-ProcedureDecl: PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL body SEMCOL {}
-| PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL FORWARD SEMCOL {}
+ProcedureDecl: ProcedureBegin body SEMCOL {}
+| ProcedureBegin FORWARD SEMCOL {}
 ;
-FunctionDecl: FUNCTION ID POPEN FormalParameters PCLOSE COL Typestatement SEMCOL body SEMCOL{}
-| FUNCTION ID POPEN FormalParameters PCLOSE COL Typestatement SEMCOL FORWARD SEMCOL{}
+FunctionDecl: FunctionBegin body SEMCOL{}
+| FunctionBegin FORWARD SEMCOL{}
 ; 
+
+FunctionBegin: FUNCTION ID POPEN FormalParameters PCLOSE COL Typestatement SEMCOL {};
+
+ProcedureBegin: PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL {};
 
 body: ConstSubDecl TypeDecl VarDecl Block {}
 | TypeDecl VarDecl Block {}

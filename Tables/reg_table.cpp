@@ -29,10 +29,17 @@ std::string RegTable::getNewRegister(){
     }
     std::string returnstring = regs.top();
     regs.pop();
+    usedregs.push_back(returnstring);
     return returnstring;
 }
 void RegTable::addRegister(std::string r){
     regs.push(r);
+    auto it = std::find(usedregs.begin(), usedregs.end(), r);
+    if (it != usedregs.end()){
+        usedregs.erase(it);
+    } else{
+        std::cerr << "Something went wrong here\n";
+    }
 }
 
 void RegTable::getStats(){
