@@ -12,6 +12,9 @@ public:
     void declare();
     void call();
     std::map<std::string, Type*> params;
+    int getStackSize() { return stacksize; }
+protected:
+    int stacksize;
 };
 
 #endif
