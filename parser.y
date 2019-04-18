@@ -478,16 +478,20 @@ whilebegin: whilelabel Expression{
 		delete r;
 	}
 	$$ = $1;
-	delete $2;
+	MemExpression* m = dynamic_cast<MemExpression*>($2);
+	if(m==NULL)
+		delete $2;
 };
 
 whilelabel: WHILE{
 	int x = LoopLabels::whileLabel();
 	std::cout << "while_test" << x << ":" << std::endl;
+	Write::comment("This is where while starts");
 	$$ = x;
 };
 
 RepeatStatement: repeatlabel StatementSequence UNTIL Expression {
+	Write::comment("This is right before we do everything");
 	if(ConstExpression* c = dynamic_cast<ConstExpression*>($4)){
 		if(c->getElement() != 0){
 		}
@@ -497,11 +501,14 @@ RepeatStatement: repeatlabel StatementSequence UNTIL Expression {
 	}
 	else{
 		RegExpression* r = $4->copyAsRegExpression();
-		std::cout << "beqz " << r->getRegister() << ", repeat" << $1 << std::endl;
+		std::cout << "bnez " << r->getRegister() << ", repeat" << $1 << std::endl;
+		Write::comment("In while test");
 		delete r;
 	}
 	$$ = $1;
-	delete $4;
+	MemExpression* m = dynamic_cast<MemExpression*>($4);
+	if(m==NULL)
+		delete $4;
 };
 
 repeatlabel: REPEAT{
