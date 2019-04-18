@@ -6,13 +6,9 @@
 
 #include "../Types/type.hpp"
 #include "../Tables/symbol_table.hpp"
+#include "parameterlist.hpp"
 
 extern SymbolTable* symbols;
-
-struct Parameter{
-    std::string name;
-    Type* type;
-};
 
 class Procedure {
 
@@ -23,7 +19,7 @@ public:
     int getStackSize() { return stacksize; }
     void declareParameters();
 protected:
-    std::vector<Parameter> parameterlist;
+    ParameterList plist;
     int stacksize;
 };
 

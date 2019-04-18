@@ -8,6 +8,7 @@ RegTable* rtable;
 IdList* idlist;
 StringList* strlist;
 LoopLabels* llbl;
+FunctionList* flist;
 
 
 int main(){
@@ -17,6 +18,7 @@ int main(){
 	rtable = new RegTable();
 	strlist = new StringList();
 	llbl = new LoopLabels();
+	flist = new FunctionList();
 	yyparse();
 	delete symbols;
 	delete elist;
@@ -24,4 +26,5 @@ int main(){
 	delete rtable;
 	delete strlist;
 	delete llbl;
+	delete flist;
 }

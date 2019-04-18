@@ -7,6 +7,7 @@
 
 class FunctionList {
 public:
+    FunctionList(){}
     void declareFunction();
 
 private:

@@ -19,6 +19,7 @@
 	extern RegTable* rtable;
 	extern LoopLabels* llbl;
 	extern StringList* strlist;
+	extern FunctionList* flist;
 
 	#endif
 }
@@ -306,10 +307,12 @@ FunctionDecl: FunctionBegin body SEMCOL{}
 ; 
 
 FunctionBegin: FUNCTION ID POPEN FormalParameters PCLOSE COL Typestatement SEMCOL {
-	
+
 };
 
-ProcedureBegin: PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL {};
+ProcedureBegin: PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL {
+
+};
 
 body: ConstSubDecl TypeDecl VarDecl Block {}
 | TypeDecl VarDecl Block {}

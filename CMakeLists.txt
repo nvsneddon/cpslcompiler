@@ -30,6 +30,8 @@ set(cpsl_srcs
 	Function/functionlist.hpp
 	Function/function.hpp
 	Function/function.cpp
+	Function/parameterlist.hpp
+	Function/parameterlist.cpp
 	Lists/idlist.cpp
 	Lists/idlist.hpp
 	Lists/stringlist.hpp
