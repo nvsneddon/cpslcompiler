@@ -20,6 +20,7 @@ RegTable::RegTable(){
     regs.push("$t2");
     regs.push("$t1");
     regs.push("$t0");
+    usedregs.push_back("$ra");
 }
 
 std::string RegTable::getNewRegister(){
