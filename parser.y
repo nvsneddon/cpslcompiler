@@ -305,7 +305,9 @@ FunctionDecl: FunctionBegin body SEMCOL{}
 | FunctionBegin FORWARD SEMCOL{}
 ; 
 
-FunctionBegin: FUNCTION ID POPEN FormalParameters PCLOSE COL Typestatement SEMCOL {};
+FunctionBegin: FUNCTION ID POPEN FormalParameters PCLOSE COL Typestatement SEMCOL {
+	
+};
 
 ProcedureBegin: PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL {};
 

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <deque>
+#include <stack>
 #include <map>
 #include "../Expressions/expression.hpp"
 #include "../Expressions/constexpression.hpp"
@@ -26,6 +27,8 @@ class SymbolTable{
         void declareType(std::string, Type*);
         void printStringLabels();
         void addScope();
+        void startFunction();
+        void startFunction(std::map<std::string, Type*> params);
         void removeScope();
         void removeForVar();
         std::string getReferencePointer();
@@ -40,6 +43,7 @@ class SymbolTable{
         std::vector<std::string> stringVariables;
         std::map<std::string, Type*> types;
         std::deque<MemExpression*> forvariables;
+        std::stack<std::string> refPointers;
 };
 
 

@@ -2,6 +2,7 @@
 
 SymbolTable::SymbolTable(){
     addScope(); 
+    refPointers.push("$gp");
 }
 
 SymbolTable::~SymbolTable(){
@@ -12,8 +13,20 @@ SymbolTable::~SymbolTable(){
     }
 }
 
+void SymbolTable::startFunction(){
+    addScope();
+    refPointers.push("$fp");
+}
+
+void SymbolTable::startFunction(std::map<std::string, Type*> params){
+    startFunction();
+    for(auto it = params.begin(); it != params.end(); it++){
+        declareVariable(it->first, it->second->getCopyPtr());
+    }
+}
+
 std::string SymbolTable::getReferencePointer(){
-    return "$gp";
+    return refPointers.top();
 }
 
 void SymbolTable::declareVariable(std::string varname, Type* t, bool forvar){

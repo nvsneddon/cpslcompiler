@@ -20,6 +20,7 @@ RegTable::RegTable(){
     regs.push("$t2");
     regs.push("$t1");
     regs.push("$t0");
+    usedregs.push_back("$fp");
     usedregs.push_back("$ra");
 }
 
@@ -39,8 +40,28 @@ void RegTable::addRegister(std::string r){
     if (it != usedregs.end()){
         usedregs.erase(it);
     } else{
-        std::cerr << "Something went wrong here\n";
+        std::cerr << "Something went wrong taking the register out of the used register pool.\n";
     }
+}
+
+void RegTable::spillregisters(int offset){
+   for(auto it = usedregs.begin(); it != usedregs.end(); it++, offset += 4){
+       std::cout << "sw " << *it << ", " << offset << "(sp)" << std::endl;
+   } 
+}
+
+void RegTable::unspillregisters(int offset){
+   for(auto it = usedregs.begin(); it != usedregs.end(); it++, offset += 4){
+       std::cout << "lw " << *it << ", " << offset << "(sp)" << std::endl;
+   } 
+}
+
+int RegTable::getSpillRegSize(){
+   int size = 0; 
+   for(auto it = usedregs.begin(); it != usedregs.end(); it++){
+       size += 4;
+    } 
+    return size;
 }
 
 void RegTable::getStats(){
