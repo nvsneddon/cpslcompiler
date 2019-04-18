@@ -16,5 +16,8 @@
 #include "Types/array.hpp"
 #include "Types/record.hpp"
 #include "Labels/looplabels.hpp"
+#include "Function/functionlist.hpp"
+#include "Function/function.hpp"
+#include "Function/procedure.hpp"
 
 #endif

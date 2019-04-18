@@ -13,13 +13,13 @@ SymbolTable::~SymbolTable(){
     }
 }
 
-void SymbolTable::startFunction(){
+void SymbolTable::startFunctionScope(){
     addScope();
     refPointers.push("$fp");
 }
 
-void SymbolTable::startFunction(std::map<std::string, Type*> params){
-    startFunction();
+void SymbolTable::startFunctionScope(std::map<std::string, Type*> params){
+    startFunctionScope();
     for(auto it = params.begin(); it != params.end(); it++){
         declareVariable(it->first, it->second->getCopyPtr());
     }

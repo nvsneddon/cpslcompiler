@@ -25,6 +25,11 @@ set(cpsl_srcs
 	Statements/write.cpp
 	Statements/statement.hpp
 	Statements/statementlist.hpp
+	Function/procedure.hpp
+	Function/procedure.cpp
+	Function/functionlist.hpp
+	Function/function.hpp
+	Function/function.cpp
 	Lists/idlist.cpp
 	Lists/idlist.hpp
 	Lists/stringlist.hpp
