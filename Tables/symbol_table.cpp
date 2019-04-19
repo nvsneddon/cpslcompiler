@@ -113,6 +113,7 @@ void SymbolTable::removeScope(){
         delete it->second;
     }
     variables.pop_front();
+    refPointers.pop();
     offsets.pop_front();
 }
 

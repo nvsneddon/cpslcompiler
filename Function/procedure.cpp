@@ -21,7 +21,7 @@ void Procedure::declare() {
         plist->saveParameters();
 }
 
-void Procedure::call() {
+RegExpression* Procedure::call() {
     int sizeOffset = rtable->getUsedSize()*4+stacksize;
     std::cout << "addi $sp, $sp, -" << sizeOffset << std::endl;
     rtable->spillregisters(stacksize);
@@ -29,9 +29,10 @@ void Procedure::call() {
     std::cout << "jal " << name << std::endl;
     rtable->unspillregisters(stacksize);
     std::cout << "addi $sp, $sp, " << sizeOffset << std::endl;
+    return NULL;
 }
 
-void Procedure::call(ExpressionsList* e) {
+RegExpression* Procedure::call(ExpressionsList* e) {
     int sizeOffset = rtable->getUsedSize()*4+stacksize;
     int sizeCounter = 0;
 
@@ -47,6 +48,7 @@ void Procedure::call(ExpressionsList* e) {
     std::cout << "jal " << name << std::endl;
     rtable->unspillregisters(stacksize);
     std::cout << "addi $sp, $sp, " << sizeOffset << std::endl;
+    return NULL;
 }
 
 Procedure::~Procedure(){
