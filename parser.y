@@ -602,7 +602,9 @@ ForExpr: FOR ID ASSIGN Expression{
 StopStatement: STOP {};
 
 ReturnStatement: RETURN Expression {} 
-| RETURN {};
+| RETURN {
+	std::cout << "jr $ra" << std::endl; 
+};
 
 ReadStatement: READ POPEN ReadValues PCLOSE {};
 
@@ -666,8 +668,11 @@ WriteStatement: WRITE POPEN ExpressionsList PCLOSE {
 };
 
 ProcedureCall: ID POPEN ExpressionsList PCLOSE {
+	
 }
-| ID POPEN PCLOSE {};
+| ID POPEN PCLOSE {
+	flist->callFunction(std::string($1));
+};
 
 ExpressionsList: ExpressionsList COMMA Expression { 
 	$1->add($3); 

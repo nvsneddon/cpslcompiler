@@ -7,9 +7,10 @@
 #include "../Types/type.hpp"
 #include "parameterlist.hpp"
 #include "../Tables/symbol_table.hpp"
+#include "../Tables/reg_table.hpp"
 
 extern SymbolTable* symbols;
-
+extern RegTable* rtable;
 
 class Procedure {
 

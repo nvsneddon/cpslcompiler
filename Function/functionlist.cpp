@@ -10,3 +10,14 @@ FunctionList::~FunctionList(){
         delete it->second;
     }
 }
+
+void FunctionList::callFunction(std::string n){
+    auto it = functions.find(n);
+    if(it != functions.end()){
+        it->second->call();
+    }
+    else{
+        std::cerr << "Function " << n << " not defined in code.\n";
+        throw "function error";
+    }
+}
