@@ -307,6 +307,7 @@ IDList: IDList COMMA ID {
 ProcedureDecl: ProcedureBegin body SEMCOL {
 	std::cout << "jr $ra" << std::endl; 
 	flist->removeCurrProcedure();
+	symbols->removeScope();
 	Write::comment("End of the procedure");
 }
 | ProcedureBegin FORWARD SEMCOL {}
@@ -314,6 +315,7 @@ ProcedureDecl: ProcedureBegin body SEMCOL {
 FunctionDecl: FunctionBegin body SEMCOL{
 	//std::cout << "jr $ra" << std::endl; 
 	flist->removeCurrProcedure();
+	symbols->removeScope();
 	Write::comment("End of the function");
 }
 | FunctionBegin FORWARD SEMCOL{}
