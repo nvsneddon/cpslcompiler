@@ -13,7 +13,11 @@ public:
     std::string getNewRegister();
     void addRegister(std::string r);
     int getSize(){ return regs.size(); }
+    int getUsedSize() { return usedregs.size(); }
+    int getSpillRegSize();
     void getStats();
+    void spillregisters(int offset);
+    void unspillregisters(int offset);
 private:
     std::stack<std::string> regs;
     std::vector<std::string> usedregs;

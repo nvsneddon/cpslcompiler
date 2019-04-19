@@ -19,6 +19,7 @@
 	extern RegTable* rtable;
 	extern LoopLabels* llbl;
 	extern StringList* strlist;
+	extern FunctionList* flist;
 
 	#endif
 }
@@ -35,6 +36,7 @@
 	Record* rcrd;
 	Expression* express;
 	ExpressionsList* elist;
+	ParameterList* plist;
 }
 
 %token ADD
@@ -119,6 +121,7 @@
 %type<num> RepeatStatement
 %type<express> Expression
 %type<elist> ExpressionsList
+%type<plist> FormalParameters
 
 
 //%left OR
@@ -149,7 +152,7 @@
 %locations
 %%
 
-Program: ConstantOption TypeOption VarOption Profunct Block DEC {
+Program: ConstantOption TypeOption VarOption Profunctblock Block DEC {
 	std::cout << "li $v0, 10" << std::endl;
 	std::cout << "syscall" << std::endl;
 	strlist->printLabels();
@@ -168,6 +171,10 @@ TypeOption: TypeDecl {}
 
 VarOption: VarDecl {}
 	| {};
+
+Profunctblock: Profunct {
+	std::cout << "main:" << std::endl;
+};
 
 Profunct: Profunct ProcedureDecl {} 
 | Profunct FunctionDecl {} 
@@ -289,7 +296,6 @@ arraytype: ARRAY BOPEN Expression COL Expression BCLOSE OF Typestatement {
 ;
 
 IDList: IDList COMMA ID {
-	//Do I do this or not? With the expressionlist it seems to be working fine.
 	$$=$1;
 	$$->ids.push_back(std::string($3));
 }  
@@ -298,16 +304,25 @@ IDList: IDList COMMA ID {
 	$$->ids.push_back(std::string($1));
 };
 
-ProcedureDecl: ProcedureBegin body SEMCOL {}
+ProcedureDecl: ProcedureBegin body SEMCOL {
+	std::cout << "jr $ra" << std::endl; 
+	Write::comment("End of the procedure");
+}
 | ProcedureBegin FORWARD SEMCOL {}
 ;
 FunctionDecl: FunctionBegin body SEMCOL{}
 | FunctionBegin FORWARD SEMCOL{}
 ; 
 
-FunctionBegin: FUNCTION ID POPEN FormalParameters PCLOSE COL Typestatement SEMCOL {};
+FunctionBegin: FUNCTION ID POPEN FormalParameters PCLOSE COL Typestatement SEMCOL {
 
-ProcedureBegin: PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL {};
+};
+
+ProcedureBegin: PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL {
+	Write::comment("Begnning of the procedure");
+	Procedure* p = new Procedure(std::string($2), $4);
+	flist->declareFunction(std::string($2), p);
+};
 
 body: ConstSubDecl TypeDecl VarDecl Block {}
 | TypeDecl VarDecl Block {}
@@ -319,14 +334,23 @@ body: ConstSubDecl TypeDecl VarDecl Block {}
 | Block {}
 ;
 
-Block: START StatementSequence END {}
-	;
+Block: START StatementSequence END {};
 
-FormalParameters: {}
+FormalParameters: { $$ = NULL; }
 | FormalParameters SEMCOL VarRef IDList COL Typestatement {} 
-| FormalParameters SEMCOL IDList COL Typestatement {} 
+| FormalParameters SEMCOL IDList COL Typestatement {
+	$$ = $1;
+	for(auto it = $3->ids.begin(); it != $3->ids.end(); it++){
+		$$->addParameter(*it, $5->getCopyPtr());
+	}
+} 
 | VarRef IDList COL Typestatement {} 
-| IDList COL Typestatement {};
+| IDList COL Typestatement {
+	$$ = new ParameterList();
+	for(auto it = $1->ids.begin(); it != $1->ids.end(); it++){
+		$$->addParameter(*it, $3->getCopyPtr());
+	}
+};
 	
 VarRef: VAR {} 
 | REF {};
@@ -580,7 +604,9 @@ ForExpr: FOR ID ASSIGN Expression{
 StopStatement: STOP {};
 
 ReturnStatement: RETURN Expression {} 
-| RETURN {};
+| RETURN {
+	std::cout << "jr $ra" << std::endl; 
+};
 
 ReadStatement: READ POPEN ReadValues PCLOSE {};
 
@@ -644,8 +670,12 @@ WriteStatement: WRITE POPEN ExpressionsList PCLOSE {
 };
 
 ProcedureCall: ID POPEN ExpressionsList PCLOSE {
+	Write::comment("Beginning of procedure call");
+	flist->callFunction(std::string($1), $3);
 }
-| ID POPEN PCLOSE {};
+| ID POPEN PCLOSE {
+	flist->callFunction(std::string($1));
+};
 
 ExpressionsList: ExpressionsList COMMA Expression { 
 	$1->add($3); 
