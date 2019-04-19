@@ -6,6 +6,8 @@
 
 class Function : public Procedure {
 public:
+    Function(std::string n, Type* t);
+    Function(std::string n, ParameterList* p, Type* t);
     Type* getReturnType(){ return returnType; }
     int getReturnSize(){ return returnsize; }
 private:
