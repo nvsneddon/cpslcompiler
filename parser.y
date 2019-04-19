@@ -306,16 +306,23 @@ IDList: IDList COMMA ID {
 
 ProcedureDecl: ProcedureBegin body SEMCOL {
 	std::cout << "jr $ra" << std::endl; 
+	flist->removeCurrProcedure();
 	Write::comment("End of the procedure");
 }
 | ProcedureBegin FORWARD SEMCOL {}
 ;
-FunctionDecl: FunctionBegin body SEMCOL{}
+FunctionDecl: FunctionBegin body SEMCOL{
+	//std::cout << "jr $ra" << std::endl; 
+	flist->removeCurrProcedure();
+	Write::comment("End of the function");
+}
 | FunctionBegin FORWARD SEMCOL{}
 ; 
 
 FunctionBegin: FUNCTION ID POPEN FormalParameters PCLOSE COL Typestatement SEMCOL {
-
+	Write::comment("Begnning of the function");
+	Procedure* p = new Function(std::string($2), $4, $7->getCopyPtr());
+	flist->declareFunction(std::string($2), p);
 };
 
 ProcedureBegin: PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL {
@@ -603,7 +610,28 @@ ForExpr: FOR ID ASSIGN Expression{
 
 StopStatement: STOP {};
 
-ReturnStatement: RETURN Expression {} 
+ReturnStatement: RETURN Expression {
+	Procedure* p = flist->getCurrProcedure(); 
+	if(p == NULL){
+		std::cerr << "Cannot use return statement outside of function body\n";
+		throw "Return error";
+	}
+	Function* f = dynamic_cast<Function*>(p);
+	
+	if(f == NULL){
+		std::cerr << "Cannot return an expression in a procedure\n";
+		throw "Return error";
+	}
+	f->storeExpression($2);
+	std::cout << "jr $ra" << std::endl; 
+	MemExpression* m = dynamic_cast<MemExpression*>($2);
+	if(m==NULL){
+		delete $2;
+	}
+	else if(m->isTemporary()){
+		delete $2;
+	}
+} 
 | RETURN {
 	std::cout << "jr $ra" << std::endl; 
 };
@@ -1034,10 +1062,12 @@ Expression: Expression OR Expression {
 	$$ = $2; 
 }
 | ID POPEN ExpressionsList PCLOSE {
-//		std::cout << $1 << std::endl;
+	std::cerr << $1 << std::endl;
+	flist->callFunction(std::string($1), $3);
 }
 | ID POPEN PCLOSE {
 	//std::cerr << $1 << std::endl;
+	flist->callFunction(std::string($1));
 }
 | CHR POPEN Expression PCLOSE {
 	$3->chr();

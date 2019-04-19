@@ -11,9 +11,14 @@ public:
     void declareFunction(std::string n, Procedure* p);
     void callFunction(std::string fct);
     void callFunction(std::string fct, ExpressionsList* exlist);
-
+    void saveReturnValue(Expression* e);
+    bool isFunction(std::string fct);
+    void markAsCurrProcedure(Procedure* p) { currProcedure = p; }
+    void removeCurrProcedure() { currProcedure = NULL; }
+    Procedure* getCurrProcedure() { return currProcedure; }
 private:
     std::map<std::string, Procedure*> functions; 
+    Procedure* currProcedure;
 };
 
 #endif

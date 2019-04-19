@@ -10,6 +10,9 @@ public:
     Function(std::string n, ParameterList* p, Type* t);
     Type* getReturnType(){ return returnType; }
     int getReturnSize(){ return returnsize; }
+    int getStackSize() { return stacksize + returnsize; }
+    void storeExpression(Expression* e);
+    RegExpression* getExpression();
 private:
     Type* returnType;
     int returnsize;

@@ -2,6 +2,7 @@
 
 void FunctionList::declareFunction(std::string n, Procedure* p){
     p->declare();
+    currProcedure = p;
     functions.insert(std::make_pair(n, p));
 }
 
@@ -22,10 +23,15 @@ void FunctionList::callFunction(std::string n){
     }
 }
 
+bool FunctionList::isFunction(std::string fct){
+    return true;
+}
+
 void FunctionList::callFunction(std::string n, ExpressionsList* exlist){
     auto it = functions.find(n);
     if(it != functions.end()){
         it->second->call(exlist);
+
     }
     else{
         std::cerr << "Function " << n << " not defined in code.\n";
