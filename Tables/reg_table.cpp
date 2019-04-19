@@ -46,7 +46,7 @@ void RegTable::addRegister(std::string r){
 
 void RegTable::spillregisters(int offset){
    for(auto it = usedregs.begin(); it != usedregs.end(); it++, offset += 4){
-       std::cout << "sw " << *it << ", " << offset << "(sp)" << std::endl;
+       std::cout << "sw " << *it << ", " << offset << "($sp)" << std::endl;
    } 
 }
 
