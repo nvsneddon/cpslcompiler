@@ -35,7 +35,7 @@ class SymbolTable{
         int appendString(std::string str);
         void printStats();
         MemExpression* getForVariable();
-        static int getOffset(int);
+        int getOffset(int);
     private:
         std::deque<std::map<std::string, MemExpression*>> variables;    
         std::map<std::string, ConstExpression*> constants;
@@ -44,6 +44,7 @@ class SymbolTable{
         std::map<std::string, Type*> types;
         std::deque<MemExpression*> forvariables;
         std::stack<std::string> refPointers;
+        std::deque<int> offsets;
 };
 
 

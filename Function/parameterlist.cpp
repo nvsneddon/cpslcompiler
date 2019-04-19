@@ -26,3 +26,7 @@ void ParameterList::print() {
         std::cerr << it->name << '\t' << it->type->getTypeAsString() << std::endl;
     }
 }
+
+void ParameterList::saveAsParameter(std::string n, Expression* e){
+
+}

@@ -14,7 +14,6 @@ public:
     void add(Expression* e) { elist.push_back(e);};
     void write();
     int getSize() { return elist.size(); }
-private:
     std::vector<Expression*> elist;
 };
 

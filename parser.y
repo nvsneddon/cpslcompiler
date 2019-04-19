@@ -306,6 +306,7 @@ IDList: IDList COMMA ID {
 
 ProcedureDecl: ProcedureBegin body SEMCOL {
 	std::cout << "jr $ra" << std::endl; 
+	Write::comment("End of the procedure");
 }
 | ProcedureBegin FORWARD SEMCOL {}
 ;
@@ -318,6 +319,7 @@ FunctionBegin: FUNCTION ID POPEN FormalParameters PCLOSE COL Typestatement SEMCO
 };
 
 ProcedureBegin: PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL {
+	Write::comment("Begnning of the procedure");
 	Procedure* p = new Procedure(std::string($2), $4);
 	flist->declareFunction(std::string($2), p);
 };
@@ -668,7 +670,8 @@ WriteStatement: WRITE POPEN ExpressionsList PCLOSE {
 };
 
 ProcedureCall: ID POPEN ExpressionsList PCLOSE {
-	
+	Write::comment("Beginning of procedure call");
+	flist->callFunction(std::string($1), $3);
 }
 | ID POPEN PCLOSE {
 	flist->callFunction(std::string($1));

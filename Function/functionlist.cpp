@@ -21,3 +21,14 @@ void FunctionList::callFunction(std::string n){
         throw "function error";
     }
 }
+
+void FunctionList::callFunction(std::string n, ExpressionsList* exlist){
+    auto it = functions.find(n);
+    if(it != functions.end()){
+        it->second->call(exlist);
+    }
+    else{
+        std::cerr << "Function " << n << " not defined in code.\n";
+        throw "function error";
+    }
+}

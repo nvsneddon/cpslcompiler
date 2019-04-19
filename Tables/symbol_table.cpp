@@ -96,6 +96,7 @@ MemExpression* SymbolTable::findVariable(std::string myvar){
 void SymbolTable::addScope(){
     std::map<std::string, MemExpression*> newmap;
     variables.push_front(newmap);
+    offsets.push_front(0);
 }
 
 MemExpression* SymbolTable::getForVariable(){
@@ -112,6 +113,7 @@ void SymbolTable::removeScope(){
         delete it->second;
     }
     variables.pop_front();
+    offsets.pop_front();
 }
 
 void SymbolTable::removeForVar(){
@@ -133,8 +135,11 @@ void SymbolTable::printStringLabels(){
 
 
 int SymbolTable::getOffset(int size){
-    static int offset = 0;
-    int returnvalue = offset;
-    offset += size;
+    int returnvalue = offsets[0];
+    offsets[0] += size;
     return returnvalue;
+    //static int offset = 0;
+    //int returnvalue = offset;
+    //offset += size;
+    //return returnvalue;
 }

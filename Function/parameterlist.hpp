@@ -20,6 +20,7 @@ public:
     void addParameter(std::string n, Type* t);
     int getSize();
     void saveParameters();
+    void saveAsParameter(std::string n, Expression* e);
     void print(); 
 private:
     std::vector<Parameter> plist;

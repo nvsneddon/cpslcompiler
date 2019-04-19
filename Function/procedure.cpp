@@ -22,9 +22,31 @@ void Procedure::declare() {
 }
 
 void Procedure::call() {
+    int sizeOffset = rtable->getUsedSize()*4+stacksize;
+    std::cout << "addi $sp, $sp, -" << sizeOffset << std::endl;
     rtable->spillregisters(stacksize);
+    std::cout << "move $fp, $sp" << std::endl;
     std::cout << "jal " << name << std::endl;
     rtable->unspillregisters(stacksize);
+    std::cout << "addi $sp, $sp, " << sizeOffset << std::endl;
+}
+
+void Procedure::call(ExpressionsList* e) {
+    int sizeOffset = rtable->getUsedSize()*4+stacksize;
+    int sizeCounter = 0;
+
+    std::cout << "addi $sp, $sp, -" << sizeOffset << std::endl;
+    rtable->spillregisters(stacksize);
+    std::cout << "move $fp, $sp" << std::endl;
+    for(int i = 0; i < e->getSize(); i++){
+        RegExpression* r = e->elist[i]->copyAsRegExpression();
+        std::cout << "sw " << r->getRegister() << ", " << sizeCounter << "($sp)" << std::endl;
+        sizeCounter += r->getExpressionType()->size();
+        delete r;
+    }
+    std::cout << "jal " << name << std::endl;
+    rtable->unspillregisters(stacksize);
+    std::cout << "addi $sp, $sp, " << sizeOffset << std::endl;
 }
 
 Procedure::~Procedure(){

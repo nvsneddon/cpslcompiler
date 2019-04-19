@@ -8,6 +8,7 @@
 #include "parameterlist.hpp"
 #include "../Tables/symbol_table.hpp"
 #include "../Tables/reg_table.hpp"
+#include "../Expressions/expressionslist.hpp"
 
 extern SymbolTable* symbols;
 extern RegTable* rtable;
@@ -20,6 +21,7 @@ public:
     virtual ~Procedure();
     void declare(); 
     void call();
+    void call(ExpressionsList* e);
     std::map<std::string, Type*> params;
     int getStackSize() { return stacksize; }
     void declareParameters();
