@@ -24,6 +24,7 @@ void Procedure::declare() {
 void Procedure::call() {
     rtable->spillregisters(stacksize);
     std::cout << "jal " << name << std::endl;
+    rtable->unspillregisters(stacksize);
 }
 
 Procedure::~Procedure(){

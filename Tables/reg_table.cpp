@@ -52,7 +52,7 @@ void RegTable::spillregisters(int offset){
 
 void RegTable::unspillregisters(int offset){
    for(auto it = usedregs.begin(); it != usedregs.end(); it++, offset += 4){
-       std::cout << "lw " << *it << ", " << offset << "(sp)" << std::endl;
+       std::cout << "lw " << *it << ", " << offset << "($sp)" << std::endl;
    } 
 }
 
