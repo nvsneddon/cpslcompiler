@@ -24,9 +24,11 @@ void Procedure::declare() {
 RegExpression* Procedure::call() {
     int sizeOffset = rtable->getUsedSize()*4+stacksize;
     std::cout << "addi $sp, $sp, -" << sizeOffset << std::endl;
+    Write::comment("Spilling registers");
     rtable->spillregisters(stacksize);
     std::cout << "move $fp, $sp" << std::endl;
     std::cout << "jal " << name << std::endl;
+    Write::comment("unspilling registers");
     rtable->unspillregisters(stacksize);
     std::cout << "addi $sp, $sp, " << sizeOffset << std::endl;
     return NULL;
@@ -37,6 +39,7 @@ RegExpression* Procedure::call(ExpressionsList* e) {
     int sizeCounter = 0;
 
     std::cout << "addi $sp, $sp, -" << sizeOffset << std::endl;
+    Write::comment("Spilling registers");
     rtable->spillregisters(stacksize);
     std::cout << "move $fp, $sp" << std::endl;
     for(int i = 0; i < e->getSize(); i++){
@@ -46,6 +49,7 @@ RegExpression* Procedure::call(ExpressionsList* e) {
         delete r;
     }
     std::cout << "jal " << name << std::endl;
+    Write::comment("unspilling registers");
     rtable->unspillregisters(stacksize);
     std::cout << "addi $sp, $sp, " << sizeOffset << std::endl;
     return NULL;

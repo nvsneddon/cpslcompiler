@@ -328,8 +328,9 @@ FunctionBegin: FUNCTION ID POPEN FormalParameters PCLOSE COL Typestatement SEMCO
 };
 
 ProcedureBegin: PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL {
-	Write::comment("Begnning of the procedure");
+	Write::comment("Begnning of the procedurewe");
 	Procedure* p = new Procedure(std::string($2), $4);
+	Write::comment("I think this works");
 	flist->declareFunction(std::string($2), p);
 };
 
@@ -346,14 +347,24 @@ body: ConstSubDecl TypeDecl VarDecl Block {}
 Block: START StatementSequence END {};
 
 FormalParameters: { $$ = NULL; }
-| FormalParameters SEMCOL VarRef IDList COL Typestatement {} 
+| FormalParameters SEMCOL VarRef IDList COL Typestatement {
+	$$ = $1;
+	for(auto it = $4->ids.begin(); it != $4->ids.end(); it++){
+		$$->addParameter(*it, $6->getCopyPtr());
+	}
+} 
 | FormalParameters SEMCOL IDList COL Typestatement {
 	$$ = $1;
 	for(auto it = $3->ids.begin(); it != $3->ids.end(); it++){
 		$$->addParameter(*it, $5->getCopyPtr());
 	}
 } 
-| VarRef IDList COL Typestatement {} 
+| VarRef IDList COL Typestatement {
+	$$ = new ParameterList();
+	for(auto it = $2->ids.begin(); it != $2->ids.end(); it++){
+		$$->addParameter(*it, $4->getCopyPtr());
+	}
+} 
 | IDList COL Typestatement {
 	$$ = new ParameterList();
 	for(auto it = $1->ids.begin(); it != $1->ids.end(); it++){
