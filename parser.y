@@ -152,7 +152,7 @@
 %locations
 %%
 
-Program: ConstantOption TypeOption VarOption Profunct Block DEC {
+Program: ConstantOption TypeOption VarOption Profunctblock Block DEC {
 	std::cout << "li $v0, 10" << std::endl;
 	std::cout << "syscall" << std::endl;
 	strlist->printLabels();
@@ -171,6 +171,10 @@ TypeOption: TypeDecl {}
 
 VarOption: VarDecl {}
 	| {};
+
+Profunctblock: Profunct {
+	std::cout << "main:" << std::endl;
+};
 
 Profunct: Profunct ProcedureDecl {} 
 | Profunct FunctionDecl {} 
@@ -300,7 +304,9 @@ IDList: IDList COMMA ID {
 	$$->ids.push_back(std::string($1));
 };
 
-ProcedureDecl: ProcedureBegin body SEMCOL {}
+ProcedureDecl: ProcedureBegin body SEMCOL {
+	std::cout << "jr $ra" << std::endl; 
+}
 | ProcedureBegin FORWARD SEMCOL {}
 ;
 FunctionDecl: FunctionBegin body SEMCOL{}
@@ -313,6 +319,7 @@ FunctionBegin: FUNCTION ID POPEN FormalParameters PCLOSE COL Typestatement SEMCO
 
 ProcedureBegin: PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL {
 	Procedure* p = new Procedure(std::string($2), $4);
+	flist->declareFunction(std::string($2), p);
 };
 
 body: ConstSubDecl TypeDecl VarDecl Block {}
@@ -325,19 +332,23 @@ body: ConstSubDecl TypeDecl VarDecl Block {}
 | Block {}
 ;
 
-Block: START StatementSequence END {}
-	;
+Block: START StatementSequence END {};
 
 FormalParameters: { $$ = NULL; }
 | FormalParameters SEMCOL VarRef IDList COL Typestatement {} 
 | FormalParameters SEMCOL IDList COL Typestatement {
 	$$ = $1;
-	for(int i = 0; i < $1->ids.size(); i++){
-
+	for(auto it = $3->ids.begin(); it != $3->ids.end(); it++){
+		$$->addParameter(*it, $5->getCopyPtr());
 	}
 } 
 | VarRef IDList COL Typestatement {} 
-| IDList COL Typestatement {};
+| IDList COL Typestatement {
+	$$ = new ParameterList();
+	for(auto it = $1->ids.begin(); it != $1->ids.end(); it++){
+		$$->addParameter(*it, $3->getCopyPtr());
+	}
+};
 	
 VarRef: VAR {} 
 | REF {};

@@ -9,6 +9,12 @@ Procedure::Procedure(std::string n, ParameterList* p){
     plist = p;
 }
 
+void Procedure::declare() {
+    symbols->startFunctionScope();
+    std::cout << name << ":\n";
+    plist->saveParameters();
+}
+
 Procedure::~Procedure(){
     delete plist;
 }

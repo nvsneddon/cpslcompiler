@@ -28,6 +28,7 @@ set(cpsl_srcs
 	Function/procedure.hpp
 	Function/procedure.cpp
 	Function/functionlist.hpp
+	Function/functionlist.cpp
 	Function/function.hpp
 	Function/function.cpp
 	Function/parameterlist.hpp

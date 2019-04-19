@@ -14,3 +14,15 @@ int ParameterList::getSize(){
     }
     return size;
 }
+
+void ParameterList::saveParameters(){
+    for(auto it = plist.begin(); it != plist.end(); it++){
+        symbols->declareVariable(it->name, it->type->getCopyPtr());
+    }
+}
+
+void ParameterList::print() {
+    for(auto it = plist.begin(); it != plist.end(); it++){
+        std::cerr << it->name << '\t' << it->type->getTypeAsString() << std::endl;
+    }
+}

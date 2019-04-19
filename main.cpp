@@ -19,6 +19,7 @@ int main(){
 	strlist = new StringList();
 	llbl = new LoopLabels();
 	flist = new FunctionList();
+	std::cout << "j main" << std::endl;
 	yyparse();
 	delete symbols;
 	delete elist;

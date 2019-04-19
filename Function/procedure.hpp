@@ -6,6 +6,9 @@
 
 #include "../Types/type.hpp"
 #include "parameterlist.hpp"
+#include "../Tables/symbol_table.hpp"
+
+extern SymbolTable* symbols;
 
 
 class Procedure {
@@ -14,7 +17,7 @@ public:
     Procedure(std::string);
     Procedure(std::string, ParameterList* plist);
     virtual ~Procedure();
-    void declare();
+    void declare(); 
     void call();
     std::map<std::string, Type*> params;
     int getStackSize() { return stacksize; }

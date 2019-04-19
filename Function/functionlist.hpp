@@ -8,7 +8,9 @@
 class FunctionList {
 public:
     FunctionList(){}
-    void declareFunction();
+    ~FunctionList();
+    void declareFunction(std::string n, Procedure* p);
+
 
 private:
     std::map<std::string, Procedure*> functions; 
