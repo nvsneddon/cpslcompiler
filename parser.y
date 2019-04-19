@@ -311,7 +311,8 @@ FunctionBegin: FUNCTION ID POPEN FormalParameters PCLOSE COL Typestatement SEMCO
 };
 
 ProcedureBegin: PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL {
-
+	Procedure* p = new Procedure("This is great");
+	delete p;
 };
 
 body: ConstSubDecl TypeDecl VarDecl Block {}

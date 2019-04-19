@@ -13,7 +13,6 @@ struct Parameter{
 
 class ParameterList{
 public:
-    ParameterList();
     void addParameter(std::string n, Type* t);
 private:
     std::vector<Parameter> plist;
