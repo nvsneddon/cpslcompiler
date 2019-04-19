@@ -12,6 +12,8 @@ class Procedure {
 
 public:
     Procedure(std::string);
+    Procedure(std::string, ParameterList* plist);
+    virtual ~Procedure();
     void declare();
     void call();
     std::map<std::string, Type*> params;
@@ -19,7 +21,7 @@ public:
     void declareParameters();
 protected:
     std::string name;
-    ParameterList plist;
+    ParameterList* plist;
     int stacksize;
 };
 

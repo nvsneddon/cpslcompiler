@@ -14,6 +14,7 @@ struct Parameter{
 class ParameterList{
 public:
     void addParameter(std::string n, Type* t);
+    int getSize();
 private:
     std::vector<Parameter> plist;
 };

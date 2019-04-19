@@ -36,6 +36,7 @@
 	Record* rcrd;
 	Expression* express;
 	ExpressionsList* elist;
+	ParameterList* plist;
 }
 
 %token ADD
@@ -120,6 +121,7 @@
 %type<num> RepeatStatement
 %type<express> Expression
 %type<elist> ExpressionsList
+%type<plist> FormalParameters
 
 
 //%left OR
@@ -290,7 +292,6 @@ arraytype: ARRAY BOPEN Expression COL Expression BCLOSE OF Typestatement {
 ;
 
 IDList: IDList COMMA ID {
-	//Do I do this or not? With the expressionlist it seems to be working fine.
 	$$=$1;
 	$$->ids.push_back(std::string($3));
 }  
@@ -311,8 +312,7 @@ FunctionBegin: FUNCTION ID POPEN FormalParameters PCLOSE COL Typestatement SEMCO
 };
 
 ProcedureBegin: PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL {
-	Procedure* p = new Procedure("This is great");
-	delete p;
+	Procedure* p = new Procedure(std::string($2), $4);
 };
 
 body: ConstSubDecl TypeDecl VarDecl Block {}
@@ -328,9 +328,14 @@ body: ConstSubDecl TypeDecl VarDecl Block {}
 Block: START StatementSequence END {}
 	;
 
-FormalParameters: {}
+FormalParameters: { $$ = NULL; }
 | FormalParameters SEMCOL VarRef IDList COL Typestatement {} 
-| FormalParameters SEMCOL IDList COL Typestatement {} 
+| FormalParameters SEMCOL IDList COL Typestatement {
+	$$ = $1;
+	for(int i = 0; i < $1->ids.size(); i++){
+
+	}
+} 
 | VarRef IDList COL Typestatement {} 
 | IDList COL Typestatement {};
 	
