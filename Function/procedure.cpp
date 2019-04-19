@@ -32,6 +32,7 @@ RegExpression* Procedure::call() {
     std::cout << "jal " << name << std::endl;
     Write::comment("unspilling registers");
     rtable->unspillregisters(stacksize);
+    std::cerr << "localvarsize is " << localvarsize << std::endl;
     std::cout << "addi $sp, $sp, " << sizeOffset + localvarsize << std::endl;
     return NULL;
 }
@@ -53,6 +54,7 @@ RegExpression* Procedure::call(ExpressionsList* e) {
     std::cout << "jal " << name << std::endl;
     Write::comment("unspilling registers");
     rtable->unspillregisters(stacksize);
+    std::cerr << "localvarsize is " << localvarsize << std::endl;
     std::cout << "addi $sp, $sp, " << sizeOffset + localvarsize << std::endl;
     return NULL;
 }
