@@ -29,6 +29,7 @@ class SymbolTable{
         void addScope();
         void startFunctionScope();
         void startFunctionScope(std::map<std::string, Type*> params);
+        void removeFunctionScope();
         void removeScope();
         void removeForVar();
         std::string getReferencePointer();

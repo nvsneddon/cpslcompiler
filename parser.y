@@ -314,7 +314,7 @@ ProcedureDecl: ProcedureBegin body SEMCOL {
 	std::cout << "jr $ra" << std::endl; 
 	std::cout << "move $sp, $fp" << std::endl;
 	flist->removeCurrProcedure();
-	symbols->removeScope();
+	symbols->removeFunctionScope();
 	Write::comment("End of the procedure");
 }
 | ProcedureBegin FORWARD SEMCOL {}
@@ -322,8 +322,11 @@ ProcedureDecl: ProcedureBegin body SEMCOL {
 FunctionDecl: FunctionBegin body SEMCOL{
 	//std::cout << "jr $ra" << std::endl; 
 	std::cout << "move $sp, $fp" << std::endl;
+	if(flist->getCurrProcedure() == NULL)
+		std::cerr<< "found the problem" << std::endl;
 	flist->removeCurrProcedure();
-	symbols->removeScope();
+	Write::comment("Testing!");
+	symbols->removeFunctionScope(); //this is causing some problems
 	Write::comment("End of the function");
 }
 | FunctionBegin FORWARD SEMCOL{}

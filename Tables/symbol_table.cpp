@@ -25,6 +25,11 @@ void SymbolTable::startFunctionScope(std::map<std::string, Type*> params){
     }
 }
 
+void SymbolTable::removeFunctionScope(){
+    removeScope();
+    refPointers.pop();
+}
+
 std::string SymbolTable::getReferencePointer(){
     return refPointers.top();
 }
