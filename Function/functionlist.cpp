@@ -12,10 +12,22 @@ FunctionList::~FunctionList(){
     }
 }
 
-void FunctionList::callFunction(std::string n){
+RegExpression* FunctionList::callFunction(std::string n){
     auto it = functions.find(n);
     if(it != functions.end()){
-        it->second->call();
+        return it->second->call();
+    }
+    else{
+        std::cerr << "Function " << n << " not defined in code.\n";
+        throw "function error";
+    }
+}
+
+RegExpression* FunctionList::callFunction(std::string n, ExpressionsList* exlist){
+    auto it = functions.find(n);
+    if(it != functions.end()){
+        return it->second->call(exlist);
+
     }
     else{
         std::cerr << "Function " << n << " not defined in code.\n";
@@ -25,16 +37,4 @@ void FunctionList::callFunction(std::string n){
 
 bool FunctionList::isFunction(std::string fct){
     return true;
-}
-
-void FunctionList::callFunction(std::string n, ExpressionsList* exlist){
-    auto it = functions.find(n);
-    if(it != functions.end()){
-        it->second->call(exlist);
-
-    }
-    else{
-        std::cerr << "Function " << n << " not defined in code.\n";
-        throw "function error";
-    }
 }

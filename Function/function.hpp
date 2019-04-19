@@ -11,6 +11,8 @@ public:
     Type* getReturnType(){ return returnType; }
     int getReturnSize(){ return returnsize; }
     int getStackSize() { return stacksize + returnsize; }
+    RegExpression* call();
+    RegExpression* call(ExpressionsList* e);
     void storeExpression(Expression* e);
     RegExpression* getExpression();
 private:

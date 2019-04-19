@@ -1062,12 +1062,11 @@ Expression: Expression OR Expression {
 	$$ = $2; 
 }
 | ID POPEN ExpressionsList PCLOSE {
-	std::cerr << $1 << std::endl;
-	flist->callFunction(std::string($1), $3);
+	$$ = flist->callFunction(std::string($1), $3);
 }
 | ID POPEN PCLOSE {
 	//std::cerr << $1 << std::endl;
-	flist->callFunction(std::string($1));
+	$$ = flist->callFunction(std::string($1));
 }
 | CHR POPEN Expression PCLOSE {
 	$3->chr();

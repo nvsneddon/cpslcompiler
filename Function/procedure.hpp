@@ -20,8 +20,8 @@ public:
     Procedure(std::string, ParameterList* plist);
     virtual ~Procedure();
     void declare(); 
-    void call();
-    void call(ExpressionsList* e);
+    virtual RegExpression* call();
+    virtual RegExpression* call(ExpressionsList* e);
     std::map<std::string, Type*> params;
     virtual int getStackSize() { return stacksize; }
     void declareParameters();
