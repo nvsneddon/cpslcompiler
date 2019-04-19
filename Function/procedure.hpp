@@ -25,10 +25,12 @@ public:
     std::map<std::string, Type*> params;
     virtual int getStackSize() { return stacksize; }
     void declareParameters();
+    void increaseLocalVarSize(int x) { localvarsize += x; }
 protected:
     std::string name;
     ParameterList* plist;
     int stacksize;
+    int localvarsize;
 };
 
 #endif

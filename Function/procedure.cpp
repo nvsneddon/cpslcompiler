@@ -3,11 +3,13 @@
 Procedure::Procedure(std::string n){
     name = n;
     stacksize = 0;
+    localvarsize = 0;
 }
 
 Procedure::Procedure(std::string n, ParameterList* p){
     name = n;
     plist = p;
+    localvarsize = 0;
     if(p == NULL)
         stacksize = 0;
     else
@@ -30,7 +32,7 @@ RegExpression* Procedure::call() {
     std::cout << "jal " << name << std::endl;
     Write::comment("unspilling registers");
     rtable->unspillregisters(stacksize);
-    std::cout << "addi $sp, $sp, " << sizeOffset << std::endl;
+    std::cout << "addi $sp, $sp, " << sizeOffset + localvarsize << std::endl;
     return NULL;
 }
 
@@ -51,7 +53,7 @@ RegExpression* Procedure::call(ExpressionsList* e) {
     std::cout << "jal " << name << std::endl;
     Write::comment("unspilling registers");
     rtable->unspillregisters(stacksize);
-    std::cout << "addi $sp, $sp, " << sizeOffset << std::endl;
+    std::cout << "addi $sp, $sp, " << sizeOffset + localvarsize << std::endl;
     return NULL;
 }
 

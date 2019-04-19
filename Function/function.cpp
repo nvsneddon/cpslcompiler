@@ -19,7 +19,7 @@ RegExpression* Function::call(){
     Write::comment("unspilling registers");
     rtable->unspillregisters(stacksize + returnsize);
     RegExpression* returnexpr = getExpression();
-    std::cout << "addi $sp, $sp, " << sizeOffset << std::endl;
+    std::cout << "addi $sp, $sp, " << sizeOffset + localvarsize << std::endl;
     return returnexpr;
 }
 
@@ -41,7 +41,7 @@ RegExpression* Function::call(ExpressionsList* e){
     Write::comment("unspilling registers");
     rtable->unspillregisters(stacksize + returnsize);
     RegExpression* returnexpr = getExpression();
-    std::cout << "addi $sp, $sp, " << sizeOffset << std::endl;
+    std::cout << "addi $sp, $sp, " << sizeOffset + localvarsize << std::endl;
     return returnexpr;
 }
 

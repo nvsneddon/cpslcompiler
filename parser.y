@@ -122,6 +122,8 @@
 %type<express> Expression
 %type<elist> ExpressionsList
 %type<plist> FormalParameters
+%type<num> SubVarDecl
+%type<num> VarDecl
 
 
 //%left OR
@@ -212,17 +214,21 @@ SubTypeDecl: SubTypeDecl ID EQ Typestatement SEMCOL {
 	//delete $3;
 };
 
-VarDecl: VAR SubVarDecl {}; 
+VarDecl: VAR SubVarDecl { $$ = $2; }; 
 SubVarDecl: SubVarDecl IDList COL Typestatement SEMCOL {
+	$$ = $1;
 	for(int i = 0; i < $2->ids.size(); i++){
 		symbols->declareVariable($2->ids[i], $4->getCopyPtr());
+		$$ += $4->size();
 	}
 	//symbols->printStats();
 	delete $4;
 } 
 | IDList COL Typestatement SEMCOL {
+	$$ = 0;
 	for(int i = 0; i < $1->ids.size(); i++){
 		symbols->declareVariable($1->ids[i], $3->getCopyPtr());
+		$$ += $3->size();
 	}
 	//symbols->printStats();
 	delete $3;
@@ -334,14 +340,50 @@ ProcedureBegin: PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL {
 	flist->declareFunction(std::string($2), p);
 };
 
-body: ConstSubDecl TypeDecl VarDecl Block {}
-| TypeDecl VarDecl Block {}
-| ConstSubDecl VarDecl Block {}
-| ConstSubDecl TypeDecl Block {}
-| TypeDecl Block {}
-| ConstSubDecl Block {}
-| VarDecl Block {}
-| Block {}
+body: preblock Block {}
+| Block {};
+
+preblock: ConstSubDecl TypeDecl VarDecl {
+	std::cout << "addi $sp, $sp, -" << $3 << std::endl;
+	if(flist -> getCurrProcedure() == NULL){
+		std::cerr << "The current procedure is null!" << std::endl;
+		throw "fit";
+	}
+	flist -> getCurrProcedure() -> increaseLocalVarSize($3);
+}
+| TypeDecl VarDecl {
+	std::cout << "addi $sp, $sp, -" << $2 << std::endl;
+	if(flist -> getCurrProcedure() == NULL){
+		std::cerr << "The current procedure is null!" << std::endl;
+		throw "fit";
+	}
+	flist -> getCurrProcedure() -> increaseLocalVarSize($2);
+} 
+| ConstSubDecl VarDecl {
+	std::cout << "addi $sp, $sp, -" << $2 << std::endl;
+	if(flist -> getCurrProcedure() == NULL){
+		std::cerr << "The current procedure is null!" << std::endl;
+		throw "fit";
+	}
+	flist -> getCurrProcedure() -> increaseLocalVarSize($2);
+}
+| ConstSubDecl TypeDecl {
+
+}
+| TypeDecl {
+	
+}
+| ConstSubDecl {
+
+}
+| VarDecl {
+	std::cout << "addi $sp, $sp, -" << $1 << std::endl;
+	if(flist -> getCurrProcedure() == NULL){
+		std::cerr << "The current procedure is null!" << std::endl;
+		throw "fit";
+	}
+	flist -> getCurrProcedure() -> increaseLocalVarSize($1);
+}
 ;
 
 Block: START StatementSequence END {};
