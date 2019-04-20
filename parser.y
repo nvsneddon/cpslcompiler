@@ -20,6 +20,7 @@
 	extern LoopLabels* llbl;
 	extern StringList* strlist;
 	extern FunctionList* flist;
+	extern bool isFunction;
 
 	#endif
 }
@@ -122,6 +123,8 @@
 %type<express> Expression
 %type<elist> ExpressionsList
 %type<plist> FormalParameters
+%type<num> SubVarDecl
+%type<num> VarDecl
 
 
 //%left OR
@@ -152,15 +155,17 @@
 %locations
 %%
 
-Program: ConstantOption TypeOption VarOption Profunctblock Block DEC {
+Program: Programbegin Block DEC {
 	std::cout << "li $v0, 10" << std::endl;
 	std::cout << "syscall" << std::endl;
 	strlist->printLabels();
+};
+
+Programbegin: ConstantOption TypeOption VarOption Profunctblock{
+	std::cout << "main:" << std::endl;
 }
-| ConstantOption TypeOption VarOption Block DEC {
-	std::cout << "li $v0, 10" << std::endl;
-	std::cout << "syscall" << std::endl;
-	strlist->printLabels();
+| ConstantOption TypeOption VarOption {
+	std::cout << "main:" << std::endl;
 };
 
 ConstantOption: ConstantDecl {}
@@ -173,7 +178,7 @@ VarOption: VarDecl {}
 	| {};
 
 Profunctblock: Profunct {
-	std::cout << "main:" << std::endl;
+	//std::cout << "main:" << std::endl;
 };
 
 Profunct: Profunct ProcedureDecl {} 
@@ -212,17 +217,21 @@ SubTypeDecl: SubTypeDecl ID EQ Typestatement SEMCOL {
 	//delete $3;
 };
 
-VarDecl: VAR SubVarDecl {}; 
+VarDecl: VAR SubVarDecl { $$ = $2; }; 
 SubVarDecl: SubVarDecl IDList COL Typestatement SEMCOL {
+	$$ = $1;
 	for(int i = 0; i < $2->ids.size(); i++){
 		symbols->declareVariable($2->ids[i], $4->getCopyPtr());
+		$$ += $4->size();
 	}
 	//symbols->printStats();
 	delete $4;
 } 
 | IDList COL Typestatement SEMCOL {
+	$$ = 0;
 	for(int i = 0; i < $1->ids.size(); i++){
 		symbols->declareVariable($1->ids[i], $3->getCopyPtr());
+		$$ += $3->size();
 	}
 	//symbols->printStats();
 	delete $3;
@@ -306,54 +315,111 @@ IDList: IDList COMMA ID {
 
 ProcedureDecl: ProcedureBegin body SEMCOL {
 	std::cout << "jr $ra" << std::endl; 
+	isFunction = false;
 	flist->removeCurrProcedure();
-	symbols->removeScope();
+	symbols->removeFunctionScope();
 	Write::comment("End of the procedure");
 }
 | ProcedureBegin FORWARD SEMCOL {}
 ;
 FunctionDecl: FunctionBegin body SEMCOL{
 	//std::cout << "jr $ra" << std::endl; 
+	isFunction = false;
+	if(flist->getCurrProcedure() == NULL)
+		std::cerr<< "found the problem" << std::endl;
 	flist->removeCurrProcedure();
-	symbols->removeScope();
+	Write::comment("Testing!");
+	symbols->removeFunctionScope(); //this is causing some problems
 	Write::comment("End of the function");
 }
-| FunctionBegin FORWARD SEMCOL{}
+| FunctionBegin FORWARD SEMCOL{
+	isFunction = false;
+}
 ; 
 
 FunctionBegin: FUNCTION ID POPEN FormalParameters PCLOSE COL Typestatement SEMCOL {
 	Write::comment("Begnning of the function");
 	Procedure* p = new Function(std::string($2), $4, $7->getCopyPtr());
 	flist->declareFunction(std::string($2), p);
+	isFunction = true;
+	symbols->resetScopeIndex(); //This part can maybe turn into a bug with forward calls
 };
 
 ProcedureBegin: PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL {
-	Write::comment("Begnning of the procedure");
+	Write::comment("Begnning of the procedurewe");
 	Procedure* p = new Procedure(std::string($2), $4);
 	flist->declareFunction(std::string($2), p);
+	isFunction = true;
+	symbols->resetScopeIndex(); //This part can maybe turn into a bug with forward calls
 };
 
-body: ConstSubDecl TypeDecl VarDecl Block {}
-| TypeDecl VarDecl Block {}
-| ConstSubDecl VarDecl Block {}
-| ConstSubDecl TypeDecl Block {}
-| TypeDecl Block {}
-| ConstSubDecl Block {}
-| VarDecl Block {}
-| Block {}
+body: preblock Block {}
+| Block {};
+
+preblock: ConstSubDecl TypeDecl VarDecl {
+	std::cout << "addi $sp, $sp, -" << $3 << std::endl;
+	if(flist -> getCurrProcedure() == NULL){
+		std::cerr << "The current procedure is null!" << std::endl;
+		throw "fit";
+	}
+	flist -> getCurrProcedure() -> increaseLocalVarSize($3);
+}
+| TypeDecl VarDecl {
+	std::cout << "addi $sp, $sp, -" << $2 << std::endl;
+	if(flist -> getCurrProcedure() == NULL){
+		std::cerr << "The current procedure is null!" << std::endl;
+		throw "fit";
+	}
+	flist -> getCurrProcedure() -> increaseLocalVarSize($2);
+} 
+| ConstSubDecl VarDecl {
+	std::cout << "addi $sp, $sp, -" << $2 << std::endl;
+	if(flist -> getCurrProcedure() == NULL){
+		std::cerr << "The current procedure is null!" << std::endl;
+		throw "fit";
+	}
+	flist -> getCurrProcedure() -> increaseLocalVarSize($2);
+}
+| ConstSubDecl TypeDecl {
+
+}
+| TypeDecl {
+	
+}
+| ConstSubDecl {
+
+}
+| VarDecl {
+	std::cout << "addi $sp, $sp, -" << $1 << std::endl;
+	if(flist -> getCurrProcedure() == NULL){
+		std::cerr << "The current procedure is null!" << std::endl;
+		throw "fit";
+	}
+	flist -> getCurrProcedure() -> increaseLocalVarSize($1);
+}
 ;
 
 Block: START StatementSequence END {};
 
 FormalParameters: { $$ = NULL; }
-| FormalParameters SEMCOL VarRef IDList COL Typestatement {} 
+| FormalParameters SEMCOL VarRef IDList COL Typestatement {
+	$$ = $1;
+	for(auto it = $4->ids.begin(); it != $4->ids.end(); it++){
+		$$->addParameter(*it, $6->getCopyPtr());
+	}
+} 
 | FormalParameters SEMCOL IDList COL Typestatement {
 	$$ = $1;
 	for(auto it = $3->ids.begin(); it != $3->ids.end(); it++){
 		$$->addParameter(*it, $5->getCopyPtr());
 	}
 } 
-| VarRef IDList COL Typestatement {} 
+| VarRef IDList COL Typestatement {
+	$$ = new ParameterList();
+	for(auto it = $2->ids.begin(); it != $2->ids.end(); it++){
+		$$->addParameter(*it, $4->getCopyPtr());
+	}
+} 
 | IDList COL Typestatement {
 	$$ = new ParameterList();
 	for(auto it = $1->ids.begin(); it != $1->ids.end(); it++){

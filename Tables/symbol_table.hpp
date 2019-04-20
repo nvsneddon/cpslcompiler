@@ -12,6 +12,7 @@
 #include "../Types/simpletype.hpp"
 #include "../Types/type.hpp"
 
+extern bool isFunction;
 
 class SymbolTable{
     public:
@@ -28,9 +29,11 @@ class SymbolTable{
         void printStringLabels();
         void addScope();
         void startFunctionScope();
-        void startFunctionScope(std::map<std::string, Type*> params);
+        //void startFunctionScope(std::map<std::string, Type*> params);
+        void removeFunctionScope();
         void removeScope();
         void removeForVar();
+        void resetScopeIndex();
         std::string getReferencePointer();
         int appendString(std::string str);
         void printStats();

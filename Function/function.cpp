@@ -10,21 +10,22 @@ Function::Function(std::string n, ParameterList* p, Type* t) : Procedure(n, p){
 }
 
 RegExpression* Function::call(){
-    int sizeOffset = rtable->getUsedSize()*4+stacksize;
+    int sizeOffset = rtable->getUsedSize()*4+stacksize+returnsize;
     std::cout << "addi $sp, $sp, -" << sizeOffset << std::endl;
     Write::comment("Spilling registers");
-    rtable->spillregisters(stacksize);
+    rtable->spillregisters(stacksize + returnsize);
     std::cout << "move $fp, $sp" << std::endl;
     std::cout << "jal " << name << std::endl;
-    rtable->unspillregisters(stacksize);
-    RegExpression* returnexpr = getExpression();
+	std::cout << "move $sp, $fp" << std::endl;
     Write::comment("unspilling registers");
+    rtable->unspillregisters(stacksize + returnsize);
+    RegExpression* returnexpr = getExpression();
     std::cout << "addi $sp, $sp, " << sizeOffset << std::endl;
     return returnexpr;
 }
 
 RegExpression* Function::call(ExpressionsList* e){
-    int sizeOffset = rtable->getUsedSize()*4+stacksize;
+    int sizeOffset = rtable->getUsedSize()*4+stacksize+returnsize;
     int sizeCounter = 0;
 
     std::cout << "addi $sp, $sp, -" << sizeOffset << std::endl;
@@ -38,8 +39,9 @@ RegExpression* Function::call(ExpressionsList* e){
         delete r;
     }
     std::cout << "jal " << name << std::endl;
-    rtable->unspillregisters(stacksize + returnsize);
+	std::cout << "move $sp, $fp" << std::endl;
     Write::comment("unspilling registers");
+    rtable->unspillregisters(stacksize + returnsize);
     RegExpression* returnexpr = getExpression();
     std::cout << "addi $sp, $sp, " << sizeOffset << std::endl;
     return returnexpr;
@@ -54,7 +56,7 @@ void Function::storeExpression(Expression* e){
 
 RegExpression* Function::getExpression(){
     RegExpression* r = new RegExpression(returnType->getCopyPtr());
-    Write::comment("hweufhrug");
+    Write::comment("Getting the expression from the function!");
     std::cout << "lw " << r->getRegister() << ", " << stacksize << "($sp)" << std::endl;
     return r;
 }

@@ -21,6 +21,7 @@ public:
 private:
     std::stack<std::string> regs;
     std::vector<std::string> usedregs;
+    std::vector<std::string> spilledregs;
 };
 
 #endif
