@@ -47,6 +47,23 @@ void SymbolTable::declareVariable(std::string varname, Type* t, bool forvar){
     variables[0].insert(std::make_pair(varname, m));
 }
 
+void SymbolTable::declareRefVariable(std::string varname, Type* t, bool forvar){
+    auto it = constants.find(varname);
+    if(it != constants.end() && findVariable(varname) != NULL){
+        std::cerr << "Cannot declare a variable again\n";
+        throw "error";
+    }
+    MemExpression* m = new RefExpression(getOffset(t->size()), getReferencePointer(), t);
+
+    if(forvar)
+        forvariables.push_front(m);
+    variables[0].insert(std::make_pair(varname, m));
+}
+
+void SymbolTable::declareRefVariable(std::string varname, Type* t){
+    declareRefVariable(varname, t, false);
+}
+
 void SymbolTable::declareVariable(std::string varname, Type* t){
     declareVariable(varname, t, false);
 }

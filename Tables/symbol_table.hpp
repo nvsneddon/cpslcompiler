@@ -9,6 +9,7 @@
 #include "../Expressions/expression.hpp"
 #include "../Expressions/constexpression.hpp"
 #include "../Expressions/memexpression.hpp"
+#include "../Expressions/refexpression.hpp"
 #include "../Types/simpletype.hpp"
 #include "../Types/type.hpp"
 
@@ -23,6 +24,8 @@ class SymbolTable{
         Type* findType(std::string mytype);
         void declareVariable(std::string, Type*);
         void declareVariable(std::string, Type*, bool);
+        void declareRefVariable(std::string, Type*, bool);
+        void declareRefVariable(std::string, Type*);
         void declareForVariable(std::string, Type*);
         void declareConstant(std::string, ConstExpression*);
         void declareType(std::string, Type*);

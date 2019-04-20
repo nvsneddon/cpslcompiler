@@ -405,27 +405,36 @@ preblock: ConstSubDecl TypeDecl VarDecl {
 Block: START StatementSequence END {};
 
 FormalParameters: { $$ = NULL; }
-| FormalParameters SEMCOL VarRef IDList COL Typestatement {
+| FormalParameters SEMCOL VAR IDList COL Typestatement {
 	$$ = $1;
 	for(auto it = $4->ids.begin(); it != $4->ids.end(); it++){
 		$$->addParameter(*it, $6->getCopyPtr());
 	}
 } 
+| FormalParameters SEMCOL REF IDList COL Typestatement {
+	$$ = $1;
+	for(auto it = $4->ids.begin(); it != $4->ids.end(); it++){
+		$$->addParameter(*it, $6->getCopyPtr(), true);
+	}
+}
 | FormalParameters SEMCOL IDList COL Typestatement {
 	$$ = $1;
-	if($1 == NULL){
-		std::cerr << "found the problem\n";
-	}
 	for(auto it = $3->ids.begin(); it != $3->ids.end(); it++){
 		$$->addParameter(*it, $5->getCopyPtr());
 	}
 } 
-| VarRef IDList COL Typestatement {
+| VAR IDList COL Typestatement {
 	$$ = new ParameterList();
 	for(auto it = $2->ids.begin(); it != $2->ids.end(); it++){
 		$$->addParameter(*it, $4->getCopyPtr());
 	}
 } 
+| REF IDList COL Typestatement {
+	$$ = new ParameterList();
+	for(auto it = $2->ids.begin(); it != $2->ids.end(); it++){
+		$$->addParameter(*it, $4->getCopyPtr(), true);
+	}
+}
 | IDList COL Typestatement {
 	$$ = new ParameterList();
 	for(auto it = $1->ids.begin(); it != $1->ids.end(); it++){
@@ -433,8 +442,6 @@ FormalParameters: { $$ = NULL; }
 	}
 };
 	
-VarRef: VAR {} 
-| REF {};
 
 StatementSequence: StatementSequence SEMCOL Statement {} 
 | Statement {};
