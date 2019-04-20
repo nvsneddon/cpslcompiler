@@ -1119,7 +1119,33 @@ Expression: Expression OR Expression {
 		delete $3;
 	}
 }
-| TILDA Expression {}
+| TILDA Expression {
+	if($2->getExpressionType()->getTypeAsString() == "boolean"){
+		if(ConstExpression* c = dynamic_cast<ConstExpression*>($2)){
+			$$ = new ConstExpression((c->getElement() == 0) ? 0 : 1, new Boolean());
+		} else {
+			RegExpression* r = $2->copyAsRegExpression();
+			std::cout << "addi " << r->getRegister() << ", " << r->getRegister() << ", 1" << std::endl;
+			RegExpression* temp = new RegExpression();
+			std::cout << "li " << temp->getRegister() << ", 2" << std::endl;
+			std::cout << "div " << r->getRegister() << ", " << temp->getRegister() << std::endl;
+			std::cout << "mfhi " << r->getRegister() << std::endl;
+			delete temp;
+			$$ = r;
+		}
+		MemExpression* m1 = dynamic_cast<MemExpression*>($2);
+		if(m1 == NULL) {
+			delete $2;
+		}
+		else if(m1->isTemporary()){
+			delete $2;
+		}
+	} else{
+		std::cerr << "Expression not a boolean expression" << std::endl;
+		std::cerr << "It was a " << $2->getExpressionType()->getTypeAsString() << std::endl;
+		throw "fit";
+	}
+}
 | SUB Expression {
 	Expression* e = $2->sub($2);
 	Expression* e2 = e->sub($2);
