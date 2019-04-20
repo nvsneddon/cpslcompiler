@@ -143,13 +143,13 @@
 //%left AND
 //%left OR
 
-%right TILDA
-%right NEG
 %nonassoc EQ ARROWS GT GTE LT LTE
 %left OR
 %left AND
 %left ADD SUB
 %left MULT DIV PERC
+%right TILDA
+%right NEG
 
 %define parse.error verbose
 %locations
