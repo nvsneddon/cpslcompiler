@@ -18,12 +18,12 @@ void SymbolTable::startFunctionScope(){
     refPointers.push("$fp");
 }
 
-void SymbolTable::startFunctionScope(std::map<std::string, Type*> params){
-    startFunctionScope();
-    for(auto it = params.begin(); it != params.end(); it++){
-        declareVariable(it->first, it->second->getCopyPtr());
-    }
-}
+//void SymbolTable::startFunctionScope(std::map<std::string, Type*> params){
+//    startFunctionScope();
+//    for(auto it = params.begin(); it != params.end(); it++){
+//        declareVariable(it->first, it->second->getCopyPtr());
+//    }
+//}
 
 void SymbolTable::removeFunctionScope(){
     removeScope();
@@ -41,6 +41,7 @@ void SymbolTable::declareVariable(std::string varname, Type* t, bool forvar){
         throw "error";
     }
     MemExpression* m = new MemExpression(getOffset(t->size()), getReferencePointer(), t);
+
     if(forvar)
         forvariables.push_front(m);
     variables[0].insert(std::make_pair(varname, m));
@@ -98,6 +99,10 @@ MemExpression* SymbolTable::findVariable(std::string myvar){
     return NULL;
 }
 
+void SymbolTable::resetScopeIndex(){
+    offsets[0] = 0;
+}
+
 void SymbolTable::addScope(){
     std::map<std::string, MemExpression*> newmap;
     variables.push_front(newmap);
@@ -118,7 +123,7 @@ void SymbolTable::removeScope(){
         delete it->second;
     }
     variables.pop_front();
-    refPointers.pop();
+    //refPointers.pop();
     offsets.pop_front();
 }
 
@@ -143,6 +148,13 @@ void SymbolTable::printStringLabels(){
 int SymbolTable::getOffset(int size){
     int returnvalue = offsets[0];
     offsets[0] += size;
+    if(isFunction){
+        std::cerr << "We are in a function, so the return value is " << -(offsets[0]) << std::endl;
+        std::cerr << "The offset token right now is " << refPointers.top() << std::endl;
+        return -(offsets[0]);
+    }
+    std::cerr << "We are not in a function, so the return value is " << returnvalue << std::endl;
+    std::cerr << "The offset token right now is " << refPointers.top() << std::endl;
     return returnvalue;
     //static int offset = 0;
     //int returnvalue = offset;

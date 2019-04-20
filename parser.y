@@ -20,6 +20,7 @@
 	extern LoopLabels* llbl;
 	extern StringList* strlist;
 	extern FunctionList* flist;
+	extern bool isFunction;
 
 	#endif
 }
@@ -154,15 +155,17 @@
 %locations
 %%
 
-Program: ConstantOption TypeOption VarOption Profunctblock Block DEC {
+Program: Programbegin Block DEC {
 	std::cout << "li $v0, 10" << std::endl;
 	std::cout << "syscall" << std::endl;
 	strlist->printLabels();
+};
+
+Programbegin: ConstantOption TypeOption VarOption Profunctblock{
+	std::cout << "main:" << std::endl;
 }
-| ConstantOption TypeOption VarOption Block DEC {
-	std::cout << "li $v0, 10" << std::endl;
-	std::cout << "syscall" << std::endl;
-	strlist->printLabels();
+| ConstantOption TypeOption VarOption {
+	std::cout << "main:" << std::endl;
 };
 
 ConstantOption: ConstantDecl {}
@@ -175,7 +178,7 @@ VarOption: VarDecl {}
 	| {};
 
 Profunctblock: Profunct {
-	std::cout << "main:" << std::endl;
+	//std::cout << "main:" << std::endl;
 };
 
 Profunct: Profunct ProcedureDecl {} 
@@ -312,7 +315,7 @@ IDList: IDList COMMA ID {
 
 ProcedureDecl: ProcedureBegin body SEMCOL {
 	std::cout << "jr $ra" << std::endl; 
-	std::cout << "move $sp, $fp" << std::endl;
+	isFunction = false;
 	flist->removeCurrProcedure();
 	symbols->removeFunctionScope();
 	Write::comment("End of the procedure");
@@ -321,7 +324,7 @@ ProcedureDecl: ProcedureBegin body SEMCOL {
 ;
 FunctionDecl: FunctionBegin body SEMCOL{
 	//std::cout << "jr $ra" << std::endl; 
-	std::cout << "move $sp, $fp" << std::endl;
+	isFunction = false;
 	if(flist->getCurrProcedure() == NULL)
 		std::cerr<< "found the problem" << std::endl;
 	flist->removeCurrProcedure();
@@ -329,20 +332,25 @@ FunctionDecl: FunctionBegin body SEMCOL{
 	symbols->removeFunctionScope(); //this is causing some problems
 	Write::comment("End of the function");
 }
-| FunctionBegin FORWARD SEMCOL{}
+| FunctionBegin FORWARD SEMCOL{
+	isFunction = false;
+}
 ; 
 
 FunctionBegin: FUNCTION ID POPEN FormalParameters PCLOSE COL Typestatement SEMCOL {
 	Write::comment("Begnning of the function");
 	Procedure* p = new Function(std::string($2), $4, $7->getCopyPtr());
 	flist->declareFunction(std::string($2), p);
+	isFunction = true;
+	symbols->resetScopeIndex(); //This part can maybe turn into a bug with forward calls
 };
 
 ProcedureBegin: PROCEDURE ID POPEN FormalParameters PCLOSE SEMCOL {
 	Write::comment("Begnning of the procedurewe");
 	Procedure* p = new Procedure(std::string($2), $4);
-	Write::comment("I think this works");
 	flist->declareFunction(std::string($2), p);
+	isFunction = true;
+	symbols->resetScopeIndex(); //This part can maybe turn into a bug with forward calls
 };
 
 body: preblock Block {}

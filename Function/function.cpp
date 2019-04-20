@@ -16,11 +16,11 @@ RegExpression* Function::call(){
     rtable->spillregisters(stacksize + returnsize);
     std::cout << "move $fp, $sp" << std::endl;
     std::cout << "jal " << name << std::endl;
+	std::cout << "move $sp, $fp" << std::endl;
     Write::comment("unspilling registers");
     rtable->unspillregisters(stacksize + returnsize);
     RegExpression* returnexpr = getExpression();
-    std::cerr << "localvarsize is " << localvarsize << std::endl;
-    std::cout << "addi $sp, $sp, " << sizeOffset + localvarsize << std::endl;
+    std::cout << "addi $sp, $sp, " << sizeOffset << std::endl;
     return returnexpr;
 }
 
@@ -39,11 +39,11 @@ RegExpression* Function::call(ExpressionsList* e){
         delete r;
     }
     std::cout << "jal " << name << std::endl;
+	std::cout << "move $sp, $fp" << std::endl;
     Write::comment("unspilling registers");
     rtable->unspillregisters(stacksize + returnsize);
     RegExpression* returnexpr = getExpression();
-    std::cerr << "localvarsize is " << localvarsize << std::endl;
-    std::cout << "addi $sp, $sp, " << sizeOffset + localvarsize << std::endl;
+    std::cout << "addi $sp, $sp, " << sizeOffset << std::endl;
     return returnexpr;
 }
 
@@ -56,7 +56,7 @@ void Function::storeExpression(Expression* e){
 
 RegExpression* Function::getExpression(){
     RegExpression* r = new RegExpression(returnType->getCopyPtr());
-    Write::comment("hweufhrug");
+    Write::comment("Getting the expression from the function!");
     std::cout << "lw " << r->getRegister() << ", " << stacksize << "($sp)" << std::endl;
     return r;
 }

@@ -9,6 +9,7 @@ IdList* idlist;
 StringList* strlist;
 LoopLabels* llbl;
 FunctionList* flist;
+bool isFunction;
 
 
 int main(){
@@ -19,6 +20,7 @@ int main(){
 	strlist = new StringList();
 	llbl = new LoopLabels();
 	flist = new FunctionList();
+	isFunction = false;
 	std::cout << "j main" << std::endl;
 	yyparse();
 	delete symbols;
