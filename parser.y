@@ -1178,27 +1178,73 @@ Expression: Expression OR Expression {
 	$$ = $3;
 }
 | PRED POPEN Expression PCLOSE {
-	ConstExpression* c = new ConstExpression(1);
-	$$ = $3->sub(c);
-	delete c;
-	MemExpression* m3 = dynamic_cast<MemExpression*>($3);
-	if(m3 == NULL){
-		delete $3;
+	if($3->getExpressionType() -> getTypeAsString() == "boolean"){
+		if(ConstExpression* c = dynamic_cast<ConstExpression*>($3)){
+			$$ = new ConstExpression((c->getElement() == 0) ? 0 : 1, new Boolean());
+		} else {
+			RegExpression* r = $3->copyAsRegExpression();
+			std::cout << "addi " << r->getRegister() << ", " << r->getRegister() << ", 1" << std::endl;
+			RegExpression* temp = new RegExpression();
+			std::cout << "li " << temp->getRegister() << ", 2" << std::endl;
+			std::cout << "div " << r->getRegister() << ", " << temp->getRegister() << std::endl;
+			std::cout << "mfhi " << r->getRegister() << std::endl;
+			delete temp;
+			$$ = r;
+		}
+		MemExpression* m1 = dynamic_cast<MemExpression*>($3);
+		if(m1 == NULL) {
+			delete $3;
+		}
+		else if(m1->isTemporary()){
+			delete $3;
+		}
 	}
-	else if (m3->isTemporary()){
-		delete $3;
+	else{
+		ConstExpression* c = new ConstExpression(1);
+		$$ = $3->sub(c);
+		delete c;
+		MemExpression* m3 = dynamic_cast<MemExpression*>($3);
+		if(m3 == NULL){
+			delete $3;
+		}
+		else if (m3->isTemporary()){
+			delete $3;
+		}
 	}
 }
 | SUCC POPEN Expression PCLOSE {
-	ConstExpression* c = new ConstExpression(1);
-	$$ = $3->add(c);
-	delete c;
-	MemExpression* m3 = dynamic_cast<MemExpression*>($3);
-	if(m3 == NULL){
-		delete $3;
+	if($3->getExpressionType() -> getTypeAsString() == "boolean"){
+		if(ConstExpression* c = dynamic_cast<ConstExpression*>($3)){
+			$$ = new ConstExpression((c->getElement() == 0) ? 0 : 1, new Boolean());
+		} else {
+			RegExpression* r = $3->copyAsRegExpression();
+			std::cout << "addi " << r->getRegister() << ", " << r->getRegister() << ", 1" << std::endl;
+			RegExpression* temp = new RegExpression();
+			std::cout << "li " << temp->getRegister() << ", 2" << std::endl;
+			std::cout << "div " << r->getRegister() << ", " << temp->getRegister() << std::endl;
+			std::cout << "mfhi " << r->getRegister() << std::endl;
+			delete temp;
+			$$ = r;
+		}
+		MemExpression* m1 = dynamic_cast<MemExpression*>($3);
+		if(m1 == NULL) {
+			delete $3;
+		}
+		else if(m1->isTemporary()){
+			delete $3;
+		}
 	}
-	else if (m3->isTemporary()){
-		delete $3;
+	else {
+		ConstExpression* c = new ConstExpression(1);
+		$$ = $3->add(c);
+		delete c;
+		MemExpression* m3 = dynamic_cast<MemExpression*>($3);
+		if(m3 == NULL){
+			delete $3;
+		}
+		else if (m3->isTemporary()){
+			delete $3;
+		}
 	}
 }
 | LValue {
