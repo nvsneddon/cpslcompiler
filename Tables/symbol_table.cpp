@@ -149,12 +149,8 @@ int SymbolTable::getOffset(int size){
     int returnvalue = offsets[0];
     offsets[0] += size;
     if(isFunction){
-        std::cerr << "We are in a function, so the return value is " << -(offsets[0]) << std::endl;
-        std::cerr << "The offset token right now is " << refPointers.top() << std::endl;
         return -(offsets[0]);
     }
-    std::cerr << "We are not in a function, so the return value is " << returnvalue << std::endl;
-    std::cerr << "The offset token right now is " << refPointers.top() << std::endl;
     return returnvalue;
     //static int offset = 0;
     //int returnvalue = offset;
