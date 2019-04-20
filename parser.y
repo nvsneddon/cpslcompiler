@@ -261,6 +261,9 @@ simpletype: ID {
 		else if(!strcmp($1, "char") || !strcmp($1, "CHAR")){
 			$$ = new Char();	
 		}
+		else if(!strcmp($1, "character") || !strcmp($1, "CHARACTER")){
+			$$ = new Char();
+		}
 		else if(!strcmp($1, "string") || !strcmp($1, "STRING")){
 			$$ = new String();	
 		}
@@ -410,6 +413,9 @@ FormalParameters: { $$ = NULL; }
 } 
 | FormalParameters SEMCOL IDList COL Typestatement {
 	$$ = $1;
+	if($1 == NULL){
+		std::cerr << "found the problem\n";
+	}
 	for(auto it = $3->ids.begin(); it != $3->ids.end(); it++){
 		$$->addParameter(*it, $5->getCopyPtr());
 	}

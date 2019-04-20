@@ -39,6 +39,10 @@ MemExpression* Array::getExpressionAt(int arraylocation, std::string ptr, Expres
 }
 
 MemExpression* Array::getExpressionAt(int arraylocation, std::string ptr, int index, bool isconstant){
+    if(index > hi){
+        std::cerr << "Array out of bounds!" << std::endl;
+        throw "fit";
+    }
     int address = ((index-low)*arrayType->size() + arraylocation);
     return new MemExpression(address, ptr, arrayType->getCopyPtr(), true, isconstant);
 }

@@ -44,13 +44,13 @@ RegExpression* Procedure::call(ExpressionsList* e) {
     std::cout << "addi $sp, $sp, -" << sizeOffset << std::endl;
     Write::comment("Spilling registers");
     rtable->spillregisters(stacksize);
-    std::cout << "move $fp, $sp" << std::endl;
     for(int i = 0; i < e->getSize(); i++){
         RegExpression* r = e->elist[i]->copyAsRegExpression();
         std::cout << "sw " << r->getRegister() << ", " << sizeCounter << "($sp)" << std::endl;
         sizeCounter += r->getExpressionType()->size();
         delete r;
     }
+    std::cout << "move $fp, $sp" << std::endl;
     std::cout << "jal " << name << std::endl;
 	std::cout << "move $sp, $fp" << std::endl;
     Write::comment("unspilling registers");
