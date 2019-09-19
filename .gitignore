@@ -7,8 +7,8 @@ parser.tab.c
 parser.tab.h
 y.tab.c
 lex.yy.c
-*.cpsl
 cpsl
+!*.cpsl
 /cpsl-files
 .vscode
 /testdirectory
